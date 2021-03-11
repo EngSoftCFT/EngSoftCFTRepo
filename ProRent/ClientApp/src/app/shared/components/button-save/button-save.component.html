@@ -1,0 +1,38 @@
+<div class="mat-dialog-header">
+  <h1 mat-dialog-title>Salvar Gráfico</h1>
+  <button [mat-dialog-close]="{ send: false }">X</button>
+</div>
+<mat-dialog-content>
+  <div class="row">
+    <mat-form-field class="input-dialog-size">
+      <mat-label>Nome do Filtro</mat-label>
+      <input matInput [(ngModel)]="name" />
+    </mat-form-field>
+
+    <mat-form-field class="input-dialog-size">
+      <mat-label>Privacidade</mat-label>
+      <mat-select [(ngModel)]="shared">
+        <mat-option [value]="true">Público</mat-option>
+        <mat-option [value]="false">Privado</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-checkbox
+      *ngIf="!hide"
+      [disabled]="hide"
+      color="primary"
+      matTooltip="Ao desmarcar essa opção, será gerado um novo gráfico com os paraâmetros definidos"
+      [(ngModel)]="modified"
+    >
+      Sobrescrever</mat-checkbox
+    >
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions class="align-button">
+  <button class="mat-raised-button" [mat-dialog-close]="{ send: false }">Cancelar</button>
+  <button
+    mat-button
+    [mat-dialog-close]="{ filterName: name, shared: shared, modified: modified, send: true }"
+  >
+    Salvar
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,8 @@
+<app-custom-search-bar
+  [definition]="searchBarDefinition"
+  [filter]="searchBarFilter"
+  (searchEvent)="refreshData()"
+  (clearEvent)="refreshData()"
+  (addEvent)="add($event)"
+></app-custom-search-bar>
+<app-custom-table [tableDefinition]="tableDefinition" [values]="values"></app-custom-table>

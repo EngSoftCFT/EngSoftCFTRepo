@@ -1,0 +1,55 @@
+@import "../../../variables.scss";
+
+.container {
+  height: 100%;
+  width: 100%;
+  margin: unset;
+  max-width: 100%;
+  overflow: auto;
+ 
+}
+
+.mat-drawer-inner-container {
+  overflow: hidden !important;
+}
+
+
+.container-sidenav {
+  height: 100%;
+  width: 100%;
+  margin: unset;
+  max-width: 100%;
+  overflow: auto;
+ 
+}
+
+.FixedSideBar {
+  box-shadow: 2px 2px 10px -5px #757475;
+  width: 51px;
+  text-align: center;
+  transform: none;
+  min-height: 100%;
+  height: auto;
+  overflow: unset;
+  visibility: visible;
+}
+
+.menuItemContainer {
+  margin-top: 100px;
+  line-height: 3;
+}
+
+.innerMenuButtonContainer {
+  padding-left: 8px;
+}
+
+.mainPageContainer {
+  margin: 10px;
+  margin-bottom: 0px;
+  margin-top: -$main-page-container-margin-top;
+  max-height: 100%;
+}
+
+.header {
+  height: 58px;
+}

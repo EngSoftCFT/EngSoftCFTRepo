@@ -14,7 +14,11 @@
 Download and install .Net Core 5.0 and Node.
 
 ## Configuration
-
+- Manual migration commands:
+````batch
+dotnet ef migrations add <MigrationName>
+dotnet ef database update
+```` 
 
 ## How to test the software
 

@@ -1,0 +1,26 @@
+$header-size: 80px;
+
+$main-page-container-margin-top: 50px;
+
+/* Card */
+$card-margin: 12.5px;
+$card-border-radius: 5px;
+$card-content-padding: 18px;
+
+$card-full-height: calc(
+  100vh - (#{$header-size} - #{$main-page-container-margin-top}) - 2 * #{$card-margin}
+);
+$card-content-full-height: calc(#{$card-full-height} - 2 * #{$card-content-padding});
+
+$card-half-height: calc(
+  (100vh - (#{$header-size} - #{$main-page-container-margin-top})) / 2 - 2 * #{$card-margin}
+);
+$card-content-half-height: calc(#{$card-half-height} - 2 * #{$card-content-padding});
+
+/* Card horizontal */
+$card-content-searchbar-height: 54px;
+$card-searchbar-height: calc(#{$card-content-searchbar-height} + 2 * #{$card-content-padding});
+
+$card-after-searchbar-height: calc(
+  #{$card-full-height} - #{$card-searchbar-height} - #{$card-margin}
+);

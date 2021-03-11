@@ -1,0 +1,168 @@
+<div class="mat-dialog-header">
+  <h1 mat-dialog-title>{{ data.title }}</h1>
+  <button (click)="close()">X</button>
+</div>
+
+<mat-dialog-content>
+  <div class="row">
+    <mat-form-field class="component-field">
+      <mat-label>Tipo</mat-label>
+      <mat-select [disabled]="data.disableEdition" [(ngModel)]="data.realEstate.type">
+        <mat-option *ngFor="let type of RealEstateTypes" [value]="type.value">
+          {{ type.displayName }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field disabled="true" class="component-field">
+      <mat-label>Nome</mat-label>
+      <input [disabled]="data.disableEdition" matInput [(ngModel)]="data.realEstate.name" />
+    </mat-form-field>
+
+    <mat-form-field class="component-field">
+      <mat-label>Numero</mat-label>
+      <input
+        [disabled]="data.disableEdition"
+        matInput
+        type="number"
+        [(ngModel)]="data.realEstate.number"
+      />
+    </mat-form-field>
+
+    <mat-form-field class="component-field">
+      <mat-label>Rua</mat-label>
+      <input [disabled]="data.disableEdition" matInput [(ngModel)]="data.realEstate.street" />
+    </mat-form-field>
+
+    <mat-form-field class="component-field">
+      <mat-label>Bairro</mat-label>
+      <input [disabled]="data.disableEdition" matInput [(ngModel)]="data.realEstate.neighborhood" />
+    </mat-form-field>
+
+    <mat-form-field class="component-field">
+      <mat-label>Cidade</mat-label>
+      <input [disabled]="data.disableEdition" matInput [(ngModel)]="data.realEstate.city" />
+    </mat-form-field>
+
+    <mat-form-field class="component-field">
+      <mat-label>Estado</mat-label>
+      <input [disabled]="data.disableEdition" matInput [(ngModel)]="data.realEstate.state" />
+    </mat-form-field>
+
+    <mat-form-field class="component-field">
+      <mat-label>Pais</mat-label>
+      <input [disabled]="data.disableEdition" matInput [(ngModel)]="data.realEstate.country" />
+    </mat-form-field>
+
+    <mat-form-field class="component-field">
+      <mat-label>Quantidade de quartos</mat-label>
+      <input
+        [disabled]="data.disableEdition"
+        matInput
+        type="number"
+        [(ngModel)]="data.realEstate.bedRoomQt"
+      />
+    </mat-form-field>
+
+    <mat-form-field class="component-field">
+      <mat-label>Quantidade de suites</mat-label>
+      <input
+        [disabled]="data.disableEdition"
+        matInput
+        type="number"
+        [(ngModel)]="data.realEstate.suiteQt"
+      />
+    </mat-form-field>
+
+    <mat-form-field class="component-field">
+      <mat-label>Quantidade de salas de estar</mat-label>
+      <input
+        [disabled]="data.disableEdition"
+        matInput
+        type="number"
+        [(ngModel)]="data.realEstate.livingRoomQt"
+      />
+    </mat-form-field>
+
+    <mat-form-field class="component-field">
+      <mat-label>Quantidade de vagas na garagem</mat-label>
+      <input
+        [disabled]="data.disableEdition"
+        matInput
+        type="number"
+        [(ngModel)]="data.realEstate.garageParkingSpace"
+      />
+    </mat-form-field>
+
+    <mat-form-field class="component-field">
+      <mat-label>Area</mat-label>
+      <input
+        [disabled]="data.disableEdition"
+        matInput
+        type="number"
+        [(ngModel)]="data.realEstate.area"
+      />
+    </mat-form-field>
+
+    <mat-slide-toggle [disabled]="data.disableEdition" [(ngModel)]="data.realEstate.closet"
+      >Armario embutido</mat-slide-toggle
+    >
+
+    <mat-slide-toggle
+      [(ngModel)]="data.realEstate.doorman"
+      *ngIf="isApartmentRealEstateType(data.realEstate.type)"
+      >Porteiro 24Hrs</mat-slide-toggle
+    >
+
+    <mat-form-field class="component-field" *ngIf="isApartmentRealEstateType(data.realEstate.type)">
+      <mat-label>Andar</mat-label>
+      <input
+        [disabled]="data.disableEdition"
+        matInput
+        type="number"
+        [(ngModel)]="data.realEstate.floor"
+      />
+    </mat-form-field>
+
+    <mat-form-field class="component-field" *ngIf="isApartmentRealEstateType(data.realEstate.type)">
+      <mat-label>Preço do condominio</mat-label>
+      <input
+        [disabled]="data.disableEdition"
+        matInput
+        type="number"
+        min="0"
+        [(ngModel)]="data.realEstate.condominiumFee"
+      />
+    </mat-form-field>
+
+    <mat-form-field class="component-field">
+      <mat-label>Preço do aluguel</mat-label>
+      <input
+        [disabled]="data.disableEdition"
+        matInput
+        type="number"
+        min="0"
+        [(ngModel)]="data.realEstate.rentValue"
+      />
+    </mat-form-field>
+
+     <mat-form-field class="component-field">
+      <mat-label>Descrição</mat-label>
+      <input
+        [disabled]="data.disableEdition"
+        matInput
+        type="text"
+        [(ngModel)]="data.realEstate.description"
+      />
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" *ngIf="!data.disableEdition">
+  <button class="mat-raised-button" (click)="close()">
+    Cancelar
+  </button>
+  <button class="mat-raised-button mat-primary" (click)="save()" >
+    Salvar
+  </button>
+</mat-dialog-actions>

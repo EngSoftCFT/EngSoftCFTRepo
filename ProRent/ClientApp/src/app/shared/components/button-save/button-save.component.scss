@@ -1,0 +1,56 @@
+.btn:hover,
+.btn-small:hover,
+.btn-large:hover {
+  background: transparent;
+}
+
+.mat-dialog-content {
+  min-height: 25vh !important;
+  min-width: 12vw !important;
+}
+
+h2 {
+  margin-top: 10px;
+  font-size: 15px;
+}
+
+.mat-button {
+  background-color: #009E59;
+  color: #ffffff;
+  margin-left: 5px;
+  margin-right: 5px;
+  align-items: flex-end;
+
+}
+
+.title-margin {
+  margin-left: 3px;
+
+}
+
+mat-form-field {
+  width: 15vw;
+}
+
+mat-dialog-title {
+  margin-left: 5px;
+
+}
+
+.align-button {
+  display: flex;
+  justify-content: center;
+}
+
+li {
+  font-size: 14px;
+}
+
+.input-dialog-size {
+  width: 90%;
+  margin: auto;
+}
+
+.row {
+  margin: 15px;
+}

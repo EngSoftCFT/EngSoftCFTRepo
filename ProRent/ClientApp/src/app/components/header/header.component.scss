@@ -1,0 +1,68 @@
+@import "../../../variables.scss";
+
+mat-toolbar {
+  z-index: -1;
+  height: $header-size;
+}
+
+.mat-icon {
+  vertical-align: bottom;
+  font-size: 1em;
+  line-height: 1.2em;
+  padding-right: 0px;
+}
+
+.page-group {
+  font-size: 0.6em;
+
+  font-weight: 500;
+  color: rgb(196, 196, 196);
+}
+.page-name {
+  font-weight: 500;
+  font-size: 1.2rem;
+}
+
+.font {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.click {
+  cursor: pointer;
+  text-align: center;
+}
+
+.header-color {
+  background-color: #009e59;
+}
+
+.color-page {
+  color: #fff;
+}
+
+.space-arrow {
+  width: 1.2rem;
+}
+
+.margin-header {
+  width: 100%;
+  padding-bottom: 40px;
+  margin: 8px 0 0 8px;
+}
+
+.align-right {
+  float: right;
+  color: white;
+}
+
+.w-80 {
+  width: 80%;
+  margin-left: 16px;
+}
+
+.mat-menu,
+.mat-menu-content,
+.mat-menu-panel {
+  width: 250px !important;
+}

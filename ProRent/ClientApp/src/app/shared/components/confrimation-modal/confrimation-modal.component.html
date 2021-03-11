@@ -1,0 +1,17 @@
+<div class="mat-dialog-header">
+  <h1 mat-dialog-title>{{ config && config.title ? config.title : "Confirmar" }}</h1>
+  <button (click)="close()">X</button>
+</div>
+
+<mat-dialog-content class="mat-dialog-content">
+  <h3>
+      {{
+        config && config.description ? config.description : "Realmente deseja realizar essa ação?"
+      }}
+    </h3>
+
+    </mat-dialog-content>
+  <mat-dialog-actions>
+    <button class="mat-raised-button" (click)="onCancelClick()">Cancelar</button>
+    <button class="mat-raised-button mat-primary" (click)="onConfirmClick()">Confirmar</button>
+  </mat-dialog-actions>

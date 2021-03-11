@@ -1,0 +1,32 @@
+<div class="mat-dialog-header">
+  <h1 mat-dialog-title>{{ data.title }}</h1>
+  <button (click)="close()">X</button>
+</div>
+
+<mat-dialog-content>
+  <div class="row">
+    <div class="flex-child flex-parent element-padding">
+        <mat-form-field class="flex-child">
+          <mat-label>Data da visita</mat-label>
+          <input
+           [disabled]="data.disableEdition"
+            matInput
+            required
+            [(ngModel)]="data.realEstateVisit.visitTime"
+            [owlDateTimeTrigger]="dt12"
+            [owlDateTime]="dt12"
+        /></mat-form-field>
+        <owl-date-time #dt12></owl-date-time>
+      </div>
+
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" *ngIf="!data.disableEdition">
+  <button class="mat-raised-button" (click)="close()">
+    Cancelar
+  </button>
+  <button class="mat-raised-button mat-primary" (click)="save()" >
+    Salvar
+  </button>
+</mat-dialog-actions>

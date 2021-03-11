@@ -1,0 +1,23 @@
+.mat-dialog-content ::ng-deep {
+  min-height: 10vh !important;
+  height: 10vh;
+  width: 40vw;
+  padding-top: 30px!important;
+}
+
+.mat-dialog-title {
+  margin: 0;
+}
+
+.title h3 {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+  color: #009e59;
+}
+
+.mat-button {
+  background-color: #009e59;
+  color: #ffffff;
+}
+

@@ -1,0 +1,84 @@
+<div class="mat-dialog-header" id="size">
+  <h1 mat-dialog-title>Definir Período</h1>
+  <button (click)="close()">X</button>
+</div>
+<div mat-dialog-content>
+  <div class="flex-parent no-wrap">
+    <div class="variables">
+      <div class="list">
+        <ul>
+          <li *ngFor="let variable of data">
+            <div
+              *ngIf="!variable.selected"
+              class="variable-name click"
+              (click)="selectVariable(variable)"
+            >
+              {{ variable.name }}
+            </div>
+            <div
+              *ngIf="variable.selected"
+              class="variable-name click selected"
+              (click)="selectVariable(variable)"
+            >
+              {{ variable.name }}
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="input">
+        <mat-form-field class="variable-selector">
+          <mat-label>Deslocamento temporal</mat-label>
+          <input matInput [(ngModel)]="dateDisplacement" />
+        </mat-form-field>
+        <mat-icon (click)="defineDisplacement()">check_circle</mat-icon>
+      </div>
+    </div>
+
+    <div class="card hoverable table-container">
+      <mat-table [dataSource]="dataSource" class="full-width round-corners">
+        <ng-container matColumnDef="{{ columnNames[0] }}">
+          <mat-header-cell *matHeaderCellDef class="column-name">{{
+            columnNames[0]
+          }}</mat-header-cell>
+          <mat-cell *matCellDef="let element" class="column-name">{{ element.name }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="{{ columnNames[1] }}">
+          <mat-header-cell *matHeaderCellDef class="column-date">{{
+            columnNames[1]
+          }}</mat-header-cell>
+          <mat-cell *matCellDef="let element" class="column-date">{{ element.startDate }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="{{ columnNames[2] }}">
+          <mat-header-cell *matHeaderCellDef class="column-date">{{
+            columnNames[2]
+          }}</mat-header-cell>
+          <mat-cell *matCellDef="let element" class="column-date">{{ element.endDate }}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="{{ columnNames[3] }}">
+          <mat-header-cell *matHeaderCellDef class="column-icon">{{
+            columnNames[3]
+          }}</mat-header-cell>
+          <mat-cell *matCellDef="let element" class="column-icon"
+            > <a (click)="removeDisplacement(element)">
+              <img src="assets/icons/delete.svg" />
+            </a></mat-cell
+          >
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns" matRipple> </mat-row>
+      </mat-table>
+    </div>
+  </div>
+
+  <br />
+</div>
+<mat-dialog-actions>
+  <button class="mat-raised-button" (click)="close()">Cancelar</button>
+  <button class="mat-raised-button mat-primary" (click)="sendDisplacement()">
+    Realizar Deslocamento
+  </button>
+</mat-dialog-actions>

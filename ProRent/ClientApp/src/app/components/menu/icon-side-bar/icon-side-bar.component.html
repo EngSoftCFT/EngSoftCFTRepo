@@ -1,0 +1,64 @@
+<div>
+  <mat-icon class="logo">house</mat-icon>
+</div>
+<div class="burger">
+  <button
+    type="button btn"
+    aria-label="Open Menu"
+    mat-icon-button
+    (click)="toggleSidebar()"
+    color="gray"
+  >
+    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+  </button>
+</div>
+<div class="menuItemsContainer">
+  <div *ngFor="let menuItem of multipleRoutes; let i = index">
+    <div class="menuItem">
+      <button
+        (click)="selectItem(i)"
+        type="button"
+        title="{{ menuItem.name }}"
+        mat-icon-button
+        color="primary"
+        class="icon-size-menu"
+      >
+        <mat-icon
+          *ngIf="menuItem.isSvg"
+          svgIcon="{{ menuItem.icon }}"
+          aria-label="Side nav toggle icon"
+        ></mat-icon>
+        <mat-icon *ngIf="!menuItem.isSvg" aria-label="Side nav toggle icon">{{
+          menuItem.icon
+        }}</mat-icon>
+      </button>
+    </div>
+    <div *ngIf="selected === i">
+      <hr class="subItemDivisory" />
+      <div *ngFor="let subItem of menuItem.routes">
+        <div class="subItem" *ngIf="!subItem.isDisabled">
+          <a
+            [ngClass]="{ buttonSelected: subItem.isSelected }"
+            type="button"
+            aria-label="Trend Page"
+            title="{{ subItem.name }}"
+            mat-icon-button
+            (click)="checkPath(subItem.path)"
+            [routerLink]="subItem.path.includes('heatmap') ? [] : [subItem.path]"
+            class="icon-size-submenu"
+          >
+            <mat-icon
+              *ngIf="subItem.isSvg"
+              svgIcon="{{ subItem.icon }}"
+              aria-label="Side nav toggle icon"
+            ></mat-icon>
+            <mat-icon *ngIf="!subItem.isSvg" aria-label="Side nav toggle icon">{{
+              subItem.icon
+            }}</mat-icon>
+          </a>
+        </div>
+      </div>
+      <hr class="subItemDivisory" />
+    </div>
+  </div>
+</div>

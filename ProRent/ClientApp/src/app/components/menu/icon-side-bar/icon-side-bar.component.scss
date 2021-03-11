@@ -1,0 +1,84 @@
+@import "src/themes/klabin-default.scss";
+
+.logo {
+  &.mat-icon {
+    transform: scale(1.6);
+  }
+}
+
+.burger {
+  transform: scale(1.05);
+}
+
+.menuItem {
+  margin-bottom: 5px;
+  transform: scale(0.96);
+
+  .mat-icon {
+    padding-bottom: 3px;
+  }
+}
+
+.subItem {
+  color: #9e9e9e;
+  margin-top: -3px;
+  margin-bottom: -3px;
+
+  .icon-size-submenu {
+    width: 36px;
+    height: 36px;
+  }
+
+  .mat-icon {
+    padding-bottom: 3px;
+    transform: scale(1);
+  }
+
+  .buttonSelected {
+    transform: scale(1);
+    color: $klabin-primary;
+
+    .mat-icon {
+      transform: scale(1.2);
+    }
+  }
+}
+
+@media screen and (max-width: 1366px) {
+  .subItem {
+    color: #9e9e9e;
+    margin-top: -3px;
+    margin-bottom: -3px;
+
+    .icon-size-submenu {
+      width: 36px;
+      height: 36px;
+    }
+
+    .mat-icon {
+      padding-bottom: 3px;
+      transform: scale(0.9);
+    }
+
+    .buttonSelected {
+      transform: scale(0.9);
+      color: $klabin-primary;
+
+      .mat-icon {
+        transform: scale(1.1);
+      }
+    }
+  }
+}
+
+.menuItemsContainer {
+  padding-top: 8px;
+}
+
+.subItemDivisory {
+  margin: 0px;
+  margin-left: 12px;
+  margin-right: 12px;
+  color: #9e9e9e;
+  border: 1px dashed #9e9e9e;
+}
