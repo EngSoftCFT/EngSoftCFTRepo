@@ -79,13 +79,13 @@ const routes: INamedRoutes = [
      {
         name: "Contador",
         path: "counter",
-        icon: "counter",
+        icon: "clock",
         component: CounterComponent,
       },
       {
         name: "Busca dados",
         path: "fetch-data",
-        icon: "fetch",
+        icon: "android",
         component: FetchDataComponent,
         canActivate: [AuthorizeGuard],
       },

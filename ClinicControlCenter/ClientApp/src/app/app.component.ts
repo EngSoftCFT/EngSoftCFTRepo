@@ -5,6 +5,7 @@ import { AssetLoaderService } from 'src/libs/util/asset-loader/src';
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
   title = "app";

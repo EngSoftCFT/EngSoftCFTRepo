@@ -144,5 +144,10 @@
       }
     }
   },
-  "defaultProject": "ClinicControlCenter"
+  "defaultProject": "ClinicControlCenter",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }

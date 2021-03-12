@@ -1,5 +1,5 @@
-@use "./themes/materialize.scss";
-@use "./themes/basic-blue/basic-blue.scss";;
+@use "themes/materialize.scss";
+// @use "./themes/basic-blue/basic-blue.scss";;
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @import "~@angular/material/theming";
@@ -9,13 +9,18 @@
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.
+
 @include angular-material-theme($bb-default-theme);
 @include angular-material-typography($bb-typography);
+
 /* You can add global styles to this file, and also import other style files */
 
 // Global Styles
 $site-header-height: 80px;
 $site-content-height: calc(100vh - #{$site-header-height});
+$primary-color:  $primary-color;
+$primary-color-light: $primary-color-light;
+
 
 html,
 body {
@@ -40,8 +45,6 @@ body {
 $card-content-padding: 18px;
 $card-full-height: calc(#{$site-content-height} - 2 * #{$card-content-padding});
 $card-half-height: calc(#{$card-full-height} / 2);
-$primary-color:  $primary-color;
-$primary-color-50: $primary-color-50;
 
 .card {
   border-radius: 5px;
@@ -72,7 +75,7 @@ $primary-color-50: $primary-color-50;
   height: 0px;
 }
 ::-webkit-scrollbar-thumb {
-  background: $bb-primary-light50;
+  background: $primary-color-light;
   border: 0px none #c5c5c5;
   border-radius: 50px;
 }

@@ -34,7 +34,6 @@ $bb-typography: mat-typography-config(
 $primary-color: $bb-primary !default;
 $primary-color-light: lighten($primary-color, 15%) !default;
 $primary-color-dark: darken($primary-color, 15%) !default;
-$primary-color-50: $bb-primary-light50 !default;
 
 $secondary-color: $bb-accent !default;
 
