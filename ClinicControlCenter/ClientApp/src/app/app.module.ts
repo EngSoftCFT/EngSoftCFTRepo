@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { FeaMenuModule } from './../libs/ui/fea-menu/src/lib/fea-menu.module';
 import { FeaHeaderModule } from './../libs/ui/fea-header/src/lib/fea-header.module';
 import { BrowserModule } from '@angular/platform-browser';
@@ -23,7 +24,8 @@ import { AppRoutingModule } from './app-routing.module';
     FetchDataComponent,
   ],
   imports: [
-    BrowserModule.withServerTransition({ appId: "ng-cli-universal" }),
+    CommonModule,
+    BrowserModule,
     HttpClientModule,
     FormsModule,
     ApiAuthorizationModule,
