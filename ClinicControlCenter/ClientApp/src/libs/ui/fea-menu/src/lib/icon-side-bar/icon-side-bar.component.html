@@ -1,0 +1,68 @@
+<div>
+  <mat-icon *ngIf="icon || svgIcon" svgIcon="{{svgIcon}}" class="logo">{{icon}}</mat-icon>
+</div>
+<div class="burger">
+  <button
+    type="button btn"
+    aria-label="Open Menu"
+    mat-icon-button
+    (click)="toggleSidebar()"
+    color="gray"
+  >
+    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+  </button>
+</div>
+<div class="menuItemsContainer">
+  <div *ngFor="let menuItem of routes; let i = index">
+    <div class="menuItem" *ngIf="!menuItem.isDisabled">
+      <button
+        (click)="selectItem(i)"
+        type="button"
+        title="{{ menuItem.name }}"
+        mat-icon-button
+        color="primary"
+        class="icon-size-menu"
+        [routerLink]="
+          menuItem.FullPath && !menuItem.isGroupOnly ? menuItem.FullPath : null
+        "
+      >
+        <mat-icon
+          *ngIf="menuItem.isSvg"
+          svgIcon="{{ menuItem.icon }}"
+          aria-label="Side nav toggle icon"
+        ></mat-icon>
+        <mat-icon *ngIf="!menuItem.isSvg" aria-label="Side nav toggle icon">{{
+          menuItem.icon
+        }}</mat-icon>
+      </button>
+    </div>
+    <div *ngIf="selected === i && menuItem.Childs.length > 0">
+      <hr class="subItemDivisory" />
+      <div *ngFor="let subItem of menuItem.Childs">
+        <div class="subItem" *ngIf="!subItem.isDisabled">
+          <a
+            [ngClass]="{ buttonSelected: subItem.isSelected }"
+            type="button"
+            aria-label="Trend Page"
+            title="{{ subItem.name }}"
+            mat-icon-button
+            [routerLink]="subItem.FullPath ? subItem.FullPath : null"
+            class="icon-size-submenu"
+          >
+            <mat-icon
+              *ngIf="subItem.isSvg"
+              svgIcon="{{ subItem.icon }}"
+              aria-label="Side nav toggle icon"
+            ></mat-icon>
+            <mat-icon
+              *ngIf="!subItem.isSvg"
+              aria-label="Side nav toggle icon"
+              >{{ subItem.icon }}</mat-icon
+            >
+          </a>
+        </div>
+      </div>
+      <hr class="subItemDivisory" />
+    </div>
+  </div>
+</div>

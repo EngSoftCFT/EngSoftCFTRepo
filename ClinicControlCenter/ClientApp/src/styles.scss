@@ -1,0 +1,99 @@
+@use "./themes/materialize.scss";
+@use "./themes/basic-blue/basic-blue.scss";;
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import "~@angular/material/theming";
+// Plus imports for other components in your app.
+@import "./themes/basic-blue/basic-blue.scss";
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($bb-default-theme);
+@include angular-material-typography($bb-typography);
+/* You can add global styles to this file, and also import other style files */
+
+// Global Styles
+$site-header-height: 80px;
+$site-content-height: calc(100vh - #{$site-header-height});
+
+html,
+body {
+  height: 100%;
+  min-width: 640px;
+  margin: 0;
+  overflow-y: hidden;
+}
+
+.site-header {
+  height: $site-header-height;
+  background-color: $primary-color;
+}
+
+.site-content {
+  margin: 25px;
+  margin-top: -40px;
+  height: $site-content-height;
+}
+
+/* Card ----------> */
+$card-content-padding: 18px;
+$card-full-height: calc(#{$site-content-height} - 2 * #{$card-content-padding});
+$card-half-height: calc(#{$card-full-height} / 2);
+$primary-color:  $primary-color;
+$primary-color-50: $primary-color-50;
+
+.card {
+  border-radius: 5px;
+  padding: 20px;
+
+  &.full-height {
+    height: $card-full-height;
+  }
+
+  &.half-height {
+    height: $card-half-height;
+  }
+
+  .card-content {
+    overflow-y: auto;
+    padding: $card-content-padding;
+  }
+}
+/* Card <---------- */
+
+/* Scroll Bar ----------> */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background: $bb-primary-light50;
+  border: 0px none #c5c5c5;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: $primary-color;
+}
+::-webkit-scrollbar-thumb:active {
+  background: $primary-color;
+}
+::-webkit-scrollbar-track {
+  background: #c5c5c5;
+  border: 0px none #c5c5c5;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-track:hover {
+  background: #c5c5c5;
+}
+::-webkit-scrollbar-track:active {
+  background: #c5c5c5;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+/* Scroll Bar <---------- */

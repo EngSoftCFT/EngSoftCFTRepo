@@ -1,0 +1,63 @@
+<div class="logo-container">
+  <mat-icon *ngIf="icon || svgIcon" svgIcon="{{svgIcon}}" class="logo">{{icon}}</mat-icon>
+</div>
+<div class="menuItem innerMenuButtonContainer">
+  <button
+    type="button"
+    aria-label="Close Menu"
+    mat-icon-button
+    (click)="toggleSidebar()"
+    color="gray"
+  >
+    <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+  </button>
+</div>
+
+<mat-nav-list class="side-nav">
+  <div *ngFor="let menuItem of routes; let i = index">
+    <a
+      class="menuItem"
+      mat-list-item
+      (click)="itemClicked(i, menuItem)"
+      *ngIf="!menuItem.isDisabled"
+      [routerLink]="
+        menuItem.FullPath && !menuItem.isGroupOnly ? menuItem.FullPath : null
+      "
+    >
+      <span class="no-wrap">{{ menuItem.name }} </span>
+      <span class="maxSpace"></span>
+      <mat-icon
+        *ngIf="menuItem.isGroupOnly"
+        [@indicatorRotate]="expanded[i] ? 'expanded' : 'collapsed'"
+      >
+        expand_more
+      </mat-icon>
+    </a>
+    <div *ngIf="expanded[i] && !menuItem.isDisabled">
+      <div *ngFor="let subItem of menuItem.Childs">
+        <a
+          [ngClass]="{ buttonSelected: subItem.isSelected }"
+          class="menuItem menuSubItem no-wrap"
+          mat-list-item
+          *ngIf="!subItem.isDisabled"
+          [routerLink]="subItem.FullPath ? subItem.FullPath : null"
+          (click)="close()"
+        >
+          <mat-icon
+            [ngClass]="{ buttonSelected: subItem.isSelected }"
+            *ngIf="subItem.isSvg"
+            svgIcon="{{ subItem.icon }}"
+            class="icon-style positionSgv"
+          ></mat-icon>
+          <mat-icon
+            [ngClass]="{ buttonSelected: subItem.isSelected }"
+            *ngIf="!subItem.isSvg"
+            class="icon-style position"
+            >{{ subItem.icon }}</mat-icon
+          >
+          {{ subItem.name }}
+        </a>
+      </div>
+    </div>
+  </div>
+</mat-nav-list>

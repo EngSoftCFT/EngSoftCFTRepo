@@ -43,15 +43,13 @@ namespace ClinicControlCenter.Security
 
         public static async Task Setup(IServiceProvider services)
         {
-            using (var scope = services.CreateScope())
-            {
-                var scopeServices = scope.ServiceProvider;
-                var roleManager = scopeServices.GetRequiredService<RoleManager<IdentityRole>>();
-                var userManager = scopeServices.GetRequiredService<UserManager<ApplicationUser>>();
+            using var scope = services.CreateScope();
+            var scopeServices = scope.ServiceProvider;
+            var roleManager = scopeServices.GetRequiredService<RoleManager<IdentityRole>>();
+            var userManager = scopeServices.GetRequiredService<UserManager<ApplicationUser>>();
 
-                await SetupRoles(roleManager);
-                await SetupDefaultAdmin(userManager);
-            }
+            await SetupRoles(roleManager);
+            await SetupDefaultAdmin(userManager);
         }
 
         private static async Task SetupRoles<T>(RoleManager<T> roleManager)

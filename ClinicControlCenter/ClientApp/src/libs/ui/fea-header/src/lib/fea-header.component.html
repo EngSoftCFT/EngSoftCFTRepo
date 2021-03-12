@@ -1,0 +1,45 @@
+<mat-toolbar class="header-color">
+  <div class="margin-header">
+    <span class="page-group color-page" *ngIf="pageGroup">
+      {{ pageGroup }}
+      <mat-icon class="space-arrow">play_arrow</mat-icon>
+    </span>
+    <span class="page-name color-page">{{ pageName }}</span>
+
+    <div class="align-right">
+      <a
+        type="button"
+        title="Help"
+        mat-icon-button
+        color="secondary"
+        class="help-button"
+        (click)="openHelp()"
+      >
+        <mat-icon>help_outline</mat-icon>
+      </a>
+
+      <div class="align-right font">
+        Olá, {{ user
+        }}<mat-icon
+          class="click"
+          [matMenuTriggerFor]="menu"
+          matRipple
+          [matRippleRadius]="15"
+          [matRippleCentered]="true"
+          >keyboard_arrow_down</mat-icon
+        >
+      </div>
+      <mat-menu #menu="matMenu">
+        <mat-form-field class="w-80" (click)="$event.stopPropagation()">
+          <mat-label>Unidade Operacional</mat-label>
+          <mat-select [(ngModel)]="operationalUnit">
+            <mat-option *ngFor="let op of operationalUnits" [value]="op.id">
+              {{ op.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <button mat-menu-item (click)="confirmCancel()">Sair</button>
+      </mat-menu>
+    </div>
+  </div>
+</mat-toolbar>

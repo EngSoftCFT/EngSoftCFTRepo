@@ -1,0 +1,43 @@
+@import "~@angular/material/theming";
+@import "./colors.scss";
+
+@include mat-core();
+
+//Material
+$klabin-default-primary: mat-palette($md-klabinprimary);
+$klabin-default-accent: mat-palette($md-klabinaccent);
+$klabin-default-warn: mat-palette($mat-deep-orange, 500);
+
+$klabin-default-theme: mat-light-theme(
+  $klabin-default-primary,
+  $klabin-default-accent,
+  $klabin-default-warn
+);
+
+$klabin-typography: mat-typography-config(
+  $font-family: "Frutiger , Verdana",
+  $headline: mat-typography-level(26px, 36px, 700),
+  $body-1: mat-typography-level(14px, 20px, 500),
+);
+
+@media screen and (max-width: 1366px) {
+  .mat-body,
+  .mat-body-1,
+  .mat-typography {
+    font: 500 12px/16px Frutiger, Verdana;
+    letter-spacing: normal;
+  }
+}
+//-------
+
+//Materialize
+$primary-color: $klabin-primary !default;
+$primary-color-light: lighten($primary-color, 15%) !default;
+$primary-color-dark: darken($primary-color, 15%) !default;
+
+$secondary-color: $klabin-accent !default;
+
+$success-color: limegreen;
+$error-color: $klabin-warn !default;
+$link-color: rgb(64, 125, 180) !default;
+//-------------

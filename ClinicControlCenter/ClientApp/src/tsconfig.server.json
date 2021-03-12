@@ -3,6 +3,10 @@
   "compilerOptions": {
     "module": "commonjs"
   },
+  "files": [
+    "main.ts",
+    "polyfills.ts"
+  ],
   "angularCompilerOptions": {
     "entryModule": "app/app.server.module#AppServerModule"
   }

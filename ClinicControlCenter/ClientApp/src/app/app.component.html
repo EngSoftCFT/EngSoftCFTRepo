@@ -1,6 +1,10 @@
-<body>
-  <app-nav-menu></app-nav-menu>
-  <div class="container">
+<fea-menu (currentRoute)="currentRoute = $event" [icon]="'home'">
+  <fea-header
+    [currentRoute]="currentRoute"
+    class="site-header"
+  ></fea-header>
+
+  <main class="site-content">
     <router-outlet></router-outlet>
-  </div>
-</body>
+  </main>
+</fea-menu>

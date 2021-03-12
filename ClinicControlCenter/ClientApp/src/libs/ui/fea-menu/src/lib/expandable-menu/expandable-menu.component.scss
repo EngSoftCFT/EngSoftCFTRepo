@@ -1,0 +1,40 @@
+.side-nav {
+  min-width: 260px;
+}
+
+.menuSubItem {
+  padding-left: 8px;
+  font-size: 14px;
+}
+
+.no-wrap {
+  white-space: nowrap;
+}
+
+.positionSgv {
+  margin-bottom: 10px;
+}
+
+.icon-style {
+  color: #9e9e9e;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.buttonSelected {
+  transform: scale(1);
+  color: #009530;
+}
+
+.mat-drawer-inner-container {
+  overflow: hidden !important;
+  overflow-x: hidden !important;
+}
+.logo {
+  &.mat-icon {
+    transform: scale(1.6);
+  }
+}
+.logo-container {
+  padding-left: 20px;
+}
