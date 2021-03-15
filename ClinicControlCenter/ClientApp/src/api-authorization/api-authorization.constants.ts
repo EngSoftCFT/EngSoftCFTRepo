@@ -1,3 +1,11 @@
+import { environment } from './../environments/environment';
+
+export const SECURITY_URL = environment.SECURITY_API_URL ?? environment.BASE_API_URL ?? "";
+
+export function securityUrl(url: string) {
+  return `${SECURITY_URL}/${url}`;
+}
+
 export const ApplicationName = 'ClinicControlCenter';
 
 export const ReturnUrlType = 'returnUrl';

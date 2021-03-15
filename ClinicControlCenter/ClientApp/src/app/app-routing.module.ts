@@ -12,7 +12,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 const routes: INamedRoutes = [
   {
     path: "",
-    redirectTo: "Home",
+    redirectTo: "home",
     pathMatch: "full",
     isDisabled: true,
   },

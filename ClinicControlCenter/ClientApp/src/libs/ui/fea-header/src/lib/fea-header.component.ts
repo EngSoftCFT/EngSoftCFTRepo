@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { Router } from "@angular/router";
 import { INamedRoute } from "src/libs/ui/fea-menu/src";
 
 @Component({
