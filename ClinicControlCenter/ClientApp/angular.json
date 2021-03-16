@@ -14,16 +14,17 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "progress": false,
-            "extractCss": true,
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
+             "aot": true,
             "assets": [
               "src/assets"
             ],
             "styles": [
+              "src/themes/materialize.scss",
               "src/styles.scss"
             ],
             "scripts": []
@@ -39,7 +40,6 @@
               "optimization": true,
               "outputHashing": "all",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,
@@ -74,6 +74,7 @@
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
             "styles": [
+              "src/themes/materialize.scss",
               "src/styles.scss"
             ],
             "scripts": [],

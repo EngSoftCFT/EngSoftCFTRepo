@@ -1,0 +1,10 @@
+@import "./basic-blue/basic-blue.scss";
+
+
+$site-header-height: 80px;
+$site-content-height: calc(100vh - #{$site-header-height});
+$primary-color:  $primary-color;
+$primary-color-light: $primary-color-light;
+
+
+$primary-color-light-50: $bb-primary-light50;

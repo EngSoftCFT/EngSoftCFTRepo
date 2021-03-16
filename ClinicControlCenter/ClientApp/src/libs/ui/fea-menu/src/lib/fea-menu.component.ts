@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { Event, Router, RoutesRecognized } from "@angular/router";
-import { INamedRoute, NamedRoute, INamedRoutes } from "./models/named-route";
+import { INamedRoute, NamedRoute, INamedRoutes, NamedRoutes } from "./models/named-route";
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -14,7 +14,7 @@ export class FeaMenuComponent {
 
   @Output() currentRoute = new EventEmitter<NamedRoute | null>();
 
-  routes: INamedRoutes;
+  routes: NamedRoutes;
 
   private currentRouteInternal: NamedRoute | undefined | null;
 

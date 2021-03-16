@@ -1,6 +1,6 @@
 import { trigger, state, style, transition, animate } from "@angular/animations";
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { NamedRoute, INamedRoutes } from "../models/named-route";
+import { NamedRoute, INamedRoutes, NamedRoutes } from "../models/named-route";
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -26,7 +26,7 @@ export class ExpandableMenuComponent implements OnInit {
 
   @Output() closeEvent = new EventEmitter();
 
-  @Input() routes!: INamedRoutes;
+  @Input() routes!: NamedRoutes;
 
   expanded: boolean[] = [];
 

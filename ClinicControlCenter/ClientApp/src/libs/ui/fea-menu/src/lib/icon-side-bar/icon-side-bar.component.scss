@@ -1,3 +1,5 @@
+@import "src/themes/_variables.scss";
+
 .logo {
   &.mat-icon {
     transform: scale(1.6);
@@ -34,7 +36,7 @@
 
   .buttonSelected {
     transform: scale(1);
-    color: #009530;
+    color:$primary-color-light-50;
 
     .mat-icon {
       transform: scale(1.2);
@@ -60,7 +62,7 @@
 
     .buttonSelected {
       transform: scale(0.9);
-      color: #009530;
+      color: $primary-color-light-50;
 
       .mat-icon {
         transform: scale(1.1);

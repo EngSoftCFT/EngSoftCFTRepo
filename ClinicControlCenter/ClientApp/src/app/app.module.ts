@@ -1,3 +1,4 @@
+import { UiMaterialModule } from './../libs/ui/material/src/lib/ui-material.module';
 import { CommonModule } from '@angular/common';
 import { FeaMenuModule } from './../libs/ui/fea-menu/src/lib/fea-menu.module';
 import { FeaHeaderModule } from './../libs/ui/fea-header/src/lib/fea-header.module';
@@ -30,6 +31,7 @@ import { AppRoutingModule } from './app-routing.module';
     FormsModule,
     ApiAuthorizationModule,
     AppRoutingModule,
+    UiMaterialModule,
     BrowserAnimationsModule,
     FeaHeaderModule,
     FeaMenuModule,

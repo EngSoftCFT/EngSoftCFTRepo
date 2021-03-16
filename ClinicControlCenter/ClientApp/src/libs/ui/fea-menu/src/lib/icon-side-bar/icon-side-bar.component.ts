@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { INamedRoutes } from "../models/named-route";
+import { INamedRoutes, NamedRoutes } from "../models/named-route";
 
 @Component({
   // tslint:disable-next-line: component-selector
@@ -13,7 +13,7 @@ export class IconSideBarComponent implements OnInit {
 
   @Output() menuButtonClick = new EventEmitter();
 
-  @Input() routes!: INamedRoutes;
+  @Input() routes!: NamedRoutes;
 
   selected = -1;
 

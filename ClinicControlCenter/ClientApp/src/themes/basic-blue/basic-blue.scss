@@ -1,8 +1,6 @@
 @import "~@angular/material/theming";
 @import "./colors.scss";
 
-@include mat-core();
-
 //Material
 $bb-default-primary: mat-palette($md-bb-primary);
 $bb-default-accent: mat-palette($md-bb-accent);

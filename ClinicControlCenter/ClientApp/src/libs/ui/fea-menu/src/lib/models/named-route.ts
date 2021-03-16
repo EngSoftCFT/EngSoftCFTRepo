@@ -27,7 +27,7 @@ export interface INamedRoute extends Route {
 }
 
 export class NamedRoute implements INamedRoute {
-  children?: INamedRoute[];
+  children?: INamedRoutes;
 
   redirectTo?: string;
 
@@ -57,8 +57,8 @@ export class NamedRoute implements INamedRoute {
     return this.fullPath;
   }
 
-  public get Childs(): INamedRoutes {
-    return (this.children as INamedRoutes) ?? [];
+  public get Childs(): NamedRoutes {
+    return (this.children as NamedRoutes) ?? [];
   }
 
   public get Parent() {
@@ -104,3 +104,5 @@ export class NamedRoute implements INamedRoute {
 }
 
 export declare type INamedRoutes = INamedRoute[];
+
+export declare type NamedRoutes = NamedRoute[];
