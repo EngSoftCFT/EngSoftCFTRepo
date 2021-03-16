@@ -1,0 +1,14 @@
+{
+    "recommendations": [
+        "angular.ng-template",
+        "johnpapa.angular2",
+        "mikael.angular-beastcode",
+        "cyrilletuzi.angular-schematics",
+        "editorconfig.editorconfig",
+        "yzhang.markdown-all-in-one",
+        "esbenp.prettier-vscode",
+        "sibiraj-s.vscode-scss-formatter",
+        "mrmlnc.vscode-scss",
+        "ms-vscode.vscode-typescript-tslint-plugin"
+    ]
+}
