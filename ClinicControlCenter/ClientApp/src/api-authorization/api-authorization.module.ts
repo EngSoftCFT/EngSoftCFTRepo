@@ -1,3 +1,4 @@
+import { UiMaterialModule } from './../libs/ui/material/src/lib/ui-material.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -25,7 +26,8 @@ import { UserControlPaneComponent } from './user-control-pane/user-control-pane.
         { path: ApplicationPaths.LoggedOut, component: LogoutComponent },
         { path: ApplicationPaths.LogOutCallback, component: LogoutComponent }
       ]
-    )
+    ),
+    UiMaterialModule
   ],
   declarations: [LoginMenuComponent, LoginComponent, LogoutComponent, UserControlPaneComponent],
   exports: [LoginMenuComponent, LoginComponent, LogoutComponent, UserControlPaneComponent]

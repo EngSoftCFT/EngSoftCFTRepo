@@ -1,19 +1,47 @@
-<div *ngIf="isAuthenticated | async"><button></button></div>
-<div *ngIf="!(isAuthenticated | async)"><button></button></div>
+<div *ngIf="isAuthenticated | async" class="font">
+  {{ userName | async
+  }}<mat-icon
+    class="click"
+    [matMenuTriggerFor]="menu"
+    matRipple
+    [matRippleRadius]="15"
+    [matRippleCentered]="true"
+    >keyboard_arrow_down</mat-icon
+  >
+</div>
+<div *ngIf="!(isAuthenticated | async)" class="font">
+  <a
+    mat-button
+    color="accent"
+    class="not-authenticated-button"
+    [routerLink]="['/authentication/register']"
+    (click)="register()"
+    >Register</a
+  >
+  <a
+    mat-button
+    color="accent"
+    class="not-authenticated-button"
+    [routerLink]="['/authentication/login']"
+    (click)="login()"
+    >Login</a
+  >
+</div>
 
-<!-- <ul class="navbar-nav" *ngIf="isAuthenticated | async">
-    <li class="nav-item">
-        <a  class="nav-link text-dark" [routerLink]='["/authentication/profile"]' title="Manage">Hello {{ userName | async }}</a>
-    </li>
-    <li class="nav-item">
-        <a  class="nav-link text-dark" [routerLink]='["/authentication/logout"]' [state]='{ local: true }' title="Logout">Logout</a>
-    </li>
-</ul>
-<ul class="navbar-nav" *ngIf="!(isAuthenticated | async)">
-  <li class="nav-item">
-        <a class="nav-link text-dark" [routerLink]='["/authentication/register"]'>Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" [routerLink]='["/authentication/login"]'>Login</a>
-    </li>
-</ul> -->
+<mat-menu #menu="matMenu">
+  <button
+    mat-menu-item
+    [routerLink]="['/authentication/profile']"
+    (click)="profile()"
+  >
+    Profile
+  </button>
+  <button
+    mat-menu-item
+    [routerLink]="['/authentication/logout']"
+    (click)="logout()"
+    [state]="{ local: true }"
+  >
+    Logout
+  </button>
+</mat-menu>

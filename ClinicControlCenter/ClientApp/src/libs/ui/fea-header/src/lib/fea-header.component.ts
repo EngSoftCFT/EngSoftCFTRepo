@@ -34,8 +34,6 @@ export class FeaHeaderComponent {
 
     this.operationalUnit = this.operationalUnits[0].id;
     this.user = "Usuário";
-
-    (window as any).test = this;
   }
 
   logout() {

@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class CounterComponent {
   constructor(private http: HttpClient, @Inject('BASE_URL') private baseUrl: string) {
-    
+
   }
 
   public currentCount = 0;
@@ -17,8 +17,8 @@ export class CounterComponent {
   }
 
   public test() {
-    (window as any).test2 = this.http.get(this.baseUrl + 'IsAdmin').subscribe(result => {
-      (window as any).test = result;
+    this.http.get(this.baseUrl + 'IsAdmin').subscribe(result => {
+
     }, error => console.error(error));
   }
 }

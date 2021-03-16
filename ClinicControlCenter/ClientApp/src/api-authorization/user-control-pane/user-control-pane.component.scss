@@ -1,0 +1,28 @@
+@import "src/themes/_variables.scss";
+
+.click {
+  cursor: pointer;
+  text-align: center;
+}
+
+.font {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.mat-menu,
+.mat-menu-content,
+.mat-menu-panel {
+  width: 250px !important;
+}
+
+.mat-icon {
+  vertical-align: bottom;
+  font-size: 1em;
+  line-height: 1.2em;
+  padding-right: 0px;
+}
+
+.not-authenticated-button {
+ // background-color: $accent;
+}

@@ -19,9 +19,9 @@ export class CounterComponent {
   }
 
   public test() {
-    (window as any).test2 = this.http.get(this.baseUrl + "IsAdmin").subscribe(
+     this.http.get(this.baseUrl + "IsAdmin").subscribe(
       (result) => {
-        (window as any).test = result;
+
       },
       (error) => console.error(error)
     );

@@ -14,10 +14,30 @@ export class UserControlPaneComponent implements OnInit {
 
   constructor(private authorizeService: AuthorizeService) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.isAuthenticated = this.authorizeService.isAuthenticated();
+
     this.userName = this.authorizeService
       .getUser()
       .pipe(map((u) => u && u.name));
+
+    (window as any).test = await this.authorizeService.getUser().toPromise();
+    console.log((window as any).test);
+  }
+
+  login() {
+    console.log("login");
+  }
+
+  logout() {
+    console.log("logout");
+  }
+
+  profile() {
+    console.log("profile");
+  }
+
+  register() {
+    console.log("register");
   }
 }
