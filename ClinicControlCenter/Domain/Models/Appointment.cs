@@ -16,6 +16,8 @@ namespace ClinicControlCenter.Domain.Models
 
         public string Telephone { get; set; }
 
-        public Guid IdDoctor { get; set; } //FK para Doctor
+        public long DoctorId { get; set; } //FK para Doctor
+
+        public virtual Doctor Doctor { get; set; }
     }
 }

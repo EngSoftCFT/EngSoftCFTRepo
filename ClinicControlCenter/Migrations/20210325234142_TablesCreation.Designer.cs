@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClinicControlCenter.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210325232836_TablesCreation")]
+    [Migration("20210325234142_TablesCreation")]
     partial class TablesCreation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -119,11 +119,11 @@ namespace ClinicControlCenter.Migrations
                     b.Property<DateTimeOffset>("Date")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<long>("DoctorId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Email")
                         .HasColumnType("text");
-
-                    b.Property<Guid>("IdDoctor")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -132,6 +132,8 @@ namespace ClinicControlCenter.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
 
                     b.ToTable("Schedule");
                 });
@@ -146,10 +148,7 @@ namespace ClinicControlCenter.Migrations
                     b.Property<string>("CRM")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("EmployeeId")
-                        .HasColumnType("uuid");
-
-                    b.Property<long?>("EmployeeId1")
+                    b.Property<long>("EmployeeId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Specialty")
@@ -157,7 +156,7 @@ namespace ClinicControlCenter.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EmployeeId1");
+                    b.HasIndex("EmployeeId");
 
                     b.ToTable("Doctors");
                 });
@@ -172,10 +171,7 @@ namespace ClinicControlCenter.Migrations
                     b.Property<DateTimeOffset>("ContractDate")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("PersonId")
-                        .HasColumnType("uuid");
-
-                    b.Property<long?>("PersonId1")
+                    b.Property<long>("PersonId")
                         .HasColumnType("bigint");
 
                     b.Property<decimal>("Salary")
@@ -183,7 +179,7 @@ namespace ClinicControlCenter.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonId1");
+                    b.HasIndex("PersonId");
 
                     b.ToTable("Employees");
                 });
@@ -201,10 +197,7 @@ namespace ClinicControlCenter.Migrations
                     b.Property<double>("Height")
                         .HasColumnType("double precision");
 
-                    b.Property<Guid>("PersonId")
-                        .HasColumnType("uuid");
-
-                    b.Property<long?>("PersonId1")
+                    b.Property<long>("PersonId")
                         .HasColumnType("bigint");
 
                     b.Property<double>("Weight")
@@ -212,7 +205,7 @@ namespace ClinicControlCenter.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonId1");
+                    b.HasIndex("PersonId");
 
                     b.ToTable("Patients");
                 });
@@ -488,11 +481,24 @@ namespace ClinicControlCenter.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
+            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Appointment", b =>
+                {
+                    b.HasOne("ClinicControlCenter.Domain.Models.Doctor", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doctor");
+                });
+
             modelBuilder.Entity("ClinicControlCenter.Domain.Models.Doctor", b =>
                 {
                     b.HasOne("ClinicControlCenter.Domain.Models.Employee", "Employee")
                         .WithMany()
-                        .HasForeignKey("EmployeeId1");
+                        .HasForeignKey("EmployeeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Employee");
                 });
@@ -501,7 +507,9 @@ namespace ClinicControlCenter.Migrations
                 {
                     b.HasOne("ClinicControlCenter.Domain.Models.Person", "Person")
                         .WithMany()
-                        .HasForeignKey("PersonId1");
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Person");
                 });
@@ -510,7 +518,9 @@ namespace ClinicControlCenter.Migrations
                 {
                     b.HasOne("ClinicControlCenter.Domain.Models.Person", "Person")
                         .WithMany()
-                        .HasForeignKey("PersonId1");
+                        .HasForeignKey("PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Person");
                 });
