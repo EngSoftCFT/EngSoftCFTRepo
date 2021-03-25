@@ -19,6 +19,11 @@ Download and install .Net Core 5.0 and Node.
 dotnet ef migrations add <MigrationName>
 dotnet ef database update
 ```` 
+- Rollback Migration:
+````batch
+dotnet ef update <MigrationName>
+dotnet ef migrations remove
+```` 
 
 ## How to test the software
 

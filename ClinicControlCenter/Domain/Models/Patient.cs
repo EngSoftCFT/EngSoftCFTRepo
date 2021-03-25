@@ -8,7 +8,7 @@ namespace ClinicControlCenter.Domain.Models
 {
     public class Patient : Entity
     {
-        public Guid PersonId { get; set; }
+        public long PersonId { get; set; }
 
         public virtual Person Person { get; set; }
 

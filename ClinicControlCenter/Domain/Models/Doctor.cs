@@ -8,7 +8,7 @@ namespace ClinicControlCenter.Domain.Models
 {
     public class Doctor : Entity
     {
-        public Guid EmployeeId { get; set; } // FK para Funcionario
+        public long EmployeeId { get; set; } // FK para Funcionario
 
         public virtual Employee Employee { get; set; }
 
