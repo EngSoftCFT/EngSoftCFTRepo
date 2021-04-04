@@ -1,12 +1,24 @@
+import { isNullOrUndefined } from 'src/libs/util/utils/src';
 import { environment } from './../environments/environment';
 
 export const SECURITY_URL = environment.SECURITY_API_URL ?? environment.BASE_API_URL ?? "";
+
+const APPLICATION_NAME = "ClinicControlCenter";
 
 export function securityUrl(url: string) {
   return `${SECURITY_URL}/${url}`;
 }
 
-export const ApplicationName = 'ClinicControlCenter';
+export function applicationName() {
+  let appName = APPLICATION_NAME;
+
+  if (!isNullOrUndefined(SECURITY_URL) && SECURITY_URL.length > 0) {
+    appName += "External";
+  }
+  return appName;
+}
+
+export const ApplicationName = applicationName();
 
 export const ReturnUrlType = 'returnUrl';
 
@@ -30,7 +42,8 @@ export const LoginActions = {
 };
 
 let applicationPaths: ApplicationPathsType = {
-  DefaultLoginRedirectPath: '/',
+  DefaultLoginRedirectPath: `${window.location.origin}/`,
+  // DefaultLoginRedirectPath: `/`,
   ApiAuthorizationClientConfigurationUrl: `_configuration/${ApplicationName}`,
   Login: `authentication/${LoginActions.Login}`,
   LoginFailed: `authentication/${LoginActions.LoginFailed}`,
@@ -48,8 +61,8 @@ let applicationPaths: ApplicationPathsType = {
   LogOutPathComponents: [],
   LoggedOutPathComponents: [],
   LogOutCallbackPathComponents: [],
-  IdentityRegisterPath: 'Identity/Account/Register',
-  IdentityManagePath: 'Identity/Account/Manage'
+  IdentityRegisterPath: "Identity/Account/Register",
+  IdentityManagePath: "Identity/Account/Manage",
 };
 
 applicationPaths = {
