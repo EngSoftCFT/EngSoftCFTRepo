@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SDK.EntityRepository.Entities;
+﻿using SDK.EntityRepository.Entities;
 
 namespace ClinicControlCenter.Domain.Models
 {
     public class Doctor : Entity
     {
-        public long EmployeeId { get; set; } // FK para Funcionario
+        public string UserId { get; set; } // FK para Usuario
 
-        public virtual Employee Employee { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public string Specialty { get; set; }
 

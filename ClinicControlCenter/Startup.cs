@@ -67,7 +67,7 @@ namespace ClinicControlCenter
                     builder.AllowAnyOrigin()
                            .AllowAnyHeader()
                            .AllowAnyMethod()));
-     
+
             services.AddSwaggerGen(options =>
             {
                 //options.AddSecurityDefinition("Autentication", new OpenApiSecurityScheme {
@@ -77,17 +77,19 @@ namespace ClinicControlCenter
                 //        Implicit = new OpenApiOAuthFlow()
                 //    }
                 //});
-                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme {
-                    Type = SecuritySchemeType.OAuth2,
-                    Flows = new OpenApiOAuthFlows {
-                        
-                        Implicit = new OpenApiOAuthFlow {
-                            AuthorizationUrl = new Uri("https://localhost:44304/Identity/Account/Login"),
-                            TokenUrl = new Uri("https://localhost:44304/connect/token"),
+                options.AddSecurityDefinition("oauth2",
+                    new OpenApiSecurityScheme
+                    {
+                        Type = SecuritySchemeType.OAuth2,
+                        Flows = new OpenApiOAuthFlows
+                        {
+                            Implicit = new OpenApiOAuthFlow
+                            {
+                                AuthorizationUrl = new Uri("https://localhost:44304/Identity/Account/Login"),
+                                TokenUrl         = new Uri("https://localhost:44304/connect/token"),
+                            }
                         }
-                    }
-                });
-                
+                    });
             });
 
             services.AddRazorPages();
@@ -111,6 +113,7 @@ namespace ClinicControlCenter
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseCors();
 
             app.UseHttpsRedirection();
@@ -150,7 +153,8 @@ namespace ClinicControlCenter
                 }
             });
 
-            SecurityConfig.Setup(services).GetAwaiter().GetResult();
+            if (Configuration.GetValue("PermissionSystem:SetupSecurityAtStartup", false))
+                SecurityConfig.Setup(services).GetAwaiter().GetResult();
         }
     }
 }

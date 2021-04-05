@@ -21,7 +21,7 @@ dotnet ef database update
 ```` 
 - Rollback Migration:
 ````batch
-dotnet ef update <MigrationName>
+dotnet ef database update <MigrationName>
 dotnet ef migrations remove
 ```` 
 

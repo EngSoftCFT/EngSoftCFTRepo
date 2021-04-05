@@ -11,10 +11,9 @@ namespace ClinicControlCenter.Data
         public ApplicationDbContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
-        {
-        }
+        { }
 
-        public DbSet<Person> People { get; set; }
+        //public DbSet<Person> People { get; set; }
 
         public DbSet<Patient> Patients { get; set; }
 
@@ -26,5 +25,41 @@ namespace ClinicControlCenter.Data
 
         public DbSet<Address> AddressBase { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<Employee>()
+                   .HasOne(x => x.User)
+                   .WithOne()
+                   .HasForeignKey<Employee>(x => x.UserId)
+                   .IsRequired();
+
+            builder.Entity<Employee>()
+                   .HasKey(x => x.UserId);
+
+            builder.Entity<Employee>()
+                   .Property(x => x.Id)
+                   .ValueGeneratedOnAdd();
+
+            builder.Entity<Employee>()
+                   .HasAlternateKey(x => x.Id);
+
+            builder.Entity<Doctor>()
+                   .HasOne(x => x.User)
+                   .WithOne()
+                   .HasForeignKey<Doctor>(x => x.UserId)
+                   .IsRequired();
+
+            builder.Entity<Doctor>()
+                   .HasKey(x => x.UserId);
+
+            builder.Entity<Doctor>()
+                   .Property(x => x.Id)
+                   .ValueGeneratedOnAdd();
+
+            builder.Entity<Doctor>()
+                   .HasAlternateKey(x => x.Id);
+              }
     }
 }

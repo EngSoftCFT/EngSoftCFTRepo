@@ -8,9 +8,9 @@ namespace ClinicControlCenter.Domain.Models
 {
     public class Employee : Entity
     {
-        public long PersonId { get; set; }
+        public string UserId { get; set; }
 
-        public virtual Person Person { get; set; }
+        public virtual ApplicationUser User { get; set; }
 
         public DateTimeOffset ContractDate { get; set; }
 

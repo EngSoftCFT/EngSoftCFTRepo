@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ClinicControlCenter.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210325234142_TablesCreation")]
-    partial class TablesCreation
+    [Migration("20210405021013_Table_Creation")]
+    partial class Table_Creation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,6 +53,12 @@ namespace ClinicControlCenter.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
+                    b.Property<string>("CEP")
+                        .HasColumnType("text");
+
+                    b.Property<string>("City")
+                        .HasColumnType("text");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
@@ -64,11 +70,17 @@ namespace ClinicControlCenter.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("FullName")
+                        .HasColumnType("text");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Neighborhood")
+                        .HasColumnType("text");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -88,6 +100,15 @@ namespace ClinicControlCenter.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("State")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Telephone")
                         .HasColumnType("text");
 
                     b.Property<bool>("TwoFactorEnabled")
@@ -122,6 +143,10 @@ namespace ClinicControlCenter.Migrations
                     b.Property<long>("DoctorId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("DoctorUserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
@@ -133,53 +158,53 @@ namespace ClinicControlCenter.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("DoctorId");
+                    b.HasIndex("DoctorUserId");
 
                     b.ToTable("Schedule");
                 });
 
             modelBuilder.Entity("ClinicControlCenter.Domain.Models.Doctor", b =>
                 {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CRM")
+                        .HasColumnType("text");
+
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("CRM")
-                        .HasColumnType("text");
-
-                    b.Property<long>("EmployeeId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Specialty")
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
-                    b.HasIndex("EmployeeId");
+                    b.HasAlternateKey("Id");
 
                     b.ToTable("Doctors");
                 });
 
             modelBuilder.Entity("ClinicControlCenter.Domain.Models.Employee", b =>
                 {
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("ContractDate")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<DateTimeOffset>("ContractDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("PersonId")
-                        .HasColumnType("bigint");
-
                     b.Property<decimal>("Salary")
                         .HasColumnType("numeric");
 
-                    b.HasKey("Id");
+                    b.HasKey("UserId");
 
-                    b.HasIndex("PersonId");
+                    b.HasAlternateKey("Id");
 
                     b.ToTable("Employees");
                 });
@@ -197,55 +222,20 @@ namespace ClinicControlCenter.Migrations
                     b.Property<double>("Height")
                         .HasColumnType("double precision");
 
-                    b.Property<long>("PersonId")
+                    b.Property<long>("UserId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("UserId1")
+                        .HasColumnType("text");
 
                     b.Property<double>("Weight")
                         .HasColumnType("double precision");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PersonId");
+                    b.HasIndex("UserId1");
 
                     b.ToTable("Patients");
-                });
-
-            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Person", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("CEP")
-                        .HasColumnType("text");
-
-                    b.Property<string>("City")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Neighborhood")
-                        .HasColumnType("text");
-
-                    b.Property<string>("State")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Street")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Telephone")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("People");
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -485,7 +475,7 @@ namespace ClinicControlCenter.Migrations
                 {
                     b.HasOne("ClinicControlCenter.Domain.Models.Doctor", "Doctor")
                         .WithMany()
-                        .HasForeignKey("DoctorId")
+                        .HasForeignKey("DoctorUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -494,42 +484,31 @@ namespace ClinicControlCenter.Migrations
 
             modelBuilder.Entity("ClinicControlCenter.Domain.Models.Doctor", b =>
                 {
-                    b.HasOne("ClinicControlCenter.Domain.Models.Employee", "Employee")
-                        .WithMany()
-                        .HasForeignKey("EmployeeId")
+                    b.HasOne("ClinicControlCenter.Domain.Models.ApplicationUser", "User")
+                        .WithOne()
+                        .HasForeignKey("ClinicControlCenter.Domain.Models.Doctor", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Employee");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ClinicControlCenter.Domain.Models.Employee", b =>
                 {
-                    b.HasOne("ClinicControlCenter.Domain.Models.Person", "Person")
-                        .WithMany()
-                        .HasForeignKey("PersonId")
+                    b.HasOne("ClinicControlCenter.Domain.Models.ApplicationUser", "User")
+                        .WithOne()
+                        .HasForeignKey("ClinicControlCenter.Domain.Models.Employee", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Person");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ClinicControlCenter.Domain.Models.Patient", b =>
                 {
-                    b.HasOne("ClinicControlCenter.Domain.Models.Person", "Person")
-                        .WithMany()
-                        .HasForeignKey("PersonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Person");
-                });
-
-            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Person", b =>
-                {
                     b.HasOne("ClinicControlCenter.Domain.Models.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId1");
 
                     b.Navigation("User");
                 });
