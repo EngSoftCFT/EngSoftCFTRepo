@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ClinicControlCenter.Configuration;
 using ClinicControlCenter.Data;
 using ClinicControlCenter.Domain.Models;
 using ClinicControlCenter.Security;
@@ -93,7 +94,14 @@ namespace ClinicControlCenter
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
 
-            services.AddScoped(typeof(EntityRepository<>));
+            AddDependencyInjectionServices(services);
+        }
+
+        private void AddDependencyInjectionServices(IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(AutoMapperProfile));
+
+            services.AddScoped(typeof(IEntityRepository<>), typeof(EntityRepository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

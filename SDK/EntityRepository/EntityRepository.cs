@@ -18,6 +18,10 @@ namespace SDK.EntityRepository
             Context = context;
         }
 
+        public DbContext GetContext() {
+            return Context;
+        }
+
         #region Read Methods
 
         public Task<long> CountAll()
@@ -138,11 +142,6 @@ namespace SDK.EntityRepository
             var existingEntity = Context.Set<T>().FirstOrDefault(e => e.Id == id);
 
             return Remove(existingEntity);
-        }
-
-        public DbContext GetContext()
-        {
-            return Context;
         }
 
         #endregion
