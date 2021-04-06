@@ -16,6 +16,7 @@ import { AuthorizeInterceptor } from 'src/api-authorization/authorize.intercepto
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { ClinicPicturesComponent } from './clinic-pictures/clinic-pictures.component';
+import { UserManagementComponent } from './system-management/user-management/user-management.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { ClinicPicturesComponent } from './clinic-pictures/clinic-pictures.compo
     CounterComponent,
     FetchDataComponent,
     ClinicPicturesComponent,
+    UserManagementComponent,
   ],
   imports: [
     CommonModule,

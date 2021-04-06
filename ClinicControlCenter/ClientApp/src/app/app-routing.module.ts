@@ -10,6 +10,7 @@ import { HomeComponent as OldHome } from "./old/home/home.component";
 
 import { HomeComponent } from "./home/home.component";
 import { ClinicPicturesComponent } from './clinic-pictures/clinic-pictures.component';
+import { UserManagementComponent } from './system-management/user-management/user-management.component';
 
 const routes: INamedRoutes = [
   {
@@ -29,6 +30,20 @@ const routes: INamedRoutes = [
     path: "clinic-pictures",
     component: ClinicPicturesComponent,
     icon: "eco",
+  },
+  {
+    name: "System Management",
+    path: "system-management",
+    icon: "settings",
+    isGroupOnly: true,
+    children: [
+      {
+        name: "Users",
+        path: "user-management",
+        component: UserManagementComponent,
+        icon: "psychology",
+      },
+    ],
   },
   {
     name: "Old",

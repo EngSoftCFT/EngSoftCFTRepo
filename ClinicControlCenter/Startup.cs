@@ -49,9 +49,6 @@ namespace ClinicControlCenter
                     .AddDefaultUI()
                     .AddDefaultTokenProviders();
 
-            //services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
-            //        .AddEntityFrameworkStores<ApplicationDbContext>();
-
             services.AddIdentityServer()
                     .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
 
