@@ -9,11 +9,11 @@ namespace ClinicControlCenter.Data
     public class ApplicationDbContext : ApiAuthorizationDbContext<User>
     {
         public ApplicationDbContext(
-            DbContextOptions options,
-            IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+            DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions)
+            : base(options, operationalStoreOptions)
         { }
 
-        //public DbSet<Patient> Patients { get; set; }
+        public DbSet<Patient> Patients { get; set; }
 
         public DbSet<Employee> Employees { get; set; }
 
@@ -27,9 +27,10 @@ namespace ClinicControlCenter.Data
         {
             base.OnModelCreating(builder);
 
+            // Employee ->
             builder.Entity<Employee>()
                    .HasOne(x => x.User)
-                   .WithOne()
+                   .WithOne(x => x.Employee)
                    .HasForeignKey<Employee>(x => x.UserId)
                    .IsRequired();
 
@@ -42,10 +43,12 @@ namespace ClinicControlCenter.Data
 
             builder.Entity<Employee>()
                    .HasAlternateKey(x => x.Id);
+            // <- Employee
 
+            // Doctor ->
             builder.Entity<Doctor>()
                    .HasOne(x => x.User)
-                   .WithOne()
+                   .WithOne(x => x.Doctor)
                    .HasForeignKey<Doctor>(x => x.UserId)
                    .IsRequired();
 
@@ -58,6 +61,25 @@ namespace ClinicControlCenter.Data
 
             builder.Entity<Doctor>()
                    .HasAlternateKey(x => x.Id);
+            // <- Doctor
+
+            // Patient ->
+            builder.Entity<Patient>()
+                   .HasOne(x => x.User)
+                   .WithOne(x => x.Patient)
+                   .HasForeignKey<Patient>(x => x.UserId)
+                   .IsRequired();
+
+            builder.Entity<Patient>()
+                   .HasKey(x => x.UserId);
+
+            builder.Entity<Patient>()
+                   .Property(x => x.Id)
+                   .ValueGeneratedOnAdd();
+
+            builder.Entity<Patient>()
+                   .HasAlternateKey(x => x.Id);
+            // <- Patient
         }
     }
 }

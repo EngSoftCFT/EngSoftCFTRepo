@@ -23,11 +23,11 @@ namespace ClinicControlCenter.Domain.Models
 
         #region Table Navigation
 
-        //public virtual Patient Patient { get; set; }
+        public virtual Patient Patient { get; set; }
 
-        //public virtual Employee Employee { get; set; }
+        public virtual Employee Employee { get; set; }
 
-        //public virtual Doctor Doctor { get; set; }
+        public virtual Doctor Doctor { get; set; }
 
         #endregion
 

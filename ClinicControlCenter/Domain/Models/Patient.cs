@@ -2,7 +2,8 @@
 
 namespace ClinicControlCenter.Domain.Models
 {
-    public class Patient : EntityLong {
+    public class Patient : EntityLong
+    {
         public string UserId { get; set; }
 
         public virtual User User { get; set; }
