@@ -138,23 +138,23 @@ namespace ClinicControlCenter.Controllers
 
         private async Task RemoveRoles(User user, string[] rolesToRemove)
         {
-            if (rolesToRemove.Contains(SecurityConfig.DOCTOR_ROLE) && user.Doctor != null)
-            {
-                await _doctorRepository.Remove(user.Doctor);
-                user.Doctor = null;
-            }
+            //if (rolesToRemove.Contains(SecurityConfig.DOCTOR_ROLE) && user.Doctor != null)
+            //{
+            //    await _doctorRepository.Remove(user.Doctor);
+            //    user.Doctor = null;
+            //}
 
-            if (rolesToRemove.Contains(SecurityConfig.EMPLOYEE_ROLE) && user.Employee != null)
-            {
-                await _employeeRepository.Remove(user.Employee);
-                user.Employee = null;
-            }
+            //if (rolesToRemove.Contains(SecurityConfig.EMPLOYEE_ROLE) && user.Employee != null)
+            //{
+            //    await _employeeRepository.Remove(user.Employee);
+            //    user.Employee = null;
+            //}
 
-            if (rolesToRemove.Contains(SecurityConfig.PATIENT_ROLE) && user.Patient != null)
-            {
-                await _patientRepository.Remove(user.Patient);
-                user.Patient = null;
-            }
+            //if (rolesToRemove.Contains(SecurityConfig.PATIENT_ROLE) && user.Patient != null)
+            //{
+            //    await _patientRepository.Remove(user.Patient);
+            //    user.Patient = null;
+            //}
 
             await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
         }

@@ -23,23 +23,25 @@ namespace ClinicControlCenter.Domain.Models
 
         #region Table Navigation
 
-        public virtual Patient Patient { get; set; }
+        //public virtual Patient Patient { get; set; }
 
-        public virtual Employee Employee { get; set; }
+        //public virtual Employee Employee { get; set; }
 
-        public virtual Doctor Doctor { get; set; }
+        //public virtual Doctor Doctor { get; set; }
 
         #endregion
 
 
         #region NotMapped
+
         // Needed cause method cant extend "EntityBase<string>"
         [NotMapped]
-        IConvertible IEntityBase.Id {
+        IConvertible IEntityBase.Id
+        {
             get => Id;
             set => Id = (string)value;
         }
-        #endregion
 
+        #endregion
     }
 }
