@@ -29,7 +29,7 @@ namespace ClinicControlCenter.Data
 
             // Employee ->
             builder.Entity<Employee>()
-                   .HasOne(x => x.User)
+                   .HasOne<User>()
                    .WithOne(x => x.Employee)
                    .HasForeignKey<Employee>(x => x.UserId)
                    .IsRequired();
@@ -47,7 +47,7 @@ namespace ClinicControlCenter.Data
 
             // Doctor ->
             builder.Entity<Doctor>()
-                   .HasOne(x => x.User)
+                   .HasOne<User>()
                    .WithOne(x => x.Doctor)
                    .HasForeignKey<Doctor>(x => x.UserId)
                    .IsRequired();
@@ -65,7 +65,7 @@ namespace ClinicControlCenter.Data
 
             // Patient ->
             builder.Entity<Patient>()
-                   .HasOne(x => x.User)
+                   .HasOne<User>()
                    .WithOne(x => x.Patient)
                    .HasForeignKey<Patient>(x => x.UserId)
                    .IsRequired();

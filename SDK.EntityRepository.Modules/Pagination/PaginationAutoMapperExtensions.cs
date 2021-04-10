@@ -14,7 +14,7 @@ namespace SDK.EntityRepository.Modules.Pagination
             IPaginationFilter pageFilter,
             Expression<Func<TEntity, bool>> predicate = null,
             IEnumerable<Expression<Func<TEntity, object>>> includeProperties = null,
-            string defaultOrder = null, bool defaultSort = true)
+            string defaultOrder = "Id", bool defaultSort = true)
             where TEntity : class, IEntityBase
         {
             var query = autoMapperModule.RunPipeline(includeProperties, predicate);

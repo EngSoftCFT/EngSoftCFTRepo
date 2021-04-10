@@ -7,8 +7,6 @@ namespace ClinicControlCenter.Domain.Models
     {
         public string UserId { get; set; }
 
-        public virtual User User { get; set; }
-
         public DateTimeOffset ContractDate { get; set; }
 
         public decimal Salary { get; set; }

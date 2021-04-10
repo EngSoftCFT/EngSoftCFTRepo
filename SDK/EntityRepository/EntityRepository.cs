@@ -78,7 +78,7 @@ namespace SDK.EntityRepository
 
         public Task<T> Find(IConvertible id, params Expression<Func<T, object>>[] includeProperties)
         {
-            return RunPipeline(includeProperties).SingleOrDefaultAsync(x => x.Id.Equals(id));
+            return RunPipeline(includeProperties).SingleOrDefaultAsync(x => x.Id == id);
         }
 
         public Task<T> Find(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
@@ -130,31 +130,35 @@ namespace SDK.EntityRepository
         public virtual async Task<T> Update(T entity)
         {
             var context = GetContext();
-            var existingEntity = await context.Set<T>().FindAsync(entity);
-            if (existingEntity == null)
+            var entityEntry = context.Set<T>().Attach(entity);
+
+            var databaseValues = await entityEntry.GetDatabaseValuesAsync();
+
+            if (databaseValues == null)
             {
                 return null;
             }
 
-            context.Entry(existingEntity).CurrentValues.SetValues(entity);
+            entityEntry.CurrentValues.SetValues(entity);
 
-            await Context.SaveChangesAsync();
-            return existingEntity;
+            await context.SaveChangesAsync();
+            return entityEntry.Entity;
         }
 
         public virtual async Task<T> AddOrUpdate(T entity)
         {
             var context = GetContext();
             var dbSet = context.Set<T>();
-            var existingEntity = await dbSet.FindAsync(entity);
+            var entityEntry = context.Entry(entity);
+            var databaseValues = await entityEntry.GetDatabaseValuesAsync();
 
-            if (existingEntity == null)
+            if (databaseValues == null)
             {
                 await dbSet.AddAsync(entity);
             }
             else
             {
-                context.Entry(existingEntity).CurrentValues.SetValues(entity);
+                entityEntry.CurrentValues.SetValues(entity);
             }
 
             await context.SaveChangesAsync();
@@ -171,7 +175,8 @@ namespace SDK.EntityRepository
 
         public virtual Task Remove(IConvertible id)
         {
-            var existingEntity = GetContext().Set<T>().FirstOrDefault(e => e.Id.Equals(id));
+            // ReSharper disable once PossibleUnintendedReferenceComparison
+            var existingEntity = GetContext().Set<T>().FirstOrDefault(e => e.Id == id);
 
             return Remove(existingEntity);
         }

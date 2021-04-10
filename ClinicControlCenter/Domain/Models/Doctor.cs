@@ -6,8 +6,6 @@ namespace ClinicControlCenter.Domain.Models
     {
         public string UserId { get; set; } // FK para Usuario
 
-        public virtual User User { get; set; }
-
         public string Specialty { get; set; }
 
         public string CRM { get; set; }

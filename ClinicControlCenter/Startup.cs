@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using ClinicControlCenter.Configuration;
 using ClinicControlCenter.Data;
 using ClinicControlCenter.Domain.Models;
@@ -47,7 +49,7 @@ namespace ClinicControlCenter
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddIdentity<User, IdentityRole>()
-                    .AddEntityFrameworkStores<ApplicationDbContext>()
+                    .AddEntityFrameworkStores<DbContext>()
                     .AddDefaultUI()
                     .AddDefaultTokenProviders();
 
@@ -66,6 +68,11 @@ namespace ClinicControlCenter
                     builder.AllowAnyOrigin()
                            .AllowAnyHeader()
                            .AllowAnyMethod()));
+
+            services.AddMiniProfiler(options =>
+                        options.RouteBasePath = "/profiler"
+                    )
+                    .AddEntityFramework();
 
             services.AddSwaggerGen(options =>
             {
@@ -129,6 +136,16 @@ namespace ClinicControlCenter
                 app.UseSpaStaticFiles();
             }
 
+            app.UseMiniProfiler();
+
+            app.UseSwagger();
+            var assembly = GetType().Assembly;
+            var swaggerResourceName = GetSwaggerResourceName(assembly);
+            app.UseSwaggerUI(c =>
+            {
+                c.IndexStream = () => assembly.GetManifestResourceStream(swaggerResourceName);
+            });
+
             app.UseRouting();
 
             app.UseAuthentication();
@@ -142,9 +159,6 @@ namespace ClinicControlCenter
                     pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
-
-            app.UseSwagger();
-            app.UseSwaggerUI();
 
             app.UseSpa(spa =>
             {
@@ -161,6 +175,18 @@ namespace ClinicControlCenter
 
             if (Configuration.GetValue("PermissionSystem:SetupSecurityAtStartup", false))
                 SecurityConfig.Setup(services).GetAwaiter().GetResult();
+        }
+
+        private static string GetSwaggerResourceName(Assembly assembly)
+        {
+            //Getting names of all embedded resources
+            var allResourceNames = assembly.GetManifestResourceNames();
+            //Selecting first one. 
+            var resourceName =
+                allResourceNames.FirstOrDefault(x =>
+                    x.Contains("swagger", StringComparison.InvariantCultureIgnoreCase));
+
+            return resourceName;
         }
     }
 }

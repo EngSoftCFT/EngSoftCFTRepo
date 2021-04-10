@@ -11,6 +11,7 @@ namespace SDK.Utils
         public static IQueryable<TModel> OrderBy<TModel>(this IQueryable<TModel> q, string name)
         {
             var entityType = typeof(TModel);
+            name ??= string.Empty;
 
             if (name.Contains(',') || name.Contains("asc") || name.Contains("desc"))
             {

@@ -6,8 +6,6 @@ namespace ClinicControlCenter.Domain.Models
     {
         public string UserId { get; set; }
 
-        public virtual User User { get; set; }
-
         public double Weight { get; set; }
 
         public double Height { get; set; }
