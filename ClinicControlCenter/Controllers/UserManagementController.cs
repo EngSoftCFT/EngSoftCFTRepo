@@ -57,6 +57,9 @@ namespace ClinicControlCenter.Controllers
             var paginatedValues = await _userRepository
                                         .Mapper<User, UserViewModel>(_mapper)
                                         .FindAllPaginated(filter);
+
+            var test = await _patientRepository.Find("70d1b0e6-1bfc-4df2-875a-b700de407dfa");
+
             return Ok(paginatedValues);
         }
 

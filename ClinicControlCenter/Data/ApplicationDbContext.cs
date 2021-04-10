@@ -31,54 +31,33 @@ namespace ClinicControlCenter.Data
             builder.Entity<Employee>()
                    .HasOne<User>()
                    .WithOne(x => x.Employee)
-                   .HasForeignKey<Employee>(x => x.UserId)
+                   .HasForeignKey<Employee>(x => x.Id)
                    .IsRequired();
 
             builder.Entity<Employee>()
-                   .HasKey(x => x.UserId);
-
-            builder.Entity<Employee>()
-                   .Property(x => x.Id)
-                   .ValueGeneratedOnAdd();
-
-            builder.Entity<Employee>()
-                   .HasAlternateKey(x => x.Id);
+                   .HasKey(x => x.Id);
             // <- Employee
 
             // Doctor ->
             builder.Entity<Doctor>()
                    .HasOne<User>()
                    .WithOne(x => x.Doctor)
-                   .HasForeignKey<Doctor>(x => x.UserId)
+                   .HasForeignKey<Doctor>(x => x.Id)
                    .IsRequired();
 
             builder.Entity<Doctor>()
-                   .HasKey(x => x.UserId);
-
-            builder.Entity<Doctor>()
-                   .Property(x => x.Id)
-                   .ValueGeneratedOnAdd();
-
-            builder.Entity<Doctor>()
-                   .HasAlternateKey(x => x.Id);
+                   .HasKey(x => x.Id);
             // <- Doctor
 
             // Patient ->
             builder.Entity<Patient>()
                    .HasOne<User>()
                    .WithOne(x => x.Patient)
-                   .HasForeignKey<Patient>(x => x.UserId)
+                   .HasForeignKey<Patient>(x => x.Id)
                    .IsRequired();
 
             builder.Entity<Patient>()
-                   .HasKey(x => x.UserId);
-
-            builder.Entity<Patient>()
-                   .Property(x => x.Id)
-                   .ValueGeneratedOnAdd();
-
-            builder.Entity<Patient>()
-                   .HasAlternateKey(x => x.Id);
+                   .HasKey(x => x.Id);
             // <- Patient
         }
     }

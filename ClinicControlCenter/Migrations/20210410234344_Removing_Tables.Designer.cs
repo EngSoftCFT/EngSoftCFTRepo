@@ -3,15 +3,17 @@ using System;
 using ClinicControlCenter.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ClinicControlCenter.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210410234344_Removing_Tables")]
+    partial class Removing_Tables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -41,86 +43,6 @@ namespace ClinicControlCenter.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AddressBase");
-                });
-
-            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Appointment", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTimeOffset>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DoctorId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Telephone")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorId");
-
-                    b.ToTable("Schedule");
-                });
-
-            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Doctor", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CRM")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Specialty")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Doctors");
-                });
-
-            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Employee", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<DateTimeOffset>("ContractDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<decimal>("Salary")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Patient", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BloodType")
-                        .HasColumnType("text");
-
-                    b.Property<double>("Height")
-                        .HasColumnType("double precision");
-
-                    b.Property<double>("Weight")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Patients");
                 });
 
             modelBuilder.Entity("ClinicControlCenter.Domain.Models.User", b =>
@@ -441,42 +363,6 @@ namespace ClinicControlCenter.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Appointment", b =>
-                {
-                    b.HasOne("ClinicControlCenter.Domain.Models.Doctor", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId");
-
-                    b.Navigation("Doctor");
-                });
-
-            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Doctor", b =>
-                {
-                    b.HasOne("ClinicControlCenter.Domain.Models.User", null)
-                        .WithOne("Doctor")
-                        .HasForeignKey("ClinicControlCenter.Domain.Models.Doctor", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Employee", b =>
-                {
-                    b.HasOne("ClinicControlCenter.Domain.Models.User", null)
-                        .WithOne("Employee")
-                        .HasForeignKey("ClinicControlCenter.Domain.Models.Employee", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Patient", b =>
-                {
-                    b.HasOne("ClinicControlCenter.Domain.Models.User", null)
-                        .WithOne("Patient")
-                        .HasForeignKey("ClinicControlCenter.Domain.Models.Patient", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -526,15 +412,6 @@ namespace ClinicControlCenter.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("ClinicControlCenter.Domain.Models.User", b =>
-                {
-                    b.Navigation("Doctor");
-
-                    b.Navigation("Employee");
-
-                    b.Navigation("Patient");
                 });
 #pragma warning restore 612, 618
         }

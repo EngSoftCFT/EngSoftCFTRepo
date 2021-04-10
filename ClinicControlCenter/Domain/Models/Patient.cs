@@ -2,10 +2,8 @@
 
 namespace ClinicControlCenter.Domain.Models
 {
-    public class Patient : EntityLong
+    public class Patient : EntityString
     {
-        public string UserId { get; set; }
-
         public double Weight { get; set; }
 
         public double Height { get; set; }
