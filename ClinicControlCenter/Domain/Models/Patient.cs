@@ -1,12 +1,12 @@
-﻿using SDK.EntityRepository.Entities;
+﻿using SDK.EntityRepository.Implementations.Entities;
 
 namespace ClinicControlCenter.Domain.Models
 {
-    public class Patient : Entity
+    public class Patient : EntityLong
     {
-        public long UserId { get; set; }
+        public string UserId { get; set; }
 
-        public virtual ApplicationUser User { get; set; }
+        public virtual User User { get; set; }
 
         public double Weight { get; set; }
 

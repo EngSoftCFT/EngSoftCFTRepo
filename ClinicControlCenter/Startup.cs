@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SDK.EntityRepository;
+using SDK.EntityRepository.Implementations;
 
 namespace ClinicControlCenter
 {
@@ -31,7 +32,7 @@ namespace ClinicControlCenter
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<DbContext, ApplicationDbContext>(options =>
                 {
                     var pgSqlConnection = Configuration.GetConnectionString("PQSqlConnection");
                     var msSqlConnection = Configuration.GetConnectionString("MSSqlConnection");
@@ -45,13 +46,13 @@ namespace ClinicControlCenter
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>()
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddDefaultUI()
                     .AddDefaultTokenProviders();
 
             services.AddIdentityServer()
-                    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+                    .AddApiAuthorization<User, ApplicationDbContext>();
 
             services.AddAuthentication()
                     .AddIdentityServerJwt();

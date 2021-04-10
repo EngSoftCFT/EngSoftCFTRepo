@@ -1,12 +1,11 @@
 ﻿using System;
+using SDK.EntityRepository.Entities;
 
-namespace SDK.EntityRepository.Entities
+namespace SDK.EntityRepository.Implementations.Entities
 {
-    public class Entity : IEquatable<Entity>
+    public class EntityLong : EntityBase<long>, IEquatable<EntityLong>
     {
-        public virtual long Id { get; set; }
-
-        public bool Equals(Entity other)
+        public bool Equals(EntityLong other)
         {
             if (ReferenceEquals(null, other))
                 return false;
@@ -25,7 +24,7 @@ namespace SDK.EntityRepository.Entities
             if (ReferenceEquals(this, obj))
                 return true;
 
-            return Equals(obj as Entity);
+            return Equals(obj as EntityLong);
         }
 
         public override int GetHashCode() => HashCode.Combine(Id);

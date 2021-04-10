@@ -1,10 +1,11 @@
 ﻿using ProRent.Domain.Enums;
 using SDK.EntityRepository.Entities;
 using System.Collections.Generic;
+using SDK.EntityRepository.Implementations.Entities;
 
 namespace ProRent.Domain.Models
 {
-    public class RealEstate : Entity
+    public class RealEstate : EntityLong
     {
 
         public RealEstateType Type { get; set; }

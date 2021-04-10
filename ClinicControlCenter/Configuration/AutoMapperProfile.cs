@@ -8,7 +8,7 @@ namespace ClinicControlCenter.Configuration
     {
         public AutoMapperProfile()
         {
-            CreateMap<ApplicationUser, UserViewModel>();
+            CreateMap<User, UserViewModel>();
         }
     }
 }

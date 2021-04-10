@@ -5,6 +5,7 @@ using ProRent.Domain.DTO;
 using ProRent.Domain.Models;
 using ProRent.Domain.ViewModels;
 using SDK.EntityRepository;
+using SDK.EntityRepository.Implementations;
 
 namespace ProRent.Controllers
 {
@@ -12,10 +13,10 @@ namespace ProRent.Controllers
     [Route("api/[controller]")]
     public class VisitController : ControllerBase
     {
-        private readonly EntityRepository<Visit> _visitRepository;
-        private readonly EntityRepository<RealEstate> _realEstateRepository;
+        private readonly EntityRepositoryLong<Visit> _visitRepository;
+        private readonly EntityRepositoryLong<RealEstate> _realEstateRepository;
 
-        public VisitController(EntityRepository<Visit> visitRepository, EntityRepository<RealEstate> realEstateRepository)
+        public VisitController(EntityRepositoryLong<Visit> visitRepository, EntityRepositoryLong<RealEstate> realEstateRepository)
         {
             _visitRepository = visitRepository;
             _realEstateRepository = realEstateRepository;

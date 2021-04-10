@@ -6,16 +6,14 @@ using ClinicControlCenter.Domain.Models;
 
 namespace ClinicControlCenter.Data
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
+    public class ApplicationDbContext : ApiAuthorizationDbContext<User>
     {
         public ApplicationDbContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         { }
 
-        //public DbSet<Person> People { get; set; }
-
-        public DbSet<Patient> Patients { get; set; }
+        //public DbSet<Patient> Patients { get; set; }
 
         public DbSet<Employee> Employees { get; set; }
 
@@ -60,6 +58,6 @@ namespace ClinicControlCenter.Data
 
             builder.Entity<Doctor>()
                    .HasAlternateKey(x => x.Id);
-              }
+        }
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace SDK.EntityRepository.Entities
+namespace SDK.EntityRepository.Implementations.Entities
 {
-    public class DateEntity : Entity
+    public class DateEntityLong : EntityLong
     {
         private DateTimeOffset _createdDate;
         private DateTimeOffset _modifiedDate;

@@ -43,6 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SDK.EntityRepository.Modules\SDK.EntityRepository.Modules.csproj" />
     <ProjectReference Include="..\SDK\SDK.csproj" />
   </ItemGroup>
 

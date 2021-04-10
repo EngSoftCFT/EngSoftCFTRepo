@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using ProRent.DataAccess;
 using SDK.EntityRepository;
 using System.Text.Json.Serialization;
+using SDK.EntityRepository.Implementations;
 
 namespace ProRent
 {
@@ -40,7 +41,7 @@ namespace ProRent
             var connectionString = Configuration.GetConnectionString("ProRentConnection");
             services.AddDbContext<DbContext, ProRentContext>(options => { options.UseNpgsql(connectionString); });
 
-            services.AddScoped(typeof(EntityRepository<>));
+            services.AddScoped(typeof(EntityRepositoryLong<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

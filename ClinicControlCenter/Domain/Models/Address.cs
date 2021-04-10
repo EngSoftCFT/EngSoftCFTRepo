@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SDK.EntityRepository.Entities;
+using SDK.EntityRepository.Implementations.Entities;
 
 namespace ClinicControlCenter.Domain.Models
 {
-    public class Address : Entity
+    public class Address : EntityLong
     {
         public string CEP { get; set; }
 

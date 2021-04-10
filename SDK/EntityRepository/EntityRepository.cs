@@ -9,7 +9,7 @@ using SDK.EntityRepository.Entities;
 namespace SDK.EntityRepository
 {
     public class EntityRepository<T> : IEntityRepository<T>
-        where T : Entity
+        where T : class, IEntityBase
     {
         protected readonly DbContext Context;
 
@@ -18,85 +18,95 @@ namespace SDK.EntityRepository
             Context = context;
         }
 
-        public DbContext GetContext() {
+        #region Pipeline
+
+        public virtual DbContext GetContext()
+        {
             return Context;
         }
 
-        #region Read Methods
-
-        public Task<long> CountAll()
+        public virtual IQueryable<T> GetQueryable(IEnumerable<Expression<Func<T, object>>> includeProperties)
         {
-            return Context.Set<T>().LongCountAsync();
+            var query = GetContext().Set<T>().AsQueryable();
+            if (includeProperties != null)
+                query = includeProperties.Aggregate(query,
+                    (current, property) => current.Include(property));
+            return query;
         }
 
-        public Task<long> CountWhere(Expression<Func<T, bool>> predicate)
+        public virtual IQueryable<T> FilterQuery(IQueryable<T> query, Expression<Func<T, bool>> predicate = null)
         {
-            return Context.Set<T>().LongCountAsync(predicate);
+            if (predicate != null)
+                query = query.Where(predicate);
+            return query;
+        }
+
+        public virtual IQueryable<TResult> ChangeModel<TResult>(
+            IQueryable<T> query, Expression<Func<T, TResult>> selectExpression = null)
+        {
+            return selectExpression != null
+                       ? query.Select(selectExpression)
+                       : (IQueryable<TResult>)query;
+        }
+
+        public virtual IQueryable<T> RunPipeline(IEnumerable<Expression<Func<T, object>>> includeProperties,
+                                                 Expression<Func<T, bool>> predicate = null)
+        {
+            var query = GetQueryable(includeProperties);
+            query = FilterQuery(query, predicate);
+            return query;
+        }
+
+        public virtual IQueryable<T> RunPipeline(Expression<Func<T, bool>> predicate = null)
+        {
+            return RunPipeline(null, predicate);
+        }
+
+        public virtual IQueryable<TResult> RunPipeline<TResult>(
+            Expression<Func<T, TResult>> selectExpression,
+            IEnumerable<Expression<Func<T, object>>> includeProperties = null,
+            Expression<Func<T, bool>> predicate = null)
+        {
+            var query = RunPipeline(includeProperties, predicate);
+            return ChangeModel(query, selectExpression);
+        }
+
+        #endregion
+
+
+        #region Read Methods
+
+        public Task<T> Find(IConvertible id, params Expression<Func<T, object>>[] includeProperties)
+        {
+            return RunPipeline(includeProperties).SingleOrDefaultAsync(x => x.Id.Equals(id));
+        }
+
+        public Task<T> Find(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        {
+            return RunPipeline(includeProperties, predicate).SingleOrDefaultAsync();
         }
 
         public Task<bool> Any(Expression<Func<T, bool>> predicate)
         {
-            return Context.Set<T>().AnyAsync(predicate);
+            return RunPipeline(predicate).AnyAsync();
         }
 
-        public ValueTask<T> Find(long id)
+        public Task<long> Count(Expression<Func<T, bool>> predicate)
         {
-            return Context.Set<T>().FindAsync(id);
+            return RunPipeline(predicate).LongCountAsync();
         }
 
-        public Task<T> FindIncluding(long id, params Expression<Func<T, object>>[] includeProperties)
+        public async Task<IEnumerable<T>> FindAll(
+            Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
         {
-            IQueryable<T> query = Context.Set<T>();
-            query = includeProperties.Aggregate(query,
-                (current, property) => current.Include(property));
-
-            return query.SingleOrDefaultAsync(x => x.Id == id);
+            return await RunPipeline(includeProperties, predicate).ToListAsync();
         }
 
-        public async Task<IEnumerable<T>> FindAll()
-        {
-            return await Context.Set<T>().ToListAsync();
-        }
-
-        public async Task<IEnumerable<T>> FindAll(Expression<Func<T, bool>> predicate)
-        {
-            return await Context.Set<T>().Where(predicate).ToListAsync();
-        }
-
-        public async Task<IEnumerable<T>> FindAllIncluding(params Expression<Func<T, object>>[] includeProperties)
-        {
-            IQueryable<T> query = Context.Set<T>();
-            query = includeProperties.Aggregate(query,
-                (current, property) => current.Include(property));
-
-            return await query.ToListAsync();
-        }
-
-        public async Task<IEnumerable<T>> FindAllIncluding(Expression<Func<T, bool>> predicate,
+        public async Task<IEnumerable<TResult>> FindAllSelecting<TResult>(
+            Expression<Func<T, TResult>> selectExpression, Expression<Func<T, bool>> predicate = null,
             params Expression<Func<T, object>>[] includeProperties)
         {
-            var query = Context.Set<T>().Where(predicate);
-            query = includeProperties.Aggregate(query,
-                (current, property) => current.Include(property));
-
-            return await query.ToListAsync();
-        }
-
-        public async Task<IEnumerable<TResult>> FindAllIncludingSelecting<TResult>(Expression<Func<T, bool>> predicate,
-            Expression<Func<T, TResult>> selectExpression,
-            params Expression<Func<T, object>>[] includeProperties)
-        {
-            var query = Context.Set<T>().Where(predicate);
-            query = includeProperties.Aggregate(query,
-                (current, property) => current.Include(property));
-
-
-            return await query.Select(selectExpression).ToListAsync();
-        }
-
-        public Task<T> FirstOrDefault(Expression<Func<T, bool>> predicate)
-        {
-            return Context.Set<T>().FirstOrDefaultAsync(predicate);
+            return await RunPipeline(selectExpression, includeProperties, predicate).ToListAsync();
         }
 
         #endregion
@@ -105,7 +115,7 @@ namespace SDK.EntityRepository
 
         public virtual async Task<T> Add(T entity)
         {
-            await Context.Set<T>().AddAsync(entity);
+            await GetContext().Set<T>().AddAsync(entity);
             await Context.SaveChangesAsync();
 
             return entity;
@@ -113,33 +123,55 @@ namespace SDK.EntityRepository
 
         public virtual async Task AddRange(IEnumerable<T> entities)
         {
-            await Context.Set<T>().AddRangeAsync(entities);
+            await GetContext().Set<T>().AddRangeAsync(entities);
             await Context.SaveChangesAsync();
         }
 
         public virtual async Task<T> Update(T entity)
         {
-            var existingEntity = Context.Set<T>().FirstOrDefault(e => e.Id == entity.Id);
+            var context = GetContext();
+            var existingEntity = await context.Set<T>().FindAsync(entity);
             if (existingEntity == null)
             {
                 return null;
             }
 
-            Context.Entry(existingEntity).CurrentValues.SetValues(entity);
+            context.Entry(existingEntity).CurrentValues.SetValues(entity);
 
             await Context.SaveChangesAsync();
             return existingEntity;
         }
 
+        public virtual async Task<T> AddOrUpdate(T entity)
+        {
+            var context = GetContext();
+            var dbSet = context.Set<T>();
+            var existingEntity = await dbSet.FindAsync(entity);
+
+            if (existingEntity == null)
+            {
+                await dbSet.AddAsync(entity);
+            }
+            else
+            {
+                context.Entry(existingEntity).CurrentValues.SetValues(entity);
+            }
+
+            await context.SaveChangesAsync();
+
+            return entity;
+        }
+
+
         public virtual Task Remove(T entity)
         {
-            Context.Set<T>().Remove(entity);
+            GetContext().Set<T>().Remove(entity);
             return Context.SaveChangesAsync();
         }
 
-        public virtual Task Remove(long id)
+        public virtual Task Remove(IConvertible id)
         {
-            var existingEntity = Context.Set<T>().FirstOrDefault(e => e.Id == id);
+            var existingEntity = GetContext().Set<T>().FirstOrDefault(e => e.Id.Equals(id));
 
             return Remove(existingEntity);
         }
