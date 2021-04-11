@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { INamedRoute } from 'src/libs/ui/fea-menu/src';
-import { AssetLoaderService } from 'src/libs/util/asset-loader/src';
+import { Component } from "@angular/core";
+import { INamedRoute } from "src/libs/ui/fea-menu/src";
+import { AssetLoaderService } from "src/libs/util/asset-loader/src";
 
 @Component({
   selector: "app-root",
@@ -13,6 +13,9 @@ export class AppComponent {
   currentRoute: INamedRoute | null | undefined;
 
   constructor(private assetLoader: AssetLoaderService) {
-    // assetLoader.loadIcon("eye");
+    assetLoader.loadIcon("delete");
+    assetLoader.loadIcon("edit");
+    assetLoader.loadIcon("eraser");
+    assetLoader.loadIcon("eye");
   }
 }

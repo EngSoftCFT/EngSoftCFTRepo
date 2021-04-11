@@ -17,6 +17,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { ClinicPicturesComponent } from './clinic-pictures/clinic-pictures.component';
 import { UserManagementComponent } from './system-management/user-management/user-management.component';
+import { CustomTableModule } from 'src/libs/ui/custom-table/src';
+import { AdressDatabaseComponent } from './adress-database/adress-database.component';
+import { PatientsComponent } from './system-management/patients/patients.component';
+import { NewAppointmentComponent } from './appointments/new-appointment/new-appointment.component';
+import { ListAppointmentsComponent } from './appointments/list-appointments/list-appointments.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +32,10 @@ import { UserManagementComponent } from './system-management/user-management/use
     FetchDataComponent,
     ClinicPicturesComponent,
     UserManagementComponent,
+    AdressDatabaseComponent,
+    PatientsComponent,
+    NewAppointmentComponent,
+    ListAppointmentsComponent,
   ],
   imports: [
     CommonModule,
@@ -39,6 +48,7 @@ import { UserManagementComponent } from './system-management/user-management/use
     BrowserAnimationsModule,
     FeaHeaderModule,
     FeaMenuModule,
+    CustomTableModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },

@@ -41,6 +41,12 @@ body {
   height: $site-content-height;
 }
 
+/* Utility Classes ----------> */
+.ligth-color{
+  color: $primary-color-light;
+}
+/* Utility Classes  <---------- */
+
 /* Card ----------> */
 $card-content-padding: 18px;
 $card-full-height: calc(#{$site-content-height} - 2 * #{$card-content-padding});

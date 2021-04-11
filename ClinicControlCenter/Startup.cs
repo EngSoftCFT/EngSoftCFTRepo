@@ -1,15 +1,16 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using ClinicControlCenter.Configuration;
 using ClinicControlCenter.Data;
 using ClinicControlCenter.Domain.Models;
 using ClinicControlCenter.Security;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SDK.EntityRepository;
-using SDK.EntityRepository.Implementations;
+using SDK.Utils;
 
 namespace ClinicControlCenter
 {
@@ -56,12 +57,21 @@ namespace ClinicControlCenter
             services.AddIdentityServer()
                     .AddApiAuthorization<User, ApplicationDbContext>();
 
+            services.AddTransient<IProfileService, ProfileService>();
+
             services.AddAuthentication()
                     .AddIdentityServerJwt();
 
             services.AddAuthorization(SecurityConfig.GetPolicies);
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                    .AddJsonOptions(options =>
+                    {
+                        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+
+                        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                        options.JsonSerializerOptions.Converters.Add(new HandleSpecialDoublesAsStrings_NewtonsoftCompat());
+                    });
 
             services.AddCors(options => options
                 .AddDefaultPolicy(builder =>
@@ -141,10 +151,7 @@ namespace ClinicControlCenter
             app.UseSwagger();
             var assembly = GetType().Assembly;
             var swaggerResourceName = GetSwaggerResourceName(assembly);
-            app.UseSwaggerUI(c =>
-            {
-                c.IndexStream = () => assembly.GetManifestResourceStream(swaggerResourceName);
-            });
+            app.UseSwaggerUI(c => { c.IndexStream = () => assembly.GetManifestResourceStream(swaggerResourceName); });
 
             app.UseRouting();
 

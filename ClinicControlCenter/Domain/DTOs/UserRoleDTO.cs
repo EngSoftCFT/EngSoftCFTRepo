@@ -6,7 +6,7 @@ namespace ClinicControlCenter.Domain.DTOs
     public class UserRoleDTO
     {
         [JsonIgnore]
-        public string UserId { get; set; }
+        public string Id { get; set; }
 
         #region Employee
 

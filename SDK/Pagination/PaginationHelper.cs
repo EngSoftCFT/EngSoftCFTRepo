@@ -37,7 +37,8 @@ namespace SDK.Pagination
                 query = query.LongSkip(pageFilter.Offset.Value);
             }
 
-            query = query.Take(pageFilter.Limit ?? 10);
+            if(pageFilter.Limit.HasValue)
+                query = query.Take(pageFilter.Limit.Value);
 
             if (query is IAsyncEnumerable<T>)
             {

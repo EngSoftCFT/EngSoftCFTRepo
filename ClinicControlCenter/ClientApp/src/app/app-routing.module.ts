@@ -11,6 +11,9 @@ import { HomeComponent as OldHome } from "./old/home/home.component";
 import { HomeComponent } from "./home/home.component";
 import { ClinicPicturesComponent } from './clinic-pictures/clinic-pictures.component';
 import { UserManagementComponent } from './system-management/user-management/user-management.component';
+import { AdressDatabaseComponent } from './adress-database/adress-database.component';
+import { NewAppointmentComponent } from './appointments/new-appointment/new-appointment.component';
+import { ListAppointmentsComponent } from './appointments/list-appointments/list-appointments.component';
 
 const routes: INamedRoutes = [
   {
@@ -29,7 +32,27 @@ const routes: INamedRoutes = [
     name: "Clinic Pictures",
     path: "clinic-pictures",
     component: ClinicPicturesComponent,
-    icon: "eco",
+    icon: "photo_camera",
+  },
+  {
+    name: "Appointments",
+    path: "appointments",
+    icon: "date_range",
+    isGroupOnly: true,
+    children: [
+      {
+        name: "New Appointment",
+        path: "new-appointment",
+        component: NewAppointmentComponent,
+        icon: "pending_actions",
+      },
+      {
+        name: "Appointment Listing",
+        path: "lsit-appointments",
+        component: ListAppointmentsComponent,
+        icon: "calendar_view_month",
+      },
+    ],
   },
   {
     name: "System Management",
@@ -44,6 +67,12 @@ const routes: INamedRoutes = [
         icon: "psychology",
       },
     ],
+  },
+  {
+    name: "Addresses",
+    path: "addresses",
+    component: AdressDatabaseComponent,
+    icon: "contact_mail",
   },
   {
     name: "Old",

@@ -51,14 +51,12 @@ namespace ClinicControlCenter.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UserViewModel>>> Get([FromQuery] UserFilter filter)
+        public async Task<ActionResult<PaginationResult<UserViewModel>>> Get([FromQuery] UserFilter filter)
         {
             // TODO: Filter
             var paginatedValues = await _userRepository
                                         .Mapper<User, UserViewModel>(_mapper)
                                         .FindAllPaginated(filter);
-
-            var test = await _patientRepository.Find("70d1b0e6-1bfc-4df2-875a-b700de407dfa");
 
             return Ok(paginatedValues);
         }
@@ -134,7 +132,7 @@ namespace ClinicControlCenter.Controllers
 
             userRoleDto ??= new UserRoleDTO();
 
-            userRoleDto.UserId = user.Id;
+            userRoleDto.Id = user.Id;
 
             if (roleToAdd == SecurityConfig.PATIENT_ROLE)
             {
