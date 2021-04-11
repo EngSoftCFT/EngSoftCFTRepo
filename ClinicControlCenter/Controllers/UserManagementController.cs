@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -56,7 +58,14 @@ namespace ClinicControlCenter.Controllers
             // TODO: Filter
             var paginatedValues = await _userRepository
                                         .Mapper<User, UserViewModel>(_mapper)
-                                        .FindAllPaginated(filter);
+                                        .FindAllPaginated(
+                                            filter,
+                                            includeProperties: new List<Expression<Func<User, object>>>()
+                                            {
+                                                x => x.Doctor,
+                                                x => x.Employee,
+                                                x => x.Patient
+                                            });
 
             return Ok(paginatedValues);
         }
@@ -137,7 +146,7 @@ namespace ClinicControlCenter.Controllers
             if (roleToAdd == SecurityConfig.PATIENT_ROLE)
             {
                 var patient = _mapper.Map<Patient>(userRoleDto);
-                patient = await _patientRepository.AddOrUpdate(patient);
+                patient      = await _patientRepository.AddOrUpdate(patient);
                 user.Patient = patient;
             }
 
@@ -150,23 +159,22 @@ namespace ClinicControlCenter.Controllers
                 .Contains(roleToAdd))
             {
                 var employee = _mapper.Map<Employee>(userRoleDto);
-                employee = await _employeeRepository.AddOrUpdate(employee);
+                employee      = await _employeeRepository.AddOrUpdate(employee);
                 user.Employee = employee;
 
                 if (roleToAdd == SecurityConfig.DOCTOR_ROLE)
                 {
                     var doctor = _mapper.Map<Doctor>(userRoleDto);
-                    doctor = await _doctorRepository.AddOrUpdate(doctor);
+                    doctor      = await _doctorRepository.AddOrUpdate(doctor);
                     user.Doctor = doctor;
                 }
+
+                if (roleToAdd == SecurityConfig.MANAGER_ROLE)
+                {
+                    user.IsManager = true;
+                    user = await _userRepository.Update(user);
+                }
             }
-
-            //var updatedUser = await _userRepository.Update(user);
-
-            //if (updatedUser != null)
-            //{
-            //    user = updatedUser;
-            //}
 
             await _userManager.AddToRoleAsync(user, roleToAdd);
 

@@ -14,7 +14,7 @@
 </div>
 <div class="menuItemsContainer">
   <div *ngFor="let menuItem of routes; let i = index">
-    <div class="menuItem" *ngIf="!menuItem.isDisabled">
+    <div class="menuItem" *ngIf="!menuItem.isDisabled && (menuItem.CanShow | async)">
       <button
         (click)="selectItem(i)"
         type="button"
@@ -39,7 +39,7 @@
     <div *ngIf="selected === i && menuItem.Childs.length > 0">
       <hr class="subItemDivisory" />
       <div *ngFor="let subItem of menuItem.Childs">
-        <div class="subItem" *ngIf="!subItem.isDisabled">
+        <div class="subItem" *ngIf="!subItem.isDisabled && (menuItem.CanShow | async)">
           <a
             [ngClass]="{ buttonSelected: subItem.isSelected }"
             type="button"

@@ -9,10 +9,18 @@ namespace ClinicControlCenter.Configuration
     {
         public AutoMapperProfile()
         {
-            CreateMap<User, UserViewModel>();
             CreateMap<UserRoleDTO, Patient>();
             CreateMap<UserRoleDTO, Employee>();
             CreateMap<UserRoleDTO, Doctor>();
+
+            CreateMap<User, UserViewModel>()
+                .ForMember(x => x.IsDoctor, m => m.MapFrom(x => x.Doctor != null))
+                .ForMember(x => x.IsEmployee, m => m.MapFrom(x => x.Employee != null))
+                .ForMember(x => x.IsPatient, m => m.MapFrom(x => x.Patient != null));
+
+            CreateMap<Doctor, DoctorViewModel>();
+            CreateMap<Employee, EmployeeViewModel>();
+            CreateMap<Patient, PatientViewModel>();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using ClinicControlCenter.Domain.Models;
@@ -22,9 +24,24 @@ namespace ClinicControlCenter.Security
 
             var roles = await UserManager.GetRolesAsync(user);
 
-            var roleClaims = roles.Select(role => new Claim(JwtClaimTypes.Role, role)).ToList();
+            var userRolePermLevelName = JwtClaimTypes.Role + "PermLevel";
+            int? permLevel = null;
 
-            context.IssuedClaims.AddRange(roleClaims);
+            var claimsToAdd = new List<Claim>();
+            foreach (var role in roles)
+            {
+                if (SecurityConfig.ROLE_HIERARCHY.TryGetValue(role, out var lvl))
+                {
+                    if (!permLevel.HasValue || lvl < permLevel.Value)
+                        permLevel = lvl;
+                }
+
+                claimsToAdd.Add(new Claim(JwtClaimTypes.Role, role));
+            }
+
+            claimsToAdd.Add(new Claim(userRolePermLevelName, permLevel.ToString()));
+
+            context.IssuedClaims.AddRange(claimsToAdd);
         }
     }
 }

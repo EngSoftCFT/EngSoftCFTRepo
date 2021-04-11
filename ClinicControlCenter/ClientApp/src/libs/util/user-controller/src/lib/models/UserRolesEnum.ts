@@ -1,4 +1,4 @@
-export enum UserRoles {
+export enum USER_ROLES {
   ADMIN_ROLE = "ADMIN",
   MANAGER_ROLE = "MANAGER",
   DOCTOR_ROLE = "DOCTOR",
@@ -6,3 +6,12 @@ export enum UserRoles {
   PATIENT_ROLE = "PATIENT",
   USER_ROLE = "USER",
 }
+
+export const USER_ROLES_LEVEL = {
+  [USER_ROLES.ADMIN_ROLE]: 0,
+  [USER_ROLES.MANAGER_ROLE]: 1,
+  [USER_ROLES.DOCTOR_ROLE]: 2,
+  [USER_ROLES.EMPLOYEE_ROLE]: 3,
+  [USER_ROLES.PATIENT_ROLE]: 4,
+  [USER_ROLES.USER_ROLE]: 4,
+};

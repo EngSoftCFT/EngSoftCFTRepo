@@ -19,7 +19,7 @@
       class="menuItem"
       mat-list-item
       (click)="itemClicked(i, menuItem)"
-      *ngIf="!menuItem.isDisabled"
+      *ngIf="!menuItem.isDisabled  && (menuItem.CanShow | async)"
       [routerLink]="
         menuItem.FullPath && !menuItem.isGroupOnly ? menuItem.FullPath : null
       "
@@ -33,7 +33,7 @@
         expand_more
       </mat-icon>
     </a>
-    <div *ngIf="expanded[i] && !menuItem.isDisabled">
+    <div *ngIf="expanded[i] && !menuItem.isDisabled  && (menuItem.CanShow | async)">
       <div *ngFor="let subItem of menuItem.Childs">
         <a
           [ngClass]="{ buttonSelected: subItem.isSelected }"

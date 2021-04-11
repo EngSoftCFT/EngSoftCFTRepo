@@ -54,7 +54,11 @@ namespace ClinicControlCenter
                     .AddDefaultUI()
                     .AddDefaultTokenProviders();
 
-            services.AddIdentityServer()
+            services.AddIdentityServer(options =>
+                    {
+                        options.Authentication.CookieLifetime          = TimeSpan.FromDays(30);
+                        options.Authentication.CookieSlidingExpiration = true;
+                    })
                     .AddApiAuthorization<User, ApplicationDbContext>();
 
             services.AddTransient<IProfileService, ProfileService>();
@@ -70,7 +74,8 @@ namespace ClinicControlCenter
                         options.JsonSerializerOptions.PropertyNamingPolicy = null;
 
                         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                        options.JsonSerializerOptions.Converters.Add(new HandleSpecialDoublesAsStrings_NewtonsoftCompat());
+                        options.JsonSerializerOptions.Converters.Add(
+                            new HandleSpecialDoublesAsStrings_NewtonsoftCompat());
                     });
 
             services.AddCors(options => options

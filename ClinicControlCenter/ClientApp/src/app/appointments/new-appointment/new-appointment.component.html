@@ -1,1 +1,85 @@
-<p>new-appointment works!</p>
+<div class="card hoverable card-content full-height">
+  <form class="new-appointment-form" [formGroup]="formGroup">
+    <span class="card-title">Create a new Appointment</span>
+    <br />
+    <br />
+    <br />
+    <p>
+      <!-- Name -->
+      <mat-form-field appearance="outline">
+        <mat-label>Your Name</mat-label>
+        <input matInput placeholder="Name" />
+        <!-- TODO: Change Icon color according to validation -->
+        <mat-icon matSuffix style="color: green">done_outline</mat-icon>
+        <mat-hint>Full name</mat-hint>
+      </mat-form-field>
+    </p>
+    <p>
+      <!-- Email -->
+      <mat-form-field appearance="outline">
+        <mat-label>Your E-mail</mat-label>
+        <input matInput placeholder="E-mail" />
+        <!-- TODO: Change Icon color according to validation -->
+        <mat-icon matSuffix style="color: green">done_outline</mat-icon>
+        <mat-hint>E-mail</mat-hint>
+      </mat-form-field>
+    </p>
+    <p>
+      <!-- Telephone -->
+      <mat-form-field appearance="outline">
+        <mat-label>Your Telephone</mat-label>
+        <input matInput placeholder="Telephone" />
+        <!-- TODO: Change Icon color according to validation -->
+        <mat-icon matSuffix style="color: green">done_outline</mat-icon>
+        <mat-hint>Telephone</mat-hint>
+      </mat-form-field>
+    </p>
+    <p>
+      <!-- Doctor -->
+      <mat-form-field appearance="outline">
+        <mat-label>Doctor</mat-label>
+        <input
+          type="text"
+          placeholder="Doctor"
+          aria-label="Text"
+          matInput
+          name="DoctorInput"
+          [formControl]="doctorInputFormControl"
+          [matAutocomplete]="doctorAutoComplete"
+        />
+        <mat-autocomplete
+          #doctorAutoComplete="matAutocomplete"
+          [displayWith]="doctorAutoCompleteDisplay"
+        >
+          <mat-option
+            *ngFor="let option of doctorOptions | async"
+            [value]="option"
+          >
+            {{ option?.Name }}
+          </mat-option>
+        </mat-autocomplete>
+        <mat-icon matSuffix style="color: green">done_outline</mat-icon>
+        <mat-hint>Select the Doctor</mat-hint>
+      </mat-form-field>
+    </p>
+    <p>
+      <!-- Appointment Date -->
+      <mat-form-field appearance="outline">
+        <mat-label>Choose a date</mat-label>
+        <input
+          type="text"
+          aria-label="Text"
+          matInput
+          autocomplete="off"
+          [matDatepicker]="appointmentDatePicker"
+          [formControl]="appointmentDateFormControl"
+        />
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="appointmentDatePicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #appointmentDatePicker></mat-datepicker>
+      </mat-form-field>
+    </p>
+  </form>
+</div>

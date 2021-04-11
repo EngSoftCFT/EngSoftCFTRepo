@@ -20,5 +20,22 @@
 
         public string State { get; set; }
 
+        #region User Relationships
+
+        public bool IsManager { get; set; }
+
+        public bool IsDoctor { get; set; }
+
+        public bool IsEmployee { get; set; }
+
+        public bool IsPatient { get; set; }
+
+        public virtual PatientViewModel Patient { get; set; }
+
+        public virtual EmployeeViewModel Employee { get; set; }
+
+        public virtual DoctorViewModel Doctor { get; set; }
+
+        #endregion
     }
 }

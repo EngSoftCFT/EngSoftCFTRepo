@@ -1,4 +1,6 @@
-import { IUser } from "./../../../../../../api-authorization/authorize.service";
+import { IUser } from "src/api-authorization/authorize.service";
+
 export interface IAuthUser extends IUser {
   role?: string | string[];
+  rolePermLevel?: string;
 }

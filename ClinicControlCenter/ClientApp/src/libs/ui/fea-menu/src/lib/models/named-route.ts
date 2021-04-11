@@ -1,3 +1,5 @@
+import { USER_ROLES } from "./../../../../../util/user-controller/src/lib/models/UserRolesEnum";
+import { Observable } from "rxjs";
 import { Route } from "@angular/router";
 import { isNullOrUndefined } from "src/libs/util/utils/src";
 
@@ -24,9 +26,18 @@ export interface INamedRoute extends Route {
 
   /** @description Parent route if it exists */
   Parent?: INamedRoute;
+
+  /** @description Minimum role that this user needs to have in order to view this route */
+  requireRoleOf?: USER_ROLES;
+
+  /** @description If can show this route on the menu */
+  CanShow?: Observable<boolean>;
 }
 
 export class NamedRoute implements INamedRoute {
+  requireRoleOf?: USER_ROLES;
+  CanShow: Observable<boolean>;
+
   children?: INamedRoutes;
 
   redirectTo?: string;
@@ -90,6 +101,12 @@ export class NamedRoute implements INamedRoute {
       !isNullOrUndefined(this.redirectTo)
     )
       this.isDisabled = true;
+
+    if (isNullOrUndefined(this.CanShow))
+      this.CanShow = new Observable((observer) => {
+        observer.next(true);
+        observer.complete();
+      });
 
     if (!isNullOrUndefined(this.children)) {
       const childs = this.children ?? [];

@@ -1,19 +1,22 @@
-import { NavMenuComponent } from './old/nav-menu/nav-menu.component';
+import { UserControllerModule } from "./../libs/util/user-controller/src/lib/user-controller.module";
+import { NavMenuComponent } from "./old/nav-menu/nav-menu.component";
 import { NgModule } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { INamedRoutes } from "src/libs/ui/fea-menu/src";
 import { AuthorizeGuard } from "src/api-authorization/authorize.guard";
 
-import { CounterComponent } from './old/counter/counter.component';
-import { FetchDataComponent } from './old/fetch-data/fetch-data.component';
+import { CounterComponent } from "./old/counter/counter.component";
+import { FetchDataComponent } from "./old/fetch-data/fetch-data.component";
 import { HomeComponent as OldHome } from "./old/home/home.component";
 
 import { HomeComponent } from "./home/home.component";
-import { ClinicPicturesComponent } from './clinic-pictures/clinic-pictures.component';
-import { UserManagementComponent } from './system-management/user-management/user-management.component';
-import { AdressDatabaseComponent } from './adress-database/adress-database.component';
-import { NewAppointmentComponent } from './appointments/new-appointment/new-appointment.component';
-import { ListAppointmentsComponent } from './appointments/list-appointments/list-appointments.component';
+import { ClinicPicturesComponent } from "./clinic-pictures/clinic-pictures.component";
+import { UserManagementComponent } from "./system-management/user-management/user-management.component";
+import { AdressDatabaseComponent } from "./adress-database/adress-database.component";
+import { NewAppointmentComponent } from "./appointments/new-appointment/new-appointment.component";
+import { ListAppointmentsComponent } from "./appointments/list-appointments/list-appointments.component";
+import { USER_ROLES } from "src/libs/util/user-controller/src";
+import { PatientsComponent } from "./system-management/patients/patients.component";
 
 const routes: INamedRoutes = [
   {
@@ -51,6 +54,7 @@ const routes: INamedRoutes = [
         path: "lsit-appointments",
         component: ListAppointmentsComponent,
         icon: "calendar_view_month",
+        requireRoleOf: USER_ROLES.DOCTOR_ROLE,
       },
     ],
   },
@@ -64,7 +68,15 @@ const routes: INamedRoutes = [
         name: "Users",
         path: "user-management",
         component: UserManagementComponent,
+        icon: "manage_accounts",
+        requireRoleOf: USER_ROLES.MANAGER_ROLE,
+      },
+      {
+        name: "Patients",
+        path: "patients",
+        component: PatientsComponent,
         icon: "psychology",
+        requireRoleOf: USER_ROLES.DOCTOR_ROLE,
       },
     ],
   },
@@ -106,11 +118,12 @@ const routes: INamedRoutes = [
         canActivate: [AuthorizeGuard],
       },
     ],
+    requireRoleOf: USER_ROLES.ADMIN_ROLE,
   },
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes) ],
-  exports: [ RouterModule ],
+  imports: [RouterModule.forRoot(routes), UserControllerModule],
+  exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

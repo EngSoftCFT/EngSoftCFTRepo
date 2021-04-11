@@ -21,6 +21,8 @@ namespace ClinicControlCenter.Domain.Models
 
         public string State { get; set; }
 
+        public bool IsManager { get; set; } = false;
+
         #region Table Navigation
 
         public virtual Patient Patient { get; set; }
