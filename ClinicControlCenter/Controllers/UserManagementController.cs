@@ -60,6 +60,8 @@ namespace ClinicControlCenter.Controllers
                                         .Mapper<User, UserViewModel>(_mapper)
                                         .FindAllPaginated(
                                             filter,
+                                            (x) => (string.IsNullOrEmpty(filter.Name) || x.FullName.ToLower().Contains(filter.Name.ToLower())) &&
+                                                   (string.IsNullOrEmpty(filter.Email) || x.Email.ToLower().Contains(filter.Email.ToLower())),
                                             includeProperties: new List<Expression<Func<User, object>>>()
                                             {
                                                 x => x.Doctor,

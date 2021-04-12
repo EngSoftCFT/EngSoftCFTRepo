@@ -22,6 +22,7 @@ import { AdressDatabaseComponent } from "./adress-database/adress-database.compo
 import { PatientsComponent } from "./system-management/patients/patients.component";
 import { NewAppointmentComponent } from "./appointments/new-appointment/new-appointment.component";
 import { ListAppointmentsComponent } from "./appointments/list-appointments/list-appointments.component";
+import { CustomSearchBarModule } from "src/libs/ui/custom-search-bar/src";
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { ListAppointmentsComponent } from "./appointments/list-appointments/list
     FeaHeaderModule,
     FeaMenuModule,
     CustomTableModule,
+    CustomSearchBarModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },

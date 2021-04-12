@@ -21,6 +21,7 @@ export class AppComponent {
     assetLoader.loadIcon("edit");
     assetLoader.loadIcon("eraser");
     assetLoader.loadIcon("eye");
+    assetLoader.loadIcon("search");
 
     this.dateAdapter.setLocale(navigator.language);
   }

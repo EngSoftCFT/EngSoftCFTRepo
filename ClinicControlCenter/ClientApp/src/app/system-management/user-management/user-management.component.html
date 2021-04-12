@@ -1,4 +1,11 @@
 <div class="card hoverable card-content full-height">
+  <custom-search-bar
+    [definition]="searchBarDefinition"
+    [filter]="apiFilter"
+    (searchEvent)="refreshData()"
+    (clearEvent)="refreshData()"
+    (addEvent)="refreshData()"
+  ></custom-search-bar>
   <custom-table
     [tableDefinition]="tableDefinition"
     [values]="values"

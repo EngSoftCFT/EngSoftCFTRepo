@@ -1,4 +1,5 @@
-﻿using SDK.Pagination;
+﻿using System.Collections.Generic;
+using SDK.Pagination;
 
 namespace ClinicControlCenter.Domain.Filters
 {
@@ -10,6 +11,6 @@ namespace ClinicControlCenter.Domain.Filters
 
        public string Address { get; set; }
 
-       public string UserRole { get; set; }
+       public IEnumerable<string> UserTypes { get; set; } = new List<string>();
     }
 }
