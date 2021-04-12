@@ -6,6 +6,10 @@ export function IsArrayWithValues(obj: any): boolean {
   return !isNullOrUndefined(obj) && Array.isArray(obj) && obj.length > 0;
 }
 
+export function isString(value) {
+  return typeof value === "string" || value instanceof String;
+}
+
 export function deepCopy<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
 }

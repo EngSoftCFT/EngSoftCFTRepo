@@ -1,7 +1,9 @@
 ﻿using System;
 
-namespace ClinicControlCenter.Domain.DTOs {
-    public class NewAppointmentDTO {
+namespace ClinicControlCenter.Domain.DTOs
+{
+    public class NewAppointmentDTO
+    {
         public DateTimeOffset Date { get; set; }
 
         public string Name { get; set; }

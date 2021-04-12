@@ -19,7 +19,7 @@
 // Global Styles
 $site-header-height: 80px;
 $site-content-height: calc(100vh - #{$site-header-height});
-$primary-color:  $primary-color;
+$primary-color: $primary-color;
 $primary-color-light: $primary-color-light;
 
 html,
@@ -27,7 +27,7 @@ body {
   height: 100%;
   min-width: 640px;
   margin: 0;
-  overflow-y: hidden;
+  // overflow-y: hidden;
 }
 
 .site-header {
@@ -42,7 +42,7 @@ body {
 }
 
 /* Utility Classes ----------> */
-.ligth-color{
+.ligth-color {
   color: $primary-color-light;
 }
 /* Utility Classes  <---------- */
@@ -64,8 +64,8 @@ $card-half-height: calc(#{$card-full-height} / 2);
     height: $card-half-height;
   }
 
-  .card-content {
-    overflow-y: auto;
+  &.card-content {
+    overflow-y: scroll;
     padding: $card-content-padding;
   }
 }
