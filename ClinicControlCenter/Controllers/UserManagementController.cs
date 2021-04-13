@@ -102,20 +102,25 @@ namespace ClinicControlCenter.Controllers
             return Ok(await _userRepository.Find(id, x => x.Doctor, x => x.Employee, x => x.Patient));
         }
 
-        // TODO: Everything
-        //[HttpPost]
-        //public void Post([FromBody] string value)
-        //{ }
+        [HttpPost("new-user")]
+        public async Task<User> NewUser([FromBody] UserDTO userDto)
+        {
+            var user = _mapper.Map<User>(userDto);
+            if (!string.IsNullOrWhiteSpace(userDto.Password))
+            {
+                var result =await _userManager.CreateAsync(user, userDto.Password);
+            }
+            else
+            {
+                var result = await _userManager.CreateAsync(user);
+            }
+
+            return user;
+        }
 
         // TODO: Everything
         //[HttpPut("{id}")]
         //public void Put(int id, [FromBody] string value)
-        //{ }
-
-        // TODO: Everything
-        // DELETE api/<UserManagementController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
         //{ }
 
         [HttpPut("to-user/{id}")]

@@ -32,6 +32,17 @@ namespace ClinicControlCenter.Security
 
         public static readonly List<string> ROLES = ROLE_HIERARCHY.Keys.ToList();
 
+        public static bool HasPermission(IEnumerable<string> userRoles, string minimumRole)
+        {
+            var userPermissionLevel =
+                userRoles.Min(x => ROLE_HIERARCHY.TryGetValue(x, out var lvl) ? lvl : double.PositiveInfinity);
+
+            var minimumRolePermLevel =
+                ROLE_HIERARCHY.TryGetValue(minimumRole, out var lvl) ? lvl : double.PositiveInfinity;
+
+            return userPermissionLevel <= minimumRolePermLevel;
+        }
+
         public static IEnumerable<string> GetParentRoles(string role)
         {
             if (string.IsNullOrEmpty(role) ||

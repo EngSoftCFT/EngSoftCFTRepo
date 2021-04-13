@@ -153,7 +153,6 @@ export class PatientsComponent implements OnInit {
       ? "/api/UserManagement/to-patient"
       : "/api/UserManagement/remove-patient";
 
-
       this.api.put(element.Id, element, roleUpdatePath).subscribe((result) => {
         this.snackBar.open("Roles Updated", "X", {
           duration: 500,

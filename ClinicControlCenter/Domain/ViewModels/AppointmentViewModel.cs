@@ -12,6 +12,8 @@ namespace ClinicControlCenter.Domain.ViewModels {
 
         public string DoctorId { get; set; } //FK para Doctor
 
+        public virtual UserViewModel User { get; set; }
+
         public virtual DoctorViewModel Doctor { get; set; }
     }
 }

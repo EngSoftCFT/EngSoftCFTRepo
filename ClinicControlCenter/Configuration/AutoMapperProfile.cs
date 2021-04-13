@@ -13,6 +13,7 @@ namespace ClinicControlCenter.Configuration
             CreateMap<UserRoleDTO, Employee>();
             CreateMap<UserRoleDTO, Doctor>();
 
+            CreateMap<UserDTO, User>();
             CreateMap<User, UserViewModel>()
                 .ForMember(x => x.IsDoctor, m => m.MapFrom(x => x.Doctor != null))
                 .ForMember(x => x.IsEmployee, m => m.MapFrom(x => x.Employee != null))

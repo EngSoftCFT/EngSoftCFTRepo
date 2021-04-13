@@ -161,4 +161,8 @@ export class NewAppointmentComponent implements OnInit {
     this.appointmentDto.Date.setHours(selectedHours);
     this.appointmentDto.Date.setMinutes(selectedMinutes);
   }
+
+  submit() {
+
+  }
 }
