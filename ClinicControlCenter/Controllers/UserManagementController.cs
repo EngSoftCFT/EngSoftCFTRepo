@@ -5,7 +5,6 @@ using System.Linq.Expressions;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using ClinicControlCenter.Domain.DTOs;
 using ClinicControlCenter.Domain.Filters;
 using ClinicControlCenter.Domain.Models;
@@ -13,10 +12,10 @@ using ClinicControlCenter.Domain.ViewModels;
 using ClinicControlCenter.Security;
 using Microsoft.AspNetCore.Identity;
 using SDK.EntityRepository;
-using SDK.EntityRepository.Implementations;
 using SDK.EntityRepository.Modules.AutoMapper;
 using SDK.EntityRepository.Modules.Pagination;
 using SDK.Pagination;
+using SDK.Utils;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -55,19 +54,44 @@ namespace ClinicControlCenter.Controllers
         [HttpGet]
         public async Task<ActionResult<PaginationResult<UserViewModel>>> Get([FromQuery] UserFilter filter)
         {
-            // TODO: Filter
-            var paginatedValues = await _userRepository
-                                        .Mapper<User, UserViewModel>(_mapper)
-                                        .FindAllPaginated(
-                                            filter,
-                                            (x) => (string.IsNullOrEmpty(filter.Name) || x.FullName.ToLower().Contains(filter.Name.ToLower())) &&
-                                                   (string.IsNullOrEmpty(filter.Email) || x.Email.ToLower().Contains(filter.Email.ToLower())),
-                                            includeProperties: new List<Expression<Func<User, object>>>()
-                                            {
-                                                x => x.Doctor,
-                                                x => x.Employee,
-                                                x => x.Patient
-                                            });
+            filter.UserTypes ??= new List<string>();
+            var filterUserTypes = false;
+
+            var filterShowPatients = filter.UserTypes.Contains(SecurityConfig.PATIENT_ROLE);
+            var filterShowEmployees = filter.UserTypes.Contains(SecurityConfig.EMPLOYEE_ROLE);
+            var filterShowDoctors = filter.UserTypes.Contains(SecurityConfig.DOCTOR_ROLE);
+            var filterShowManagers = filter.UserTypes.Contains(SecurityConfig.MANAGER_ROLE);
+
+            filterUserTypes = filterShowPatients || filterShowEmployees || filterShowDoctors || filterShowManagers;
+
+            if (filter.UserTypes.Contains(SecurityConfig.USER_ROLE))
+                filterUserTypes = false;
+
+            var paginatedValues =
+                await _userRepository
+                      .Mapper<User, UserViewModel>(_mapper)
+                      .FindAllPaginated(
+                          filter,
+                          (x) => (
+                                     string.IsNullOrEmpty(filter.Name) ||
+                                     x.FullName.ToLower().Contains(filter.Name.ToLower())
+                                 ) &&
+                                 (
+                                     string.IsNullOrEmpty(filter.Email) ||
+                                     x.Email.ToLower().Contains(filter.Email.ToLower())
+                                 ) &&
+                                 (
+                                     !filterUserTypes || ((!filterShowPatients  || x.Patient  != null) &&
+                                                          (!filterShowEmployees || x.Employee != null) &&
+                                                          (!filterShowDoctors   || x.Doctor   != null) &&
+                                                          (!filterShowManagers  || x.IsManager))
+                                 ),
+                          includeProperties: new List<Expression<Func<User, object>>>()
+                          {
+                              x => x.Doctor,
+                              x => x.Employee,
+                              x => x.Patient
+                          });
 
             return Ok(paginatedValues);
         }
@@ -94,10 +118,22 @@ namespace ClinicControlCenter.Controllers
         //public void Delete(int id)
         //{ }
 
+        [HttpPut("to-user/{id}")]
+        public async Task<ActionResult<User>> ToUser([FromRoute] string id, [FromBody] UserRoleDTO userRoleDto)
+        {
+            return await SetupUserRoles(id, SecurityConfig.USER_ROLE, userRoleDto);
+        }
+
         [HttpPut("to-patient/{id}")]
         public async Task<ActionResult<User>> ToPatient([FromRoute] string id, [FromBody] UserRoleDTO userRoleDto)
         {
             return await SetupUserRoles(id, SecurityConfig.PATIENT_ROLE, userRoleDto);
+        }
+
+        [HttpPut("remove-patient/{id}")]
+        public async Task<ActionResult<User>> RemovePatient([FromRoute] string id, [FromBody] UserRoleDTO userRoleDto)
+        {
+            return await SetupUserRoles(id, SecurityConfig.PATIENT_ROLE, userRoleDto, true);
         }
 
         [HttpPut("to-employee/{id}")]
@@ -118,19 +154,21 @@ namespace ClinicControlCenter.Controllers
             return await SetupUserRoles(id, SecurityConfig.MANAGER_ROLE, userRoleDto);
         }
 
-        private async Task<ActionResult<User>> SetupUserRoles(string userId, string roleToAddOrMaintain = null,
-                                                              UserRoleDTO userRoleDto = null)
+        private async Task<ActionResult<User>> SetupUserRoles(string userId, string role = null,
+                                                              UserRoleDTO userRoleDto = null, bool removeRole = false)
         {
             var user = await _userRepository.Find(userId, x => x.Doctor, x => x.Employee, x => x.Patient);
             if (user == null)
                 return BadRequest("No user for this ID");
 
-            var rolesToRemove = GetRolesToRemove(roleToAddOrMaintain);
+            var rolesToRemove = removeRole
+                                    ? new List<string>() { role }
+                                    : GetRolesToRemove(role);
             await RemoveRoles(user, rolesToRemove.ToArray());
 
-            if (!string.IsNullOrEmpty(roleToAddOrMaintain))
+            if (!string.IsNullOrEmpty(role) && !removeRole)
             {
-                user = await AddRoles(user, roleToAddOrMaintain, userRoleDto);
+                user = await AddRoles(user, role, userRoleDto);
             }
 
             return Ok(user);
@@ -174,7 +212,7 @@ namespace ClinicControlCenter.Controllers
                 if (roleToAdd == SecurityConfig.MANAGER_ROLE)
                 {
                     user.IsManager = true;
-                    user = await _userRepository.Update(user);
+                    user           = await _userRepository.Update(user);
                 }
             }
 

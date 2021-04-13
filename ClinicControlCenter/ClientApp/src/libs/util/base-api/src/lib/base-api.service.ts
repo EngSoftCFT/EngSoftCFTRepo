@@ -84,7 +84,7 @@ export class BaseApiService {
   }
 
   put<TResult>(
-    id: number,
+    id: number | string,
     body: TResult,
     urlPath: string = this.apiPath
   ): Observable<TResult> {
@@ -95,7 +95,7 @@ export class BaseApiService {
   }
 
   delete<TResult>(
-    id: number,
+    id: number | string,
     urlPath: string = this.apiPath
   ): Observable<TResult> {
     const requestUrl = this.getRequestUrl(urlPath);

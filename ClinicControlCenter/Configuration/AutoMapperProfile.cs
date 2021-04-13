@@ -21,6 +21,9 @@ namespace ClinicControlCenter.Configuration
             CreateMap<Doctor, DoctorViewModel>();
             CreateMap<Employee, EmployeeViewModel>();
             CreateMap<Patient, PatientViewModel>();
+
+            CreateMap<Appointment, AppointmentViewModel>();
+            CreateMap<NewAppointmentDTO, Appointment>();
         }
     }
 }

@@ -28,5 +28,8 @@ export interface ColumnDefinition {
   isButton?: boolean;
   icon?: string;
   iconSvg?: string;
+  showIcon?: (element?: any, columnDefinition?: ColumnDefinition, tableComponent?: CustomTableComponent) => boolean;
+  iconValue?: (element?: any, columnDefinition?: ColumnDefinition, tableComponent?: CustomTableComponent) => string | undefined;
+  iconSvgValue?: (element?: any, columnDefinition?: ColumnDefinition, tableComponent?: CustomTableComponent) => string | undefined;
   onClick?: (element?: any, columnDefinition?: ColumnDefinition, event?: MouseEvent, tableComponent?: CustomTableComponent) => void;
 }

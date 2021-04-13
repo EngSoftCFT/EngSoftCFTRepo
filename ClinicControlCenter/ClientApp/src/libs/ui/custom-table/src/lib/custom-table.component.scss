@@ -26,6 +26,12 @@
   padding-right: 5px;
 }
 
+.column-extra-small {
+  flex-shrink: 5;
+  flex-grow: 0.3;
+  padding-right: 3px;
+}
+
 .column-default {
   flex-grow: 1;
   flex-shrink: 1;

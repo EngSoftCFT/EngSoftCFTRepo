@@ -1,4 +1,4 @@
-import { ColumnDefinition } from './models/custom-table-data.model';
+import { ColumnDefinition } from "./models/custom-table-data.model";
 import { MatPaginator, PageEvent } from "@angular/material/paginator";
 import {
   Component,
@@ -63,11 +63,19 @@ export class CustomTableComponent implements OnInit, OnChanges, AfterViewInit {
         if (!column.displayName) column.displayName = column.name;
 
         if (!column.getValueFunc) {
-          if (column.icon || column.iconSvg) column.getValueFunc = (obj: any) => "";
+          if (column.icon || column.iconSvg)
+            column.getValueFunc = (obj: any) => "";
           else column.getValueFunc = (obj: any) => obj[column.name];
         }
+
+        if (!column.showIcon) column.showIcon = (obj: any) => false;
+        if (!column.iconValue)
+          column.iconValue = (obj: any) => column.icon;
+        if (!column.iconSvgValue)
+          column.iconSvgValue = (obj: any) => column.iconSvg;
       });
     }
+
   }
 
   ngAfterViewInit() {

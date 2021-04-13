@@ -23,6 +23,7 @@ import { PatientsComponent } from "./system-management/patients/patients.compone
 import { NewAppointmentComponent } from "./appointments/new-appointment/new-appointment.component";
 import { ListAppointmentsComponent } from "./appointments/list-appointments/list-appointments.component";
 import { CustomSearchBarModule } from "src/libs/ui/custom-search-bar/src";
+import { UserModalComponent } from './system-management/components/user-modal/user-modal.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { CustomSearchBarModule } from "src/libs/ui/custom-search-bar/src";
     PatientsComponent,
     NewAppointmentComponent,
     ListAppointmentsComponent,
+    UserModalComponent,
   ],
   imports: [
     CommonModule,

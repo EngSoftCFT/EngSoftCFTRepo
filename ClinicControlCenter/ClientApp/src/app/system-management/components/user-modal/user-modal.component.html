@@ -1,0 +1,177 @@
+<div class="mat-dialog-header">
+  <h1 mat-dialog-title>{{ title }}</h1>
+  <button (click)="close()">X</button>
+</div>
+
+<mat-dialog-content>
+  <div class="user-modal-content">
+    <!-- ROLE SELECT -->
+    <div *ngIf="data.showRoleSelect">
+      <mat-form-field appearance="outline">
+        <mat-label>Role Select</mat-label>
+        <mat-select [(ngModel)]="modalObj.userRole" [disabled]="!enableEdition">
+          <mat-option *ngFor="let option of getUserRoles()" [value]="option">
+            {{ option }}
+          </mat-option>
+        </mat-select>
+        <mat-hint>Role Select</mat-hint>
+      </mat-form-field>
+    </div>
+    <!-- ROLE SELECT END -->
+    <!-- PATIENT SWITCH -->
+    <div *ngIf="data.showPatientSwitch">
+      <mat-form-field appearance="outline">
+        <mat-label> Is Patient</mat-label>
+        <mat-slide-toggle
+          [disabled]="!enableEdition"
+          [(ngModel)]="modalObj.isPatient"
+        >
+          Is Patient
+        </mat-slide-toggle>
+        <mat-hint>Is Patient</mat-hint>
+      </mat-form-field>
+    </div>
+    <!-- PATIENT SWITCH END -->
+
+    <!-- PATIENT -->
+    <div *ngIf="showPatientProperties">
+      <!-- Weight -->
+      <mat-form-field appearance="outline">
+        <mat-label>Weight</mat-label>
+        <input
+          [disabled]="!enableEdition"
+          matInput
+          placeholder="Weight"
+          type="number"
+          autocomplete="off"
+          aria-label="Weight"
+          [(ngModel)]="modalObj.Weight"
+          min="0"
+        />
+        <!-- TODO: Change Icon color according to validation -->
+        <mat-icon matSuffix style="color: green">done_outline</mat-icon>
+        <mat-hint>Height</mat-hint>
+      </mat-form-field>
+      <!-- Height -->
+      <mat-form-field appearance="outline">
+        <mat-label>Height</mat-label>
+        <input
+          [disabled]="!enableEdition"
+          matInput
+          placeholder="Height"
+          type="number"
+          autocomplete="off"
+          aria-label="Height"
+          [(ngModel)]="modalObj.Height"
+          min="0"
+        />
+        <!-- TODO: Change Icon color according to validation -->
+        <mat-icon matSuffix style="color: green">done_outline</mat-icon>
+        <mat-hint>Height</mat-hint>
+      </mat-form-field>
+      <!-- Blood Type -->
+      <mat-form-field appearance="outline">
+        <mat-label>Blood Type</mat-label>
+        <input
+          [disabled]="!enableEdition"
+          matInput
+          placeholder="Blood Type"
+          type="text"
+          autocomplete="off"
+          aria-label="BloodType"
+          [(ngModel)]="modalObj.BloodType"
+        />
+        <!-- TODO: Change Icon color according to validation -->
+        <mat-icon matSuffix style="color: green">done_outline</mat-icon>
+        <mat-hint>Blood Type</mat-hint>
+      </mat-form-field>
+    </div>
+    <!-- PATIENT END -->
+
+    <!-- DOCTOR -->
+    <div *ngIf="showDoctorProperties">
+      <!-- Specialty -->
+      <mat-form-field appearance="outline">
+        <mat-label>Specialty</mat-label>
+        <input
+          [disabled]="!enableEdition"
+          matInput
+          placeholder="Specialty"
+          type="text"
+          autocomplete="off"
+          aria-label="Specialty"
+          [(ngModel)]="modalObj.Specialty"
+        />
+        <!-- TODO: Change Icon color according to validation -->
+        <mat-icon matSuffix style="color: green">done_outline</mat-icon>
+        <mat-hint>Specialty</mat-hint>
+      </mat-form-field>
+      <!-- CRM -->
+      <mat-form-field appearance="outline">
+        <mat-label>CRM</mat-label>
+        <input
+          [disabled]="!enableEdition"
+          matInput
+          placeholder="CRM"
+          type="text"
+          autocomplete="off"
+          aria-label="CRM"
+          [(ngModel)]="modalObj.CRM"
+        />
+        <!-- TODO: Change Icon color according to validation -->
+        <mat-icon matSuffix style="color: green">done_outline</mat-icon>
+        <mat-hint>CRM</mat-hint>
+      </mat-form-field>
+    </div>
+    <!-- DOCTOR END -->
+
+    <!-- EMPLOYEE -->
+    <div *ngIf="showEmployeeProperties">
+      <!-- ContractDate -->
+      <mat-form-field appearance="outline">
+        <mat-label>Contracted Date</mat-label>
+        <input
+          [disabled]="!enableEdition"
+          aria-label="Text"
+          matInput
+          autocomplete="off"
+          [matDatepicker]="contractDateDatePicker"
+          [value]="modalObj.ContractDate"
+        />
+        <mat-datepicker-toggle
+          [disabled]="!enableEdition"
+          matSuffix
+          [for]="contractDateDatePicker"
+        ></mat-datepicker-toggle>
+        <mat-datepicker #contractDateDatePicker></mat-datepicker>
+        <mat-hint>Contracted Date</mat-hint>
+      </mat-form-field>
+
+      <!-- Salary -->
+      <mat-form-field appearance="outline">
+        <mat-label>Salary</mat-label>
+        <input
+          [disabled]="!enableEdition"
+          matInput
+          placeholder="Salary"
+          type="number"
+          autocomplete="off"
+          aria-label="Salary"
+          [(ngModel)]="modalObj.Salary"
+          min="0"
+        />
+        <!-- TODO: Change Icon color according to validation -->
+        <mat-icon matSuffix style="color: green">done_outline</mat-icon>
+        <mat-hint>Salary</mat-hint>
+      </mat-form-field>
+    </div>
+    <!-- EMPLOYEE END -->
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" *ngIf="enableEdition">
+  <button class="mat-raised-button" (click)="close()">Cancel</button>
+  <button class="mat-raised-button mat-primary" (click)="confirm()">
+    Confirm
+  </button>
+</mat-dialog-actions>

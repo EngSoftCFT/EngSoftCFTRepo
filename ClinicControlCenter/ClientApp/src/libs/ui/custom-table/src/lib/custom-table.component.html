@@ -31,6 +31,25 @@
         "
         ><span *ngIf="!columnDefinition.isButton">
           {{ columnDefinition.getValueFunc(element) }}
+          <span
+            *ngIf="
+              columnDefinition.showIcon(element, columnDefinition, instance)
+            "
+          >
+            <mat-icon
+              [svgIcon]="
+                columnDefinition.iconSvgValue(
+                  element,
+                  columnDefinition,
+                  instance
+                )
+              "
+            >
+              {{
+                columnDefinition.iconValue(element, columnDefinition, instance)
+              }}
+            </mat-icon></span
+          >
         </span>
         <button
           *ngIf="columnDefinition.isButton"
