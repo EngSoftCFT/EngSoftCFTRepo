@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SDK.EntityRepository.Entities;
+using SDK.EntityRepository.Implementations.Entities;
 
 namespace ClinicControlCenter.Domain.Models
 {
-    public class Employee : Entity
+    public class Employee : EntityString
     {
-        public string UserId { get; set; }
-
-        public virtual ApplicationUser User { get; set; }
-
         public DateTimeOffset ContractDate { get; set; }
 
         public decimal Salary { get; set; }

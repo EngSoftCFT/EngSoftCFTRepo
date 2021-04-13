@@ -6,14 +6,12 @@ using ClinicControlCenter.Domain.Models;
 
 namespace ClinicControlCenter.Data
 {
-    public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
+    public class ApplicationDbContext : ApiAuthorizationDbContext<User>
     {
         public ApplicationDbContext(
-            DbContextOptions options,
-            IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+            DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions)
+            : base(options, operationalStoreOptions)
         { }
-
-        //public DbSet<Person> People { get; set; }
 
         public DbSet<Patient> Patients { get; set; }
 
@@ -29,37 +27,38 @@ namespace ClinicControlCenter.Data
         {
             base.OnModelCreating(builder);
 
+            // Employee ->
             builder.Entity<Employee>()
-                   .HasOne(x => x.User)
-                   .WithOne()
-                   .HasForeignKey<Employee>(x => x.UserId)
+                   .HasOne<User>()
+                   .WithOne(x => x.Employee)
+                   .HasForeignKey<Employee>(x => x.Id)
                    .IsRequired();
 
             builder.Entity<Employee>()
-                   .HasKey(x => x.UserId);
+                   .HasKey(x => x.Id);
+            // <- Employee
 
-            builder.Entity<Employee>()
-                   .Property(x => x.Id)
-                   .ValueGeneratedOnAdd();
-
-            builder.Entity<Employee>()
-                   .HasAlternateKey(x => x.Id);
-
+            // Doctor ->
             builder.Entity<Doctor>()
-                   .HasOne(x => x.User)
-                   .WithOne()
-                   .HasForeignKey<Doctor>(x => x.UserId)
+                   .HasOne<User>()
+                   .WithOne(x => x.Doctor)
+                   .HasForeignKey<Doctor>(x => x.Id)
                    .IsRequired();
 
             builder.Entity<Doctor>()
-                   .HasKey(x => x.UserId);
+                   .HasKey(x => x.Id);
+            // <- Doctor
 
-            builder.Entity<Doctor>()
-                   .Property(x => x.Id)
-                   .ValueGeneratedOnAdd();
+            // Patient ->
+            builder.Entity<Patient>()
+                   .HasOne<User>()
+                   .WithOne(x => x.Patient)
+                   .HasForeignKey<Patient>(x => x.Id)
+                   .IsRequired();
 
-            builder.Entity<Doctor>()
-                   .HasAlternateKey(x => x.Id);
-              }
+            builder.Entity<Patient>()
+                   .HasKey(x => x.Id);
+            // <- Patient
+        }
     }
 }

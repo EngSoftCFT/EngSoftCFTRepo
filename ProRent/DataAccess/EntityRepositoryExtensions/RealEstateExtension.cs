@@ -6,12 +6,13 @@ using Microsoft.EntityFrameworkCore;
 using ProRent.Domain.Filters;
 using ProRent.Domain.Models;
 using SDK.EntityRepository;
+using SDK.EntityRepository.Implementations;
 
 namespace ProRent.DataAccess.EntityRepositoryExtensions
 {
     public static class RealEstateExtension
     {
-        public static async Task<IEnumerable<RealEstate>> Filter(this IEntityRepository<RealEstate> repository,
+        public static async Task<IEnumerable<RealEstate>> Filter(this IEntityRepositoryLong<RealEstate> repository,
             RealEstateFilter filter)
         {
             var context = repository.GetContext().Set<RealEstate>();

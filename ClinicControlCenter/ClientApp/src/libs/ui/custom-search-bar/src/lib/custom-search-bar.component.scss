@@ -1,0 +1,92 @@
+.flex-parent {
+  flex-wrap: nowrap;
+
+  .flex-child {
+    .mat-form-field-wrapper {
+      margin-bottom: -1em;
+    }
+  }
+}
+
+.card-content {
+  height: auto;
+}
+
+.right-align {
+  text-align: right;
+}
+
+.mat-raised-button {
+  margin: 0.5em !important;
+}
+
+.icon-margin {
+  margin-right: 8px;
+}
+
+// Font Form-Field
+.mat-form-field {
+  font-size: 14px;
+}
+
+/* Card */
+.card {
+  &.searchbar-height {
+    height: 80px;
+  }
+
+  .card-content {
+    &.searchbar-height {
+      height: 42px;
+      overflow: hidden;
+    }
+  }
+}
+
+/* Card Horizontal*/
+.search-bar-card {
+  mat-form-field {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .element-padding {
+    padding: 0.5em;
+  }
+
+  .btns-form-field {
+    align-self: center;
+  }
+}
+
+.search-icons {
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.search-icons img {
+  width: 1.6rem;
+}
+
+.filter-card {
+  width: 20%;
+}
+
+.graph-card {
+  padding-left: 0.8%;
+  width: 80%;
+}
+/* Card END */
+
+.flex-parent {
+  display: flex;
+
+  &.no-wrap {
+    flex-wrap: nowrap;
+  }
+
+  .flex-child {
+    flex: 1;
+  }
+}

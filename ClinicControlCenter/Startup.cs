@@ -1,12 +1,16 @@
 using System;
-using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using ClinicControlCenter.Configuration;
 using ClinicControlCenter.Data;
 using ClinicControlCenter.Domain.Models;
 using ClinicControlCenter.Security;
+using IdentityServer4.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.EntityFrameworkCore;
@@ -15,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using SDK.EntityRepository;
+using SDK.Utils;
 
 namespace ClinicControlCenter
 {
@@ -30,7 +35,7 @@ namespace ClinicControlCenter
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
+            services.AddDbContext<DbContext, ApplicationDbContext>(options =>
                 {
                     var pgSqlConnection = Configuration.GetConnectionString("PQSqlConnection");
                     var msSqlConnection = Configuration.GetConnectionString("MSSqlConnection");
@@ -44,29 +49,45 @@ namespace ClinicControlCenter
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                    .AddEntityFrameworkStores<ApplicationDbContext>()
+            services.AddIdentity<User, IdentityRole>()
+                    .AddEntityFrameworkStores<DbContext>()
                     .AddDefaultUI()
                     .AddDefaultTokenProviders();
 
-            //services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
-            //        .AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddIdentityServer(options =>
+                    {
+                        options.Authentication.CookieLifetime          = TimeSpan.FromDays(30);
+                        options.Authentication.CookieSlidingExpiration = true;
+                    })
+                    .AddApiAuthorization<User, ApplicationDbContext>();
 
-            services.AddIdentityServer()
-                    .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
+            services.AddTransient<IProfileService, ProfileService>();
 
             services.AddAuthentication()
                     .AddIdentityServerJwt();
 
             services.AddAuthorization(SecurityConfig.GetPolicies);
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                    .AddJsonOptions(options =>
+                    {
+                        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+
+                        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                        options.JsonSerializerOptions.Converters.Add(
+                            new HandleSpecialDoublesAsStrings_NewtonsoftCompat());
+                    });
 
             services.AddCors(options => options
                 .AddDefaultPolicy(builder =>
                     builder.AllowAnyOrigin()
                            .AllowAnyHeader()
                            .AllowAnyMethod()));
+
+            services.AddMiniProfiler(options =>
+                        options.RouteBasePath = "/profiler"
+                    )
+                    .AddEntityFramework();
 
             services.AddSwaggerGen(options =>
             {
@@ -96,7 +117,14 @@ namespace ClinicControlCenter
             // In production, the Angular files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/dist"; });
 
-            services.AddScoped(typeof(EntityRepository<>));
+            AddDependencyInjectionServices(services);
+        }
+
+        private void AddDependencyInjectionServices(IServiceCollection services)
+        {
+            services.AddAutoMapper(typeof(AutoMapperProfile));
+
+            services.AddScoped(typeof(IEntityRepository<>), typeof(EntityRepository<>));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -123,6 +151,13 @@ namespace ClinicControlCenter
                 app.UseSpaStaticFiles();
             }
 
+            app.UseMiniProfiler();
+
+            app.UseSwagger();
+            var assembly = GetType().Assembly;
+            var swaggerResourceName = GetSwaggerResourceName(assembly);
+            app.UseSwaggerUI(c => { c.IndexStream = () => assembly.GetManifestResourceStream(swaggerResourceName); });
+
             app.UseRouting();
 
             app.UseAuthentication();
@@ -136,9 +171,6 @@ namespace ClinicControlCenter
                     pattern: "{controller}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
-
-            app.UseSwagger();
-            app.UseSwaggerUI();
 
             app.UseSpa(spa =>
             {
@@ -155,6 +187,18 @@ namespace ClinicControlCenter
 
             if (Configuration.GetValue("PermissionSystem:SetupSecurityAtStartup", false))
                 SecurityConfig.Setup(services).GetAwaiter().GetResult();
+        }
+
+        private static string GetSwaggerResourceName(Assembly assembly)
+        {
+            //Getting names of all embedded resources
+            var allResourceNames = assembly.GetManifestResourceNames();
+            //Selecting first one. 
+            var resourceName =
+                allResourceNames.FirstOrDefault(x =>
+                    x.Contains("swagger", StringComparison.InvariantCultureIgnoreCase));
+
+            return resourceName;
         }
     }
 }

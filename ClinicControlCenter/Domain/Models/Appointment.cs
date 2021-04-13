@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using SDK.EntityRepository.Entities;
+using SDK.EntityRepository.Implementations.Entities;
 
 namespace ClinicControlCenter.Domain.Models
 {
-    public class Appointment : Entity
+    public class Appointment : EntityLong
     {
         public DateTimeOffset Date { get; set; }
 
@@ -16,7 +13,7 @@ namespace ClinicControlCenter.Domain.Models
 
         public string Telephone { get; set; }
 
-        public long DoctorId { get; set; } //FK para Doctor
+        public string DoctorId { get; set; } //FK para Doctor
 
         public virtual Doctor Doctor { get; set; }
     }

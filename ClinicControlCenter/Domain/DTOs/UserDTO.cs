@@ -1,7 +1,17 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿namespace ClinicControlCenter.Domain.DTOs
+{
+    public class UserDTO
+    {
+        public string Password { get; set; }
 
-namespace ClinicControlCenter.Domain.Models {
-    public class ApplicationUser : IdentityUser {
+        #region IdentityBase
+
+        public string UserName { get; set; }
+
+        public string Email { get; set; }
+
+        #endregion
+
         public string FullName { get; set; }
 
         public string Telephone { get; set; }
@@ -15,6 +25,5 @@ namespace ClinicControlCenter.Domain.Models {
         public string City { get; set; }
 
         public string State { get; set; }
-
     }
 }

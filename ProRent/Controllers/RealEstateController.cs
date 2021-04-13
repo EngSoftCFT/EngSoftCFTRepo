@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using ProRent.DataAccess.EntityRepositoryExtensions;
 using ProRent.Domain.DTO;
 using ProRent.Domain.Enums;
+using SDK.EntityRepository.Implementations;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -19,9 +20,9 @@ namespace ProRent.Controllers
     [ApiController]
     public class RealEstateController : ControllerBase
     {
-        private readonly EntityRepository<RealEstate> _realEstateRepository;
+        private readonly EntityRepositoryLong<RealEstate> _realEstateRepository;
 
-        public RealEstateController(EntityRepository<RealEstate> realEstateRepository)
+        public RealEstateController(EntityRepositoryLong<RealEstate> realEstateRepository)
         {
             _realEstateRepository = realEstateRepository;
         }

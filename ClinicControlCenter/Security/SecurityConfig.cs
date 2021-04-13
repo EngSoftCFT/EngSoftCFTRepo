@@ -13,22 +13,51 @@ namespace ClinicControlCenter.Security
     public static class SecurityConfig
     {
         public const string ADMIN_ROLE = "ADMIN";
+        public const string MANAGER_ROLE = "MANAGER";
         public const string DOCTOR_ROLE = "DOCTOR";
+        public const string EMPLOYEE_ROLE = "EMPLOYEE";
+        public const string PATIENT_ROLE = "PATIENT";
         public const string USER_ROLE = "USER";
 
-        private static List<string> _roles = new List<string>()
+        // Smaller number means it is upper in the hierarchy
+        public static readonly Dictionary<string, int> ROLE_HIERARCHY = new Dictionary<string, int>()
         {
-            ADMIN_ROLE,
-            DOCTOR_ROLE,
-            USER_ROLE
+            { ADMIN_ROLE, 0 },
+            { MANAGER_ROLE, 1 },
+            { DOCTOR_ROLE, 2 },
+            { EMPLOYEE_ROLE, 3 },
+            { PATIENT_ROLE, 4 },
+            { USER_ROLE, 4 },
         };
+
+        public static readonly List<string> ROLES = ROLE_HIERARCHY.Keys.ToList();
+
+        public static bool HasPermission(IEnumerable<string> userRoles, string minimumRole)
+        {
+            var userPermissionLevel =
+                userRoles.Min(x => ROLE_HIERARCHY.TryGetValue(x, out var lvl) ? lvl : double.PositiveInfinity);
+
+            var minimumRolePermLevel =
+                ROLE_HIERARCHY.TryGetValue(minimumRole, out var lvl) ? lvl : double.PositiveInfinity;
+
+            return userPermissionLevel <= minimumRolePermLevel;
+        }
+
+        public static IEnumerable<string> GetParentRoles(string role)
+        {
+            if (string.IsNullOrEmpty(role) ||
+                !SecurityConfig.ROLE_HIERARCHY.TryGetValue(role, out var roleHierarchyLevel))
+                return ROLES;
+
+            var parentRoles = ROLE_HIERARCHY
+                              .Where(x => x.Value < roleHierarchyLevel)
+                              .Select(x => x.Key);
+            return parentRoles;
+        }
 
         public static void GetPolicies(AuthorizationOptions options)
         {
-            //options.AddPolicy(ADMIN_ROLE, opt => opt.RequireRole(ADMIN_ROLE));
-            //options.AddPolicy(DOCTOR_ROLE, opt => opt.RequireRole(ADMIN_ROLE, DOCTOR_ROLE));
-            //options.AddPolicy(USER_ROLE, opt => opt.RequireRole(ADMIN_ROLE, DOCTOR_ROLE, USER_ROLE));
-            options.AddPoliciesHierarchical(_roles.ToArray());
+            options.AddPoliciesHierarchical(ROLES.ToArray());
         }
 
         private static void AddPoliciesHierarchical(this AuthorizationOptions options, params string[] roles)
@@ -36,8 +65,8 @@ namespace ClinicControlCenter.Security
             for (var i = 0; i < roles.Length; i++)
             {
                 var currentRole = roles[i];
-                var parentRoles = roles.Take(i + 1).ToArray();
-                options.AddPolicy(currentRole, opt => opt.RequireRole(parentRoles));
+                var requiredRoles = GetParentRoles(currentRole).Append(currentRole);
+                options.AddPolicy(currentRole, opt => opt.RequireRole(requiredRoles));
             }
         }
 
@@ -46,7 +75,7 @@ namespace ClinicControlCenter.Security
             using var scope = services.CreateScope();
             var scopeServices = scope.ServiceProvider;
             var roleManager = scopeServices.GetRequiredService<RoleManager<IdentityRole>>();
-            var userManager = scopeServices.GetRequiredService<UserManager<ApplicationUser>>();
+            var userManager = scopeServices.GetRequiredService<UserManager<User>>();
 
             await SetupRoles(roleManager);
             await SetupDefaultAdmin(userManager);
@@ -55,7 +84,7 @@ namespace ClinicControlCenter.Security
         private static async Task SetupRoles<T>(RoleManager<T> roleManager)
             where T : IdentityRole, new()
         {
-            foreach (var role in _roles)
+            foreach (var role in ROLES)
                 await roleManager.AddRole(role);
         }
 

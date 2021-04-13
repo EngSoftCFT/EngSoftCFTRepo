@@ -3,9 +3,10 @@ using System.Collections.Generic;
 
 namespace SDK.EntityRepository.Entities
 {
-    public class EntityComparer : IEqualityComparer<Entity>
+    public class EntityComparer : IEqualityComparer<IEntityBase<IConvertible>>
     {
-        public bool Equals(Entity x, Entity y)
+#nullable enable
+        public bool Equals(IEntityBase<IConvertible>? x, IEntityBase<IConvertible>? y)
         {
             if (x == null && y == null)
                 return true;
@@ -13,10 +14,10 @@ namespace SDK.EntityRepository.Entities
             if (x == null || y == null)
                 return false;
 
-            return x?.Id == y?.Id;
+            return x.Id.Equals(y.Id);
         }
+#nullable restore
 
-        public int GetHashCode(Entity obj) => HashCode.Combine(obj.Id);
-        
+        public int GetHashCode(IEntityBase<IConvertible> obj) => HashCode.Combine(obj.Id);
     }
 }

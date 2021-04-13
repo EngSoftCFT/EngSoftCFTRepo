@@ -43,7 +43,87 @@ namespace ClinicControlCenter.Migrations
                     b.ToTable("AddressBase");
                 });
 
-            modelBuilder.Entity("ClinicControlCenter.Domain.Models.ApplicationUser", b =>
+            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Appointment", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+
+                    b.Property<DateTimeOffset>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DoctorId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Telephone")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DoctorId");
+
+                    b.ToTable("Schedule");
+                });
+
+            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Doctor", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CRM")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Specialty")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Doctors");
+                });
+
+            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Employee", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<DateTimeOffset>("ContractDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<decimal>("Salary")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Employees");
+                });
+
+            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Patient", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("BloodType")
+                        .HasColumnType("text");
+
+                    b.Property<double>("Height")
+                        .HasColumnType("double precision");
+
+                    b.Property<double>("Weight")
+                        .HasColumnType("double precision");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Patients");
+                });
+
+            modelBuilder.Entity("ClinicControlCenter.Domain.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("text");
@@ -70,6 +150,9 @@ namespace ClinicControlCenter.Migrations
 
                     b.Property<string>("FullName")
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsManager")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("boolean");
@@ -126,114 +209,6 @@ namespace ClinicControlCenter.Migrations
                         .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Appointment", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<DateTimeOffset>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("DoctorId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("DoctorUserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Telephone")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DoctorUserId");
-
-                    b.ToTable("Schedule");
-                });
-
-            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Doctor", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CRM")
-                        .HasColumnType("text");
-
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("Specialty")
-                        .HasColumnType("text");
-
-                    b.HasKey("UserId");
-
-                    b.HasAlternateKey("Id");
-
-                    b.ToTable("Doctors");
-                });
-
-            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Employee", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
-                    b.Property<DateTimeOffset>("ContractDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<decimal>("Salary")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("UserId");
-
-                    b.HasAlternateKey("Id");
-
-                    b.ToTable("Employees");
-                });
-
-            modelBuilder.Entity("ClinicControlCenter.Domain.Models.Patient", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
-
-                    b.Property<string>("BloodType")
-                        .HasColumnType("text");
-
-                    b.Property<double>("Height")
-                        .HasColumnType("double precision");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("UserId1")
-                        .HasColumnType("text");
-
-                    b.Property<double>("Weight")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId1");
-
-                    b.ToTable("Patients");
                 });
 
             modelBuilder.Entity("IdentityServer4.EntityFramework.Entities.DeviceFlowCodes", b =>
@@ -473,42 +448,36 @@ namespace ClinicControlCenter.Migrations
                 {
                     b.HasOne("ClinicControlCenter.Domain.Models.Doctor", "Doctor")
                         .WithMany()
-                        .HasForeignKey("DoctorUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DoctorId");
 
                     b.Navigation("Doctor");
                 });
 
             modelBuilder.Entity("ClinicControlCenter.Domain.Models.Doctor", b =>
                 {
-                    b.HasOne("ClinicControlCenter.Domain.Models.ApplicationUser", "User")
-                        .WithOne()
-                        .HasForeignKey("ClinicControlCenter.Domain.Models.Doctor", "UserId")
+                    b.HasOne("ClinicControlCenter.Domain.Models.User", null)
+                        .WithOne("Doctor")
+                        .HasForeignKey("ClinicControlCenter.Domain.Models.Doctor", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ClinicControlCenter.Domain.Models.Employee", b =>
                 {
-                    b.HasOne("ClinicControlCenter.Domain.Models.ApplicationUser", "User")
-                        .WithOne()
-                        .HasForeignKey("ClinicControlCenter.Domain.Models.Employee", "UserId")
+                    b.HasOne("ClinicControlCenter.Domain.Models.User", null)
+                        .WithOne("Employee")
+                        .HasForeignKey("ClinicControlCenter.Domain.Models.Employee", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ClinicControlCenter.Domain.Models.Patient", b =>
                 {
-                    b.HasOne("ClinicControlCenter.Domain.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId1");
-
-                    b.Navigation("User");
+                    b.HasOne("ClinicControlCenter.Domain.Models.User", null)
+                        .WithOne("Patient")
+                        .HasForeignKey("ClinicControlCenter.Domain.Models.Patient", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -522,7 +491,7 @@ namespace ClinicControlCenter.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("ClinicControlCenter.Domain.Models.ApplicationUser", null)
+                    b.HasOne("ClinicControlCenter.Domain.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -531,7 +500,7 @@ namespace ClinicControlCenter.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("ClinicControlCenter.Domain.Models.ApplicationUser", null)
+                    b.HasOne("ClinicControlCenter.Domain.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -546,7 +515,7 @@ namespace ClinicControlCenter.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ClinicControlCenter.Domain.Models.ApplicationUser", null)
+                    b.HasOne("ClinicControlCenter.Domain.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -555,11 +524,20 @@ namespace ClinicControlCenter.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("ClinicControlCenter.Domain.Models.ApplicationUser", null)
+                    b.HasOne("ClinicControlCenter.Domain.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ClinicControlCenter.Domain.Models.User", b =>
+                {
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("Patient");
                 });
 #pragma warning restore 612, 618
         }

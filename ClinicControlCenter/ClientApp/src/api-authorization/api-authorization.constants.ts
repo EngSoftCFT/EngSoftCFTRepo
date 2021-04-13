@@ -12,9 +12,10 @@ export function securityUrl(url: string) {
 export function applicationName() {
   let appName = APPLICATION_NAME;
 
-  if (!isNullOrUndefined(SECURITY_URL) && SECURITY_URL.length > 0) {
-    appName += "External";
+  if (!isNullOrUndefined(SECURITY_URL)) {
+    if (SECURITY_URL !== window.origin) appName += "External";
   }
+
   return appName;
 }
 
@@ -42,8 +43,7 @@ export const LoginActions = {
 };
 
 let applicationPaths: ApplicationPathsType = {
-  DefaultLoginRedirectPath: `${window.location.origin}/`,
-  // DefaultLoginRedirectPath: `/`,
+  DefaultLoginRedirectPath: `/`,
   ApiAuthorizationClientConfigurationUrl: `_configuration/${ApplicationName}`,
   Login: `authentication/${LoginActions.Login}`,
   LoginFailed: `authentication/${LoginActions.LoginFailed}`,

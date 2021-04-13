@@ -1,0 +1,125 @@
+<div class="card searchbar-height hoverable">
+  <div class="search-bar-card flex-parent card-content searchbar-height" (keydown.enter)="search()">
+    <div *ngFor="let field of definition?.fields" class="flex-child flex-parent searchbar-height">
+      <!-- TEXT FIELD -->
+      <mat-form-field *ngIf="isTextField(field)" class="flex-child element-padding">
+        <mat-label>{{ field.name }}</mat-label>
+        <input
+          matInput
+          [ngModel]="filterObj[field.filterName]"
+          (ngModelChange)="filterObj[field.filterName] = field.filterValue($event)"
+        />
+      </mat-form-field>
+      <!-- TEXT FIELD END -->
+
+      <!-- VALUE FIELD -->
+      <mat-form-field *ngIf="isNumberField(field)" class="flex-child element-padding">
+        <mat-label>{{ field.name }}</mat-label>
+        <input
+          matInput
+          type="number"
+          min="{{ field.floor }}"
+          max="{{ field.ceil }}"
+          [ngModel]="filterObj[field.filterName]"
+          (ngModelChange)="setNumberFieldFilter($event, field)"
+        />
+      </mat-form-field>
+      <!-- VALUE FIELD END -->
+
+      <!-- SELECT FIELD -->
+      <mat-form-field *ngIf="isSelectField(field)" class="flex-child element-padding">
+        <mat-label>{{ field.name }}</mat-label>
+        <mat-select
+          [ngModel]="filterObj[field.filterName]"
+          (ngModelChange)="filterObj[field.filterName] = field.filterValue($event)"
+          name="field.name"
+        >
+          <mat-option *ngFor="let option of field.options" [value]="field.filterValue(option)">
+            {{ field.optionsDisplayName(option) }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <!-- SELECT FIELD END -->
+
+      <!-- MULTI-SELECT FIELD -->
+      <mat-form-field *ngIf="isMultSelectField(field)" class="flex-child element-padding">
+        <mat-label>{{ field.name }}</mat-label>
+        <mat-select
+          [ngModel]="filterObj[field.filterName]"
+          (ngModelChange)="filterObj[field.filterName] = field.filterValue($event)"
+          name="field.name"
+          multiple
+        >
+          <mat-option *ngFor="let option of field.options" [value]="field.filterValue(option)">
+            {{ field.optionsDisplayName(option) }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <!-- MULTI-SELECT FIELD END -->
+
+      <!-- DATE RANGE FIELD -->
+      <!-- TODO: Update Datetime Range Field to Material library -->
+      <!-- <div *ngIf="isDateRangeField(field)" class="flex-child flex-parent element-padding">
+        <mat-form-field class="flex-child">
+          <mat-label>{{ field.name }}</mat-label>
+          <input
+            matInput
+            required
+            [ngModel]="filterObj[field.filterName]"
+            (ngModelChange)="filterObj[field.filterName] = field.filterValue($event)"
+            [owlDateTimeTrigger]="dt12"
+            [owlDateTime]="dt12"
+            [selectMode]="'range'"
+        /></mat-form-field>
+        <owl-date-time #dt12></owl-date-time>
+      </div> -->
+      <!-- DATE RANGE FIELD END -->
+
+      <!-- VALUE RANGE FIELD -->
+      <!-- TODO: Update Slider Range Field to Material library -->
+      <!-- <div *ngIf="isValueRangeField(field)" class="flex-child flex-parent element-padding">
+        <ng5-slider
+          [value]="filterObj[field.filterName]"
+          (valueChange)="filterObj[field.filterName] = field.filterValue($event)"
+          [options]="getNg5SliderOptions(field)"
+        ></ng5-slider>
+      </div> -->
+      <!-- VALUE RANGE FIELD END -->
+    </div>
+
+    <div class="btns-form-field">
+      <button
+        *ngIf="!definition?.addButtonHidden"
+        mat-icon-button
+        (click)="add()"
+        color="primary"
+        class="search-icons"
+        [matTooltip]="definition?.addButtonTooltip"
+      >
+        <mat-icon svgIcon="add"></mat-icon>
+      </button>
+
+      <button
+        *ngIf="!definition?.clearButtonHidden"
+        mat-icon-button
+        (click)="clear()"
+        color="primary"
+        class="search-icons"
+        [matTooltip]="definition?.clearButtonTooltip"
+      >
+        <mat-icon svgIcon="eraser"></mat-icon>
+      </button>
+
+      <button
+        *ngIf="!definition?.searchButtonHidden"
+        mat-icon-button
+        (click)="search()"
+        color="primary"
+        class="search-icons"
+        [matTooltip]="definition?.searchButtonTooltip"
+      >
+        <mat-icon svgIcon="search"></mat-icon>
+      </button>
+    </div>
+  </div>
+</div>
