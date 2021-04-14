@@ -2,8 +2,6 @@
 {
     public class UserDTO
     {
-        public string Password { get; set; }
-
         #region IdentityBase
 
         public string UserName { get; set; }
@@ -25,5 +23,11 @@
         public string City { get; set; }
 
         public string State { get; set; }
+
+        #region Optional
+        public string Password { get; set; }
+
+        #endregion
+
     }
 }

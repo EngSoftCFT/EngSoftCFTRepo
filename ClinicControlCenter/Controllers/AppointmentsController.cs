@@ -10,6 +10,7 @@ using ClinicControlCenter.Domain.DTOs;
 using ClinicControlCenter.Domain.Models;
 using ClinicControlCenter.Domain.ViewModels;
 using ClinicControlCenter.Security;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using SDK.EntityRepository;
 using SDK.EntityRepository.Modules.AutoMapper;
@@ -40,6 +41,9 @@ namespace ClinicControlCenter.Controllers
         public async Task<ActionResult<PaginationResult<AppointmentViewModel>>> Get([FromQuery] PaginationFilter filter)
         {
             var email = HttpContext.User.FindFirst(ClaimTypes.Email);
+
+            if (email == null)
+                return NoContent();
 
             var user = await _userManager.FindByEmailAsync(email.Value);
             var userRoles = await _userManager.GetRolesAsync(user);
@@ -72,7 +76,7 @@ namespace ClinicControlCenter.Controllers
             foreach (var item in paginatedValues.Items)
                 item.User = userViewModel;
 
-            return paginatedValues;
+            return  Ok(paginatedValues);
         }
 
         // TODO: Everything

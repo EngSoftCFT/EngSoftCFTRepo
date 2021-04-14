@@ -49,7 +49,15 @@ namespace ClinicControlCenter
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>(options =>
+                    {
+                        //Password Validator
+                        options.Password.RequireDigit           = false;
+                        options.Password.RequiredLength         = 5;
+                        options.Password.RequireUppercase       = false;
+                        options.Password.RequireLowercase       = false;
+                        options.Password.RequireNonAlphanumeric = false;
+                    })
                     .AddEntityFrameworkStores<DbContext>()
                     .AddDefaultUI()
                     .AddDefaultTokenProviders();

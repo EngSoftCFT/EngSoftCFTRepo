@@ -20,21 +20,18 @@
     <!-- ROLE SELECT END -->
     <!-- PATIENT SWITCH -->
     <div *ngIf="data.showPatientSwitch">
-      <mat-form-field appearance="outline">
-        <mat-label> Is Patient</mat-label>
-        <mat-slide-toggle
-          [disabled]="!enableEdition"
-          [(ngModel)]="modalObj.isPatient"
-        >
-          Is Patient
-        </mat-slide-toggle>
-        <mat-hint>Is Patient</mat-hint>
-      </mat-form-field>
+      <mat-slide-toggle
+        [disabled]="!enableEdition"
+        [(ngModel)]="modalObj.isPatient"
+        color="primary"
+      >
+        Is Patient
+      </mat-slide-toggle>
     </div>
     <!-- PATIENT SWITCH END -->
 
     <!-- PATIENT -->
-    <div *ngIf="showPatientProperties">
+    <div *ngIf="showPatientProperties && data?.modalObj?.isPatient">
       <!-- Weight -->
       <mat-form-field appearance="outline">
         <mat-label>Weight</mat-label>

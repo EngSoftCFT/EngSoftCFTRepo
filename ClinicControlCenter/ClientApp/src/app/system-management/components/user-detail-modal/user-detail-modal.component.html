@@ -1,0 +1,148 @@
+<div class="mat-dialog-header">
+  <h1 mat-dialog-title>{{ title }}</h1>
+  <button (click)="close()">X</button>
+</div>
+
+<mat-dialog-content>
+  <div class="user-modal-content">
+    <!-- USER DETAILS -->
+    <div>
+      <!-- E-Mail -->
+      <mat-form-field appearance="outline">
+        <mat-label>E-Mail</mat-label>
+        <input
+          [disabled]="!enableEdition"
+          matInput
+          placeholder="E-Mail"
+          type="email"
+          autocomplete="email"
+          aria-label="E-Mail"
+          [(ngModel)]="modalObj.Email"
+        />
+        <!-- TODO: Change Icon color according to validation -->
+        <mat-icon matSuffix style="color: green">done_outline</mat-icon>
+        <mat-hint>E-Mail</mat-hint>
+      </mat-form-field>
+      <!-- Full Name -->
+      <mat-form-field appearance="outline">
+        <mat-label>Full Name</mat-label>
+        <input
+          [disabled]="!enableEdition"
+          matInput
+          placeholder="name"
+          type="text"
+          autocomplete="name"
+          aria-label="name"
+          [(ngModel)]="modalObj.FullName"
+        />
+        <mat-hint>Full Name</mat-hint>
+      </mat-form-field>
+      <!-- Full Name -->
+      <mat-form-field appearance="outline">
+        <mat-label>Telephone</mat-label>
+        <input
+          [disabled]="!enableEdition"
+          matInput
+          placeholder="Telephone"
+          type="text"
+          autocomplete="tel"
+          aria-label="Telephone"
+          [(ngModel)]="modalObj.Telephone"
+        />
+        <mat-hint>Telephone</mat-hint>
+      </mat-form-field>
+      <!-- CEP -->
+      <mat-form-field appearance="outline">
+        <mat-label>CEP</mat-label>
+        <input
+          [disabled]="!enableEdition"
+          matInput
+          placeholder="CEP"
+          type="text"
+          autocomplete="postal-code"
+          aria-label="CEP"
+          [(ngModel)]="modalObj.CEP"
+        />
+        <mat-hint>CEP</mat-hint>
+      </mat-form-field>
+      <!-- Street -->
+      <mat-form-field appearance="outline">
+        <mat-label>Street</mat-label>
+        <input
+          [disabled]="!enableEdition"
+          matInput
+          placeholder="Street"
+          type="text"
+          autocomplete="street-address"
+          aria-label="Street"
+          [(ngModel)]="modalObj.Street"
+        />
+        <mat-hint>Street</mat-hint>
+      </mat-form-field>
+      <!-- Neighborhood -->
+      <mat-form-field appearance="outline">
+        <mat-label>Neighborhood</mat-label>
+        <input
+          [disabled]="!enableEdition"
+          matInput
+          placeholder="Neighborhood"
+          type="text"
+          autocomplete="address-level3"
+          aria-label="Neighborhood"
+          [(ngModel)]="modalObj.Neighborhood"
+        />
+        <mat-hint>Neighborhood</mat-hint>
+      </mat-form-field>
+      <!-- City -->
+      <mat-form-field appearance="outline">
+        <mat-label>City</mat-label>
+        <input
+          [disabled]="!enableEdition"
+          matInput
+          placeholder="Neighborhood"
+          type="text"
+          autocomplete="address-level2"
+          aria-label="City"
+          [(ngModel)]="modalObj.City"
+        />
+        <mat-hint>City</mat-hint>
+      </mat-form-field>
+      <!-- State -->
+      <mat-form-field appearance="outline">
+        <mat-label>State</mat-label>
+        <input
+          [disabled]="!enableEdition"
+          matInput
+          placeholder="State"
+          type="text"
+          autocomplete="address-level1"
+          aria-label="State"
+          [(ngModel)]="modalObj.State"
+        />
+        <mat-hint>State</mat-hint>
+      </mat-form-field>
+      <!-- Password -->
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input
+          [disabled]="!enableEdition"
+          matInput
+          placeholder="Password"
+          type="password"
+          autocomplete="new-password"
+          aria-label="Password"
+          [(ngModel)]="modalObj.Password"
+        />
+        <mat-hint>Password</mat-hint>
+      </mat-form-field>
+    </div>
+    <!-- USER DETAILS END -->
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" *ngIf="enableEdition">
+  <button class="mat-raised-button" (click)="close()">Cancel</button>
+  <button class="mat-raised-button mat-primary" (click)="confirm()">
+    Confirm
+  </button>
+</mat-dialog-actions>
