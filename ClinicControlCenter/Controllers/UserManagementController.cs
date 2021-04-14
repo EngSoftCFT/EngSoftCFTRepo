@@ -103,17 +103,26 @@ namespace ClinicControlCenter.Controllers
         }
 
         [HttpPost("new-user")]
-        public async Task<User> NewUser([FromBody] UserDTO userDto)
+        public async Task<ActionResult<User>> NewUser([FromBody] UserDTO userDto)
         {
             var user = _mapper.Map<User>(userDto);
+            user.Email = user.Email.Trim();
+            user.UserName = user.Email;
+            IdentityResult result = null;
             if (!string.IsNullOrWhiteSpace(userDto.Password))
             {
-                var result =await _userManager.CreateAsync(user, userDto.Password);
+                result = await _userManager.CreateAsync(user, userDto.Password);
             }
             else
             {
-                var result = await _userManager.CreateAsync(user);
+                result = await _userManager.CreateAsync(user);
             }
+
+            if (result == null)
+                return null;
+
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
 
             return user;
         }

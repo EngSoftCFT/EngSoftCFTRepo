@@ -53,7 +53,7 @@ namespace ClinicControlCenter
                     {
                         //Password Validator
                         options.Password.RequireDigit           = false;
-                        options.Password.RequiredLength         = 5;
+                        options.Password.RequiredLength         = 3;
                         options.Password.RequireUppercase       = false;
                         options.Password.RequireLowercase       = false;
                         options.Password.RequireNonAlphanumeric = false;

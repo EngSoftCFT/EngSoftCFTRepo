@@ -191,7 +191,7 @@ export class UserManagementComponent implements OnInit {
     if (!isNullOrUndefined(roleUpdatePath))
       this.api.put(element.Id, element, roleUpdatePath).subscribe((result) => {
         this.snackBar.open("Roles Updated", "X", {
-          duration: 500,
+          duration: 1000,
           horizontalPosition: "right",
           verticalPosition: "top",
         });
@@ -217,7 +217,7 @@ export class UserManagementComponent implements OnInit {
               `User ${result.FullName ?? result.Email} added`,
               "X",
               {
-                duration: 500,
+                duration: 1000,
                 horizontalPosition: "right",
                 verticalPosition: "top",
               }
