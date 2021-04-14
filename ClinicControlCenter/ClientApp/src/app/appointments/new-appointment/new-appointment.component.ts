@@ -162,7 +162,10 @@ export class NewAppointmentComponent implements OnInit {
   }
 
   doctorAutoCompleteDisplay(doctor: IAutoCompleteDoctorViewModel): string {
-    return doctor?.Name ? doctor.Name : "";
+    if (isNullOrUndefined(doctor)) return "";
+    return `${doctor?.Name ? doctor.Name : ""} - (${
+      doctor?.Specialty ? doctor.Specialty : ""
+    })`;
   }
 
   appointmentTimesFilter(date: string): IAppointmentTimeViewModel[] {
@@ -231,16 +234,19 @@ export class NewAppointmentComponent implements OnInit {
       isNullOrUndefined(this.appointmentDto.DoctorId)
     )
       this.api.post<Appointment>(this.appointmentDto).subscribe((result) => {
-        if (result != null)
+        if (result != null) {
           this.snackBar.open("Appointment Created", "X", {
-            duration: 1000,
+            duration: 5000,
             horizontalPosition: "right",
             verticalPosition: "top",
           });
+          this.appointmentDto = new Appointment();
+          this.formGroup.reset();
+        }
       });
     else {
       this.snackBar.open("Fields Missing", "X", {
-        duration: 1000,
+        duration: 5000,
         horizontalPosition: "right",
         verticalPosition: "top",
       });

@@ -155,7 +155,7 @@ export class PatientsComponent implements OnInit {
 
       this.api.put(element.Id, element, roleUpdatePath).subscribe((result) => {
         this.snackBar.open("Roles Updated", "X", {
-          duration: 500,
+          duration: 1000,
           horizontalPosition: "right",
           verticalPosition: "top",
         });
