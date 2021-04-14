@@ -1,11 +1,20 @@
-import { isNullOrUndefined, isString } from "src/libs/util/utils/src";
+import {
+  IsArrayWithValues,
+  isNullOrUndefined,
+  isString,
+} from "src/libs/util/utils/src";
 import { Appointment } from "./../../../libs/domain/models/appointment/Appointment.model";
-import { IDoctorViewModel } from "../../../libs/domain/models/user/DoctorViewModel.model";
+import { IAutoCompleteDoctorViewModel } from "../../../libs/domain/models/user/AutoCompleteDoctorViewModel.model";
 import { merge, Observable, Subject, Subscriber } from "rxjs";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup } from "@angular/forms";
 import { map, startWith } from "rxjs/operators";
 import { IAppointmentTimeViewModel } from "src/libs/domain/models/appointment/AppointmentTimes.model";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { BaseApiService } from "src/libs/util/base-api/src";
+import { UserFilter } from "src/app/system-management/models/UserFilter";
+import { USER_ROLES } from "src/libs/util/user-controller/src";
+import { IUserViewModel } from "src/app/system-management/models/UserViewModel.model";
 
 // TODO: Remove this mock and add proper api callback
 const doctorOptionsMock = [...Array(30).keys()].map((i) => {
@@ -14,31 +23,32 @@ const doctorOptionsMock = [...Array(30).keys()].map((i) => {
     Name: `Doctor${i}`,
     Id: `Doctor${i}Id`,
     Specialty: `Doctor${i}Specialty`,
-  } as IDoctorViewModel;
+  } as IAutoCompleteDoctorViewModel;
 });
 
-const appointmentTimesMock: IAppointmentTimeViewModel[] = [
-  {
-    DoctorId: "Doctor1Id",
-    AppointmentTime: "2021-04-11T13:00:00Z",
-    IsAvailable: true,
-  },
-  {
-    DoctorId: "Doctor1Id",
-    AppointmentTime: "2021-04-11T14:00:00Z",
-    IsAvailable: true,
-  },
-  {
-    DoctorId: "Doctor1Id",
-    AppointmentTime: "2020-01-01T15:00:00Z",
-    IsAvailable: true,
-  },
-  {
-    DoctorId: "Doctor1Id",
-    AppointmentTime: "2020-01-01T16:00:00Z",
-    IsAvailable: true,
-  },
-];
+function generateAppointmentsTimeMock(
+  doctorId: string,
+  date: Date
+): IAppointmentTimeViewModel[] {
+  const dateISOString = date.toISOString();
+  const indexOfT = dateISOString.indexOf("T");
+  const dateOnlyString = dateISOString.substring(0, indexOfT);
+
+  const mockAppointmentTimes: IAppointmentTimeViewModel[] = [];
+
+  for (let i = 8; i <= 17; i++) {
+    const hourString = i.toLocaleString(navigator.language, {
+      minimumIntegerDigits: 2,
+    });
+    mockAppointmentTimes.push({
+      DoctorId: doctorId,
+      AppointmentTime: `${dateOnlyString}T${hourString}:00:00`,
+      IsAvailable: true,
+    });
+  }
+
+  return mockAppointmentTimes;
+}
 
 @Component({
   templateUrl: "./new-appointment.component.html",
@@ -50,13 +60,20 @@ export class NewAppointmentComponent implements OnInit {
   appointmentDateFormControl: FormControl = new FormControl(new Date());
   appointmentTimeFormControl: FormControl = new FormControl();
 
-  doctorOptions: Observable<IDoctorViewModel[]>;
+  baseDoctorOptions: IAutoCompleteDoctorViewModel[] = [];
+  doctorOptions: Observable<IAutoCompleteDoctorViewModel[]>;
   appointmentTimeOptions: Observable<IAppointmentTimeViewModel[]>;
   appointmentTimeSubject: Subject<Date>;
 
   appointmentDto: Appointment;
 
-  constructor(formBuilder: FormBuilder) {
+  constructor(
+    formBuilder: FormBuilder,
+    private api: BaseApiService,
+    private snackBar: MatSnackBar
+  ) {
+    api.setRequestPath("/api/Appointments");
+
     this.appointmentDto = new Appointment();
 
     this.appointmentTimeSubject = new Subject();
@@ -66,10 +83,14 @@ export class NewAppointmentComponent implements OnInit {
       appointmentDateFormControl: this.appointmentDateFormControl,
       appointmentTimeFormControl: this.appointmentTimeFormControl,
     });
+  }
+
+  async ngOnInit() {
+    const doctorData = await this.getDoctorAutoCompleteData();
 
     this.doctorOptions = this.doctorInputFormControl.valueChanges.pipe(
       startWith(""),
-      map((value) => this.doctorAutoCompleteFilter(value))
+      map((value) => this.doctorAutoCompleteFilter(value, doctorData))
     );
 
     this.appointmentTimeOptions = merge(
@@ -81,30 +102,66 @@ export class NewAppointmentComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  async getDoctorAutoCompleteData() {
+    if (IsArrayWithValues(this.baseDoctorOptions))
+      return this.baseDoctorOptions;
+
+    const showOnlyDoctorFilter = new UserFilter({
+      UserTypes: [USER_ROLES.DOCTOR_ROLE],
+    });
+
+    let userData: IUserViewModel[] = [];
+
+    try {
+      const result = await this.api
+        .getPaginated<IUserViewModel>(
+          showOnlyDoctorFilter,
+          "/api/UserManagement"
+        )
+        .toPromise();
+      userData = result.Items ?? [];
+    } catch (error) {
+      console.error(error);
+    }
+
+    const doctors: IAutoCompleteDoctorViewModel[] = userData
+      .filter((x) => x.IsDoctor)
+      .map((x) => {
+        return {
+          Id: x.Id,
+          Name: x.FullName ?? x.Email,
+          Specialty: x.Doctor?.Specialty,
+          CRM: x.Doctor?.CRM,
+        };
+      });
+    this.baseDoctorOptions = doctors;
+    return this.baseDoctorOptions;
+  }
 
   doctorAutoCompleteFilter(
-    input: string | IDoctorViewModel
-  ): IDoctorViewModel[] {
-    if ((input as IDoctorViewModel)?.Id) return [input as IDoctorViewModel];
+    input: string | IAutoCompleteDoctorViewModel,
+    doctorsData: IAutoCompleteDoctorViewModel[]
+  ): IAutoCompleteDoctorViewModel[] {
+    if ((input as IAutoCompleteDoctorViewModel)?.Id)
+      return [input as IAutoCompleteDoctorViewModel];
 
     if (!isString(input)) return [];
 
     const value = input as string;
     const filterValue = value.toLowerCase();
 
-    return doctorOptionsMock.filter((doctor) => {
-      const doctorName = doctor.Name.toLowerCase();
-      const doctorSpecialty = doctor.Specialty.toLowerCase();
+    return doctorsData.filter((doctor) => {
+      const doctorName = doctor.Name?.toLowerCase();
+      const doctorSpecialty = doctor.Specialty?.toLowerCase();
 
       if (doctorName.includes(filterValue)) return true;
-      if (doctorSpecialty.includes(filterValue)) return true;
+      if (doctorSpecialty?.includes(filterValue)) return true;
 
       return false;
     });
   }
 
-  doctorAutoCompleteDisplay(doctor: IDoctorViewModel): string {
+  doctorAutoCompleteDisplay(doctor: IAutoCompleteDoctorViewModel): string {
     return doctor?.Name ? doctor.Name : "";
   }
 
@@ -119,24 +176,28 @@ export class NewAppointmentComponent implements OnInit {
     const selectedMonth = selectedDate.getMonth();
     const selectedDay = selectedDate.getDate();
 
-    return appointmentTimesMock.filter((availableTimes) => {
-      if (
-        availableTimes.DoctorId !== doctorId ||
-        availableTimes.IsAvailable === false
-      )
-        return false;
+    const availableTimes = generateAppointmentsTimeMock(doctorId, selectedDate);
+    console.log(availableTimes);
+    return availableTimes;
+    // Proper Result;
+    // return appointmentTimesMock.filter((availableTimes) => {
+    //   if (
+    //     availableTimes.DoctorId !== doctorId ||
+    //     availableTimes.IsAvailable === false
+    //   )
+    //     return false;
 
-      const availableTimeDate = new Date(availableTimes.AppointmentTime);
-      const availableTimeYear = availableTimeDate.getFullYear();
-      const availableTimeMonth = availableTimeDate.getMonth();
-      const availableTimeDay = availableTimeDate.getDate();
+    //   const availableTimeDate = new Date(availableTimes.AppointmentTime);
+    //   const availableTimeYear = availableTimeDate.getFullYear();
+    //   const availableTimeMonth = availableTimeDate.getMonth();
+    //   const availableTimeDay = availableTimeDate.getDate();
 
-      return (
-        availableTimeYear === selectedYear &&
-        availableTimeMonth === selectedMonth &&
-        availableTimeDay === selectedDay
-      );
-    });
+    //   return (
+    //     availableTimeYear === selectedYear &&
+    //     availableTimeMonth === selectedMonth &&
+    //     availableTimeDay === selectedDay
+    //   );
+    // });
   }
 
   appointmentTimesDisplay(appointment: IAppointmentTimeViewModel): string {
@@ -145,7 +206,7 @@ export class NewAppointmentComponent implements OnInit {
     return display;
   }
 
-  setDtoDoctorId(doctor: IDoctorViewModel) {
+  setDtoDoctorId(doctor: IAutoCompleteDoctorViewModel) {
     this.appointmentDto.DoctorId = doctor.Id;
     this.appointmentTimeSubject.next(new Date());
   }
@@ -163,6 +224,26 @@ export class NewAppointmentComponent implements OnInit {
   }
 
   submit() {
-
+    if (
+      isNullOrUndefined(this.appointmentDto.Date) ||
+      isNullOrUndefined(this.appointmentDto.Name) ||
+      isNullOrUndefined(this.appointmentDto.Email) ||
+      isNullOrUndefined(this.appointmentDto.DoctorId)
+    )
+      this.api.post<Appointment>(this.appointmentDto).subscribe((result) => {
+        if (result != null)
+          this.snackBar.open("Appointment Created", "X", {
+            duration: 1000,
+            horizontalPosition: "right",
+            verticalPosition: "top",
+          });
+      });
+    else {
+      this.snackBar.open("Fields Missing", "X", {
+        duration: 1000,
+        horizontalPosition: "right",
+        verticalPosition: "top",
+      });
+    }
   }
 }

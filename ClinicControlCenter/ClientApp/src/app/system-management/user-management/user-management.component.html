@@ -4,7 +4,7 @@
     [filter]="apiFilter"
     (searchEvent)="refreshData()"
     (clearEvent)="refreshData()"
-    (addEvent)="refreshData()"
+    (addEvent)="userAdd()"
   ></custom-search-bar>
   <custom-table
     [tableDefinition]="tableDefinition"

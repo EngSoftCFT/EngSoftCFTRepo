@@ -1,8 +1,6 @@
-﻿using SDK.EntityRepository.Implementations.Entities;
-
-namespace ClinicControlCenter.Domain.Models
+﻿namespace ClinicControlCenter.Domain.ViewModels
 {
-    public class Address : EntityLong
+    public class AddressViewModel
     {
         public string CEP { get; set; }
 
@@ -11,6 +9,5 @@ namespace ClinicControlCenter.Domain.Models
         public string City { get; set; }
 
         public string State { get; set; }
-
     }
 }

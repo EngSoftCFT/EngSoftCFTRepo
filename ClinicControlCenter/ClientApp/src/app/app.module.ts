@@ -24,6 +24,7 @@ import { NewAppointmentComponent } from "./appointments/new-appointment/new-appo
 import { ListAppointmentsComponent } from "./appointments/list-appointments/list-appointments.component";
 import { CustomSearchBarModule } from "src/libs/ui/custom-search-bar/src";
 import { UserModalComponent } from './system-management/components/user-modal/user-modal.component';
+import { UserDetailModalComponent } from "./system-management/components/user-detail-modal/user-detail-modal.component";
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { UserModalComponent } from './system-management/components/user-modal/us
     NewAppointmentComponent,
     ListAppointmentsComponent,
     UserModalComponent,
+    UserDetailModalComponent,
   ],
   imports: [
     CommonModule,
@@ -53,7 +55,7 @@ import { UserModalComponent } from './system-management/components/user-modal/us
     FeaHeaderModule,
     FeaMenuModule,
     CustomTableModule,
-    CustomSearchBarModule
+    CustomSearchBarModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },

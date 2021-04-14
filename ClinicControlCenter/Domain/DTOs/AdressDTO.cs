@@ -1,9 +1,5 @@
-﻿using SDK.EntityRepository.Implementations.Entities;
-
-namespace ClinicControlCenter.Domain.Models
-{
-    public class Address : EntityLong
-    {
+﻿namespace ClinicControlCenter.Domain.DTOs {
+    public class AddressDTO {
         public string CEP { get; set; }
 
         public string Street { get; set; }
@@ -11,6 +7,5 @@ namespace ClinicControlCenter.Domain.Models
         public string City { get; set; }
 
         public string State { get; set; }
-
     }
 }

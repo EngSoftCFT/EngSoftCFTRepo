@@ -25,6 +25,9 @@ namespace ClinicControlCenter.Configuration
 
             CreateMap<Appointment, AppointmentViewModel>();
             CreateMap<NewAppointmentDTO, Appointment>();
+
+            CreateMap<Address, AddressViewModel>();
+            CreateMap<AddressDTO, Address>();
         }
     }
 }
