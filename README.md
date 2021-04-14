@@ -42,4 +42,4 @@ If you have questions, concerns, bug reports, etc, please file an issue in this 
 ## Credits and references
 
 1. Project made as a homework for "Engenharia de Software" class of CEFET-MG college.
-2. Project GitHub [GitHub](https://github.com/Pinacolada8/ProRent)
+2. Project GitHub [GitHub](https://github.com/EngSoftCFT/EngSoftCFTRepo)
