@@ -27,7 +27,8 @@ export class UserModalComponent implements OnInit {
   }
 
   get showPatientProperties() {
-    return this.data?.showPatientSwitch;
+    if (this.data?.showPatientSwitch) return this.data?.modalObj?.isPatient;
+    return false;
   }
 
   get modalObj() {

@@ -42,18 +42,18 @@ export class PatientsComponent implements OnInit {
       },
       {
         name: "IsPatient",
-        displayName: "Is a Patient",
+        displayName: "Patient",
         customHeaderClass: "column-small",
         customCellClass: "column-small",
         icon: "done",
         showIcon: (element: IUserViewModel) => element.IsPatient,
       },
       {
-        name: "Edit",
+        name: "Add",
         customHeaderClass: "column-small",
         customCellClass: "column-small",
         isButton: true,
-        iconSvg: "edit",
+        iconSvg: "add",
         onClick: (element: IUserViewModel) => {
           this.update(element);
         },

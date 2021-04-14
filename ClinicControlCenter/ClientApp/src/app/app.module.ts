@@ -24,7 +24,10 @@ import { NewAppointmentComponent } from "./appointments/new-appointment/new-appo
 import { ListAppointmentsComponent } from "./appointments/list-appointments/list-appointments.component";
 import { CustomSearchBarModule } from "src/libs/ui/custom-search-bar/src";
 import { UserModalComponent } from './system-management/components/user-modal/user-modal.component';
-import { UserDetailModalComponent } from "./system-management/components/user-detail-modal/user-detail-modal.component";
+import { AddressTableComponent } from './address-table/address-table.component';
+import { MatTableModule } from '@angular/material/table';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -40,7 +43,7 @@ import { UserDetailModalComponent } from "./system-management/components/user-de
     NewAppointmentComponent,
     ListAppointmentsComponent,
     UserModalComponent,
-    UserDetailModalComponent,
+    AddressTableComponent,
   ],
   imports: [
     CommonModule,
@@ -56,6 +59,9 @@ import { UserDetailModalComponent } from "./system-management/components/user-de
     FeaMenuModule,
     CustomTableModule,
     CustomSearchBarModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthorizeInterceptor, multi: true },

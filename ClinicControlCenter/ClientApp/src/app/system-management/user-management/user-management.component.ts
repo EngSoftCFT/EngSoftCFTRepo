@@ -17,9 +17,6 @@ import { MatDialog } from "@angular/material/dialog";
 import { UserRoleDTO } from "../models/UserRoleDTO";
 import { isNullOrUndefined } from "src/libs/util/utils/src";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { UserDetailModal } from "../models/UserDetailModal";
-import { UserDTO } from "../models/userDTO";
-import { UserDetailModalComponent } from "../components/user-detail-modal/user-detail-modal.component";
 
 @Component({
   templateUrl: "./user-management.component.html",
@@ -74,7 +71,7 @@ export class UserManagementComponent implements OnInit {
         isButton: true,
         iconSvg: "edit",
         onClick: (element: IUserViewModel) => {
-          this.roleUpdate(element);
+          this.update(element);
         },
       },
       {
@@ -84,7 +81,7 @@ export class UserManagementComponent implements OnInit {
         isButton: true,
         iconSvg: "eye",
         onClick: (element: IUserViewModel) => {
-          this.roleDetails(element);
+          this.details(element);
         },
       },
     ] as ColumnDefinition[],
@@ -111,7 +108,7 @@ export class UserManagementComponent implements OnInit {
           defaultValue: null,
         },
       ],
-      addButtonHidden: false,
+      addButtonHidden: true,
     }
   );
 
@@ -140,7 +137,7 @@ export class UserManagementComponent implements OnInit {
     );
   }
 
-  roleDetails(element: IUserViewModel) {
+  details(element: IUserViewModel) {
     const modal = this.dialog.open(UserModalComponent, {
       data: new UserModal({
         title: "User Role Details",
@@ -152,7 +149,7 @@ export class UserManagementComponent implements OnInit {
     });
   }
 
-  roleUpdate(element: IUserViewModel) {
+  update(element: IUserViewModel) {
     const modal = this.dialog.open(UserModalComponent, {
       data: new UserModal({
         title: "Edit User Role",
@@ -196,35 +193,7 @@ export class UserManagementComponent implements OnInit {
           verticalPosition: "top",
         });
         this.refreshData();
-      });
-  }
 
-  userAdd() {
-    const modal = this.dialog.open(UserDetailModalComponent, {
-      data: new UserDetailModal({
-        title: "Add new user",
-        enableEdition: true,
-        modalObj: new UserDTO(),
-      }),
-    });
-    modal.afterClosed().subscribe((element: UserDTO) => {
-      if (!isNullOrUndefined(element)) {
-        element.UserName = element.Email;
-        this.api
-          .post(element, "/api/UserManagement/new-user")
-          .subscribe((result) => {
-            this.snackBar.open(
-              `User ${result.FullName ?? result.Email} added`,
-              "X",
-              {
-                duration: 500,
-                horizontalPosition: "right",
-                verticalPosition: "top",
-              }
-            );
-            this.refreshData();
-          });
-      }
-    });
+      });
   }
 }

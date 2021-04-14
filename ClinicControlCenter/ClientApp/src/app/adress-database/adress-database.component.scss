@@ -1,0 +1,115 @@
+* { box-sizing: border-box; }
+body { background: slategray; margin: 0; padding: 3em 1em;}
+ul { list-style: none; margin: 0; padding: 0;}
+figure { margin: 0; }
+figcaption { font-style: italic; font-size: 0.8em; color: grey; line-height: 1.4; }
+
+.grid {
+  display: grid;
+  grid-auto-flow: column; // display the items in columns only, ie horizontal
+  grid-auto-columns: 90%; // create as many columns as there are items. 90% so we can see next item on the right.
+  grid-gap: 1em;
+  overflow-x: scroll; // scroll only within the grid, not entire page
+  -webkit-overflow-scrolling: touch; // better scrolling on touch
+  padding: 2em 1em;
+  background: white;
+
+  @media all and (min-width: 600px) {
+    grid-auto-flow: initial; // default: display items in rows and cols
+    grid-template-columns: repeat(auto-fit, minmax(auto,20em)); // as many columns with max-width of 20em;
+    justify-content: center; // center the items - this is optional
+  }
+
+  &__figure {
+    display: grid;
+    grid-template-rows: 15em 1fr; // 15em high row for image – value could be whatever
+    grid-gap: 1em;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover; // crop image within its cell
+    }
+  }
+}
+
+.w3-theme-l5 {color:#000 !important; background-color:#e9fffd !important}
+.w3-theme-l4 {color:#000 !important; background-color:#b7fff8 !important}
+.w3-theme-l3 {color:#000 !important; background-color:#6efff1 !important}
+.w3-theme-l2 {color:#000 !important; background-color:#26ffe9 !important}
+.w3-theme-l1 {color:#fff !important; background-color:#00dcc6 !important}
+.w3-theme-d1 {color:#fff !important; background-color:#008578 !important}
+.w3-theme-d2 {color:#fff !important; background-color:#00766a !important}
+.w3-theme-d3 {color:#fff !important; background-color:#00685d !important}
+.w3-theme-d4 {color:#fff !important; background-color:#005950 !important}
+.w3-theme-d5 {color:#fff !important; background-color:#004a43 !important}
+
+.w3-theme-light {color:#000 !important; background-color:#e9fffd !important}
+.w3-theme-dark {color:#fff !important; background-color:#004a43 !important}
+.w3-theme-action {color:#fff !important; background-color:#004a43 !important}
+
+.w3-theme {color:#fff !important; background-color:#009688 !important}
+.w3-text-theme {color:#009688 !important}
+.w3-border-theme {border-color:#009688 !important}
+
+.w3-hover-theme:hover {color:#fff !important; background-color:#009688 !important}
+.w3-hover-text-theme:hover {color:#009688 !important}
+.w3-hover-border-theme:hover {border-color:#009688 !important}
+
+h2{
+  padding:40px;
+  font-weight:lighter;
+  text-transform:uppercase;
+  color:#414141;
+}
+
+input{
+  display:block;
+  height:50px;
+  width:80%;
+  margin:20px auto;
+  border:none;
+  &::placeholder{
+    -webkit-transform:translateY(0px);
+      transform:translateY(0px);
+    -webkit-transition:.5s;
+      transition:.5s;
+  }
+  &:hover,
+  &:focus,
+  &:active:focus{
+    color:#009688 !important;
+    outline:none;
+    &::placeholder{
+      color:#009688;
+      position:relative;
+      -webkit-transform:translateY(-15px);
+      transform:translateY(-15px);
+
+    }
+  }
+  position:relative;
+  z-index:1;
+  border-bottom:1px solid rgba(0,0,0,.1);
+  padding-left:20px;
+  font-family: 'Open Sans', sans-serif;
+  text-transform:uppercase;
+  color:#858585;
+  font-weight:lighter;
+  -webkit-transition:.5s;
+  transition:.5s;
+}
+
+
+.buttonSend {
+  margin: 0px auto;
+  width:80%;
+  display: flex;
+  justify-content: flex-end;
+  button {
+    font-family: "Segoe UI",Arial,sans-serif;
+    width: 100px;
+    margin-left: 20px;
+    color:#858585;
+  }
+}

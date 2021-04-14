@@ -51,11 +51,10 @@ const routes: INamedRoutes = [
       },
       {
         name: "Appointment Listing",
-        path: "list-appointments",
+        path: "lsit-appointments",
         component: ListAppointmentsComponent,
         icon: "calendar_view_month",
         requireRoleOf: USER_ROLES.DOCTOR_ROLE,
-        canActivate: [AuthorizeGuard],
       },
     ],
   },
